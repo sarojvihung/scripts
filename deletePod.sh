@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 filename='/tmp/uk1'
 kubectl get pods --all-namespaces | grep $1 > $filename
 while read -r line; do

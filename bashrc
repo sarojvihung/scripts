@@ -10,3 +10,5 @@ alias kl='kubectl logs'
 alias ke='kubectl exec -it'
 alias kd='kubectl delete pod'
 alias kds='kubectl describe pod'
+source <(kubectl completion bash)
+complete -F __start_kubectl k
