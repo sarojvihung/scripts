@@ -4,7 +4,7 @@ apt -y update
 
 apt -y upgrade
 
-apt -y install docker.io golang-go curl apache2-utils default-jre default-jdk wget git vim nano make g++ libsctp-dev lksctp-tools net-tools iproute2 libssl-dev tcpdump curl jq chromium-browser iputils-ping apt-transport-https nghttp2-client bash-completion
+apt -y install docker.io golang-go curl apache2-utils default-jre default-jdk wget git vim nano make g++ libsctp-dev lksctp-tools net-tools iproute2 libssl-dev tcpdump curl jq iputils-ping apt-transport-https nghttp2-client bash-completion xauth
 
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
 echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
@@ -45,3 +45,7 @@ git clone https://github.com/UmakantKulkarni/free5gmano
 git clone https://github.com/UmakantKulkarni/scripts
 git clone https://github.com/UmakantKulkarni/open5gs
 git clone https://github.com/free5gc/free5gc
+
+cd k8s
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+apt -y install ./google-chrome-stable_current_amd64.deb
