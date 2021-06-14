@@ -70,6 +70,7 @@ iptables -A FORWARD -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --set-mss 14
 systemctl stop ufw
 
 cd /opt/
+modprobe -r gtp5g
 git clone -b v0.2.1 https://github.com/free5gc/gtp5g.git
 cd gtp5g
 make
