@@ -44,7 +44,8 @@ git clone https://github.com/UmakantKulkarni/opensource-5g-core
 git clone https://github.com/UmakantKulkarni/free5gmano
 git clone https://github.com/UmakantKulkarni/scripts
 git clone https://github.com/UmakantKulkarni/open5gs
-git clone https://github.com/free5gc/free5gc
+git clone https://github.com/UmakantKulkarni/free5gc
+git clone https://github.com/UmakantKulkarni/upf
 
 cd k8s
 wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
