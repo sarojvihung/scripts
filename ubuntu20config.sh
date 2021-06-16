@@ -14,15 +14,15 @@ apt-get install -y kubelet kubeadm kubectl
 systemctl enable docker.service
 swapoff -a
 
-wget https://github.com/Kitware/CMake/releases/download/v3.20.3/cmake-3.20.3.tar.gz && tar -xvzf cmake-3.20.3.tar.gz
+wget https://github.com/Kitware/CMake/releases/download/v3.20.4/cmake-3.20.4.tar.gz && tar -xvzf cmake-3.20.4.tar.gz
 
-cd cmake-3.20.3 && ./bootstrap -- -DCMAKE_BUILD_TYPE:STRING=Release && make && make install
+cd cmake-3.20.4 && ./bootstrap -- -DCMAKE_BUILD_TYPE:STRING=Release && make && make install
 
 cd .. && rm -rf cmake-*
 
 cmake --version
 
-git clone -b v3.2.0 https://github.com/aligungr/UERANSIM && cd UERANSIM && make
+git clone -b tagV3.2.1 https://github.com/UmakantKulkarni/UERANSIM && cd UERANSIM && make
 
 cp build/nr-* /usr/local/bin/
 cd ..
@@ -67,7 +67,7 @@ source ~/.bashrc
 apt -y update
 go get -u github.com/sirupsen/logrus
 sysctl -w net.ipv4.ip_forward=1
-iptables -t nat -A POSTROUTING -o eno49 -j MASQUERADE
+#iptables -t nat -A POSTROUTING -o eno49 -j MASQUERADE
 iptables -A FORWARD -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --set-mss 1400
 systemctl stop ufw
 
