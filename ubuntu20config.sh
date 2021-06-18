@@ -43,7 +43,7 @@ cd /opt/
 git clone https://github.com/UmakantKulkarni/opensource-5g-core
 git clone https://github.com/UmakantKulkarni/free5gmano
 git clone https://github.com/UmakantKulkarni/scripts
-git clone https://github.com/UmakantKulkarni/open5gs
+git clone https://github.com/open5gs/open5gs
 git clone https://github.com/UmakantKulkarni/free5gc
 git clone https://github.com/UmakantKulkarni/amf
 git clone https://github.com/UmakantKulkarni/upf
