@@ -67,6 +67,7 @@ echo "export GOROOT=/usr/local/go" >> ~/.bashrc
 echo "export PATH=$PATH:$GOPATH/bin:$GOROOT/bin" >> ~/.bashrc
 echo "export GO111MODULE=auto" >> ~/.bashrc
 source ~/.bashrc
+export PATH=$PATH:$GOPATH/bin:$GOROOT/bin
 apt -y update
 go get -u github.com/sirupsen/logrus
 sysctl -w net.ipv4.ip_forward=1
