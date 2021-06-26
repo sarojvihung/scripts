@@ -4,7 +4,7 @@ apt -y update
 
 apt -y upgrade
 
-apt -y install docker.io curl apache2-utils default-jre default-jdk wget git vim nano make g++ libsctp-dev lksctp-tools net-tools iproute2 libssl-dev tcpdump curl jq iputils-ping apt-transport-https nghttp2-client bash-completion xauth gcc autoconf libtool pkg-config libmnl-dev libyaml-dev
+apt -y install docker.io curl apache2-utils default-jre default-jdk wget git vim nano make g++ libsctp-dev lksctp-tools net-tools iproute2 libssl-dev tcpdump curl jq iputils-ping apt-transport-https nghttp2-client bash-completion xauth gcc autoconf libtool pkg-config libmnl-dev libyaml-dev sshpass
 
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
 echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
@@ -48,7 +48,10 @@ git clone https://github.com/UmakantKulkarni/free5gc
 git clone https://github.com/UmakantKulkarni/amf
 git clone https://github.com/UmakantKulkarni/upf
 
-cd k8s
+cd /opt/scripts 
+chmod +x *
+
+cd /opt/k8s
 wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 apt -y install ./google-chrome-stable_current_amd64.deb
 
@@ -59,10 +62,10 @@ wget https://dl.google.com/go/go1.14.4.linux-amd64.tar.gz
 tar -C /usr/local -zxvf go1.14.4.linux-amd64.tar.gz
 rm -rf go1.14.4.linux-amd64.tar.gz
 mkdir -p ~/go/{bin,pkg,src}
-echo 'export GOPATH=$HOME/go' >> ~/.bashrc
-echo 'export GOROOT=/usr/local/go' >> ~/.bashrc
-echo 'export PATH=$PATH:$GOPATH/bin:$GOROOT/bin' >> ~/.bashrc
-echo 'export GO111MODULE=auto' >> ~/.bashrc
+echo "export GOPATH=$HOME/go" >> ~/.bashrc
+echo "export GOROOT=/usr/local/go" >> ~/.bashrc
+echo "export PATH=$PATH:$GOPATH/bin:$GOROOT/bin" >> ~/.bashrc
+echo "export GO111MODULE=auto" >> ~/.bashrc
 source ~/.bashrc
 apt -y update
 go get -u github.com/sirupsen/logrus
