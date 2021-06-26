@@ -34,3 +34,9 @@ echo "alias kd='kubectl delete pod'" >> ~/.bashrc
 echo "alias kds='kubectl describe pod'" >> ~/.bashrc
 echo "source <(kubectl completion bash)" >> ~/.bashrc
 source ~/.bashrc
+echo "export GOPATH=$HOME/go" >> ~/.bashrc
+echo "export GOROOT=/usr/local/go" >> ~/.bashrc
+source ~/.bashrc
+echo "export PATH=$PATH:$GOPATH/bin:$GOROOT/bin" >> ~/.bashrc
+echo "export GO111MODULE=auto" >> ~/.bashrc
+source ~/.bashrc
