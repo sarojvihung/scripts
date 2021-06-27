@@ -39,8 +39,8 @@ do
 	ssh -o StrictHostKeyChecking=no root@$node "$wcmd"
 	echo ""
 	echo "Finished Configuring Node - $node"
-    echo ""
-    nodeNum=$((nodeNum+1))
+        echo ""
+        nodeNum=$((nodeNum+1))
 done
 
 echo ""
