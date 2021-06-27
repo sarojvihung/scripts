@@ -9,10 +9,9 @@ kjoincmd="$1"
 echo "alias lgc='google-chrome --no-sandbox --disable-gpu'" >> ~/.bashrc
 echo "export GOPATH=$HOME/go" >> ~/.bashrc
 echo "export GOROOT=/usr/local/go" >> ~/.bashrc
-source ~/.bashrc
-echo "export PATH=$PATH:$GOPATH/bin:$GOROOT/bin" >> ~/.bashrc
 echo "export GO111MODULE=auto" >> ~/.bashrc
 source ~/.bashrc
+export PATH=$PATH:$GOPATH/bin:$GOROOT/bin
 sh /opt/scripts/dockerInstall.sh
 systemctl enable docker.service
 swapoff -a

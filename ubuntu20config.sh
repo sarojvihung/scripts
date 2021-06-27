@@ -64,10 +64,9 @@ rm -rf go1.14.4.linux-amd64.tar.gz
 mkdir -p ~/go/{bin,pkg,src}
 echo "export GOPATH=$HOME/go" >> ~/.bashrc
 echo "export GOROOT=/usr/local/go" >> ~/.bashrc
-source ~/.bashrc
-echo "export PATH=$PATH:$GOPATH/bin:$GOROOT/bin" >> ~/.bashrc
 echo "export GO111MODULE=auto" >> ~/.bashrc
 source ~/.bashrc
+export PATH=$PATH:$GOPATH/bin:$GOROOT/bin
 apt -y update
 go get -u github.com/sirupsen/logrus
 sysctl -w net.ipv4.ip_forward=1
