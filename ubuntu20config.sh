@@ -22,7 +22,7 @@ cd .. && rm -rf cmake-*
 
 cmake --version
 
-git clone -b tagV3.2.1 https://github.com/UmakantKulkarni/UERANSIM && cd UERANSIM && make
+git clone -b 375d538_v3.2.2 https://github.com/UmakantKulkarni/UERANSIM && cd UERANSIM && make
 
 cp build/nr-* /usr/local/bin/
 cd ..
@@ -43,7 +43,7 @@ cd /opt/
 git clone https://github.com/UmakantKulkarni/opensource-5g-core
 git clone https://github.com/UmakantKulkarni/free5gmano
 git clone https://github.com/UmakantKulkarni/scripts
-git clone https://github.com/open5gs/open5gs
+git clone --recursive -b 1326fc8_mongo https://github.com/UmakantKulkarni/open5gs
 git clone https://github.com/UmakantKulkarni/free5gc
 git clone https://github.com/UmakantKulkarni/amf
 git clone https://github.com/UmakantKulkarni/upf
