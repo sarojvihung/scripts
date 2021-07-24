@@ -1,3 +1,3 @@
 apk update
-apk add openssh tcpdump tshark
-tcpdump -i any -w ui.pcapng
+apk add openssh tcpdump tshark jq curl bash
+tcpdump -i any -w /tmp/ui.pcapng

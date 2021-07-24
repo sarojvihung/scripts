@@ -14,9 +14,9 @@ apt-get install -y kubelet kubeadm kubectl
 systemctl enable docker.service
 swapoff -a
 
-wget https://github.com/Kitware/CMake/releases/download/v3.20.4/cmake-3.20.4.tar.gz && tar -xvzf cmake-3.20.4.tar.gz
+wget https://github.com/Kitware/CMake/releases/download/v3.21.0/cmake-3.21.0.tar.gz && tar -xvzf cmake-3.21.0.tar.gz
 
-cd cmake-3.20.4 && ./bootstrap -- -DCMAKE_BUILD_TYPE:STRING=Release && make && make install
+cd cmake-3.21.0 && ./bootstrap -- -DCMAKE_BUILD_TYPE:STRING=Release && make && make install
 
 cd .. && rm -rf cmake-*
 
