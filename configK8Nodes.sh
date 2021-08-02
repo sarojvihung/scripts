@@ -2,12 +2,12 @@
 
 if [[ $# -eq 4 ]] ; then
 	numMasterNodes="$4"
-	echo 'Number of Master nodes = $numMasterNodes'
+	echo "Number of Master nodes = $numMasterNodes"
 elif [[ $# -eq 4 ]] ; then
 	numMasterNodes=1
-	echo 'Number of Master nodes = $numMasterNodes'
+	echo "Number of Master nodes = $numMasterNodes"
 else
-	echo 'Expected at least 3 CLI arguments - Interface name, Number of worker nodes and total num of VMs to configure'
+	echo "Expected at least 3 CLI arguments - Interface name, Number of worker nodes and total num of VMs to configure"
     exit 1
 fi
 
