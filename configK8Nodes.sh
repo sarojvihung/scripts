@@ -35,7 +35,7 @@ echo ""
 
 
 #cmd="rm -rf /opt/scripts/dockerInstall.sh && echo \"sh /opt/scripts/dockerInstall.sh\" >> /opt/configWorkerNode.sh && echo \"systemctl enable docker.service\" >> /opt/configWorkerNode.sh && echo \"swapoff -a\" >> /opt/configWorkerNode.sh && echo \"kubeadm reset --force\" >> /opt/configWorkerNode.sh && echo \"systemctl restart kubelet\" >> /opt/configWorkerNode.sh && echo \"eval $kjoincmd\" >> /opt/configWorkerNode.sh && chmod +x /opt/configWorkerNode.sh && sh /opt/configWorkerNode.sh && exit"
-wcmd="bash /opt/scripts/configWorkerNode.sh \"$kjoincmd\" && exit"
+wcmd="cd /opt/scripts/ && git pull && bash /opt/scripts/configWorkerNode.sh \"$kjoincmd\" && exit"
 nodeNum=$((0 + numMasterNodes))
 startNodeNum=$((0 + numMasterNodes))
 endNodeNum=$((numWorkerNodes + numMasterNodes - 1))
@@ -60,7 +60,7 @@ echo ""
 echo "Started Configuring RAN Nodes"
 echo ""
 
-rcmd="bash /opt/scripts/configRanNode.sh && exit"
+rcmd="cd /opt/scripts/ && git pull && bash /opt/scripts/configRanNode.sh && exit"
 nodeNum=$(($numWorkerNodes + $numMasterNodes))
 startNodeNum=$(($numWorkerNodes + $numMasterNodes))
 endNodeNum=$((numTotalNodes - 1))
