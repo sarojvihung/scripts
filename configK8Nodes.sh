@@ -1,17 +1,23 @@
 #!/usr/bin/env bash
 
-if [[ $# -ne 2 ]] ; then
-    echo 'Expected 2 CLI arguments - Interface name and Number of worker nodes to configure'
+if [[ $# -eq 4 ]] ; then
+	numMasterNodes="$4"
+	echo 'Number of Master nodes = $numMasterNodes'
+elif [[ $# -eq 4 ]] ; then
+	numMasterNodes=1
+	echo 'Number of Master nodes = $numMasterNodes'
+else
+	echo 'Expected at least 3 CLI arguments - Interface name, Number of worker nodes and total num of VMs to configure'
     exit 1
 fi
+
+intf="$1"
+numWorkerNodes="$2"
+numTotalNodes="$3"
 
 echo ""
 echo "Configuring Master Node"
 echo ""
-
-intf="$1"
-numNodes="$2"
-nodeNum=1
 
 mcmd="bash /opt/scripts/configMasterNode.sh $intf"
 eval $mcmd
@@ -30,7 +36,8 @@ echo ""
 
 #cmd="rm -rf /opt/scripts/dockerInstall.sh && echo \"sh /opt/scripts/dockerInstall.sh\" >> /opt/configWorkerNode.sh && echo \"systemctl enable docker.service\" >> /opt/configWorkerNode.sh && echo \"swapoff -a\" >> /opt/configWorkerNode.sh && echo \"kubeadm reset --force\" >> /opt/configWorkerNode.sh && echo \"systemctl restart kubelet\" >> /opt/configWorkerNode.sh && echo \"eval $kjoincmd\" >> /opt/configWorkerNode.sh && chmod +x /opt/configWorkerNode.sh && sh /opt/configWorkerNode.sh && exit"
 wcmd="bash /opt/scripts/configWorkerNode.sh \"$kjoincmd\" && exit"
-for i in $(seq 1 $numNodes);
+nodeNum=0+$numMasterNodes
+for i in $(seq 0+$numMasterNodes $numWorkerNodes+$numMasterNodes-1);
 do	
 	node=node$nodeNum
 	echo ""
@@ -38,11 +45,34 @@ do
 	echo ""
 	ssh -o StrictHostKeyChecking=no root@$node "$wcmd"
 	echo ""
-	echo "Finished Configuring Node - $node"
+	echo "Finished Configuring Worker Node - $node"
         echo ""
         nodeNum=$((nodeNum+1))
 done
 
 echo ""
 echo "Finished Configuring Worker Nodes"
+echo ""
+
+echo ""
+echo "Started Configuring RAN Nodes"
+echo ""
+
+nodeNum=$numWorkerNodes+$numMasterNodes
+rcmd="bash /opt/scripts/configRanNode.sh && exit"
+for i in $(seq $numWorkerNodes+$numMasterNodes $numTotalNodes-1);
+do	
+	node=node$nodeNum
+	echo ""
+	echo "Configuring Node - $node"
+	echo ""
+	ssh -o StrictHostKeyChecking=no root@$node "$rcmd"
+	echo ""
+	echo "Finished Configuring RAN Node - $node"
+        echo ""
+        nodeNum=$((nodeNum+1))
+done
+
+echo ""
+echo "Finished Configuring RAN Nodes"
 echo ""
