@@ -3,7 +3,7 @@
 if [[ $# -eq 4 ]] ; then
 	numMasterNodes="$4"
 	echo "Number of Master nodes = $numMasterNodes"
-elif [[ $# -eq 4 ]] ; then
+elif [[ $# -eq 3 ]] ; then
 	numMasterNodes=1
 	echo "Number of Master nodes = $numMasterNodes"
 else
