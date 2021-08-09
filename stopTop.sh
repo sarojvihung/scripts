@@ -8,7 +8,7 @@ fi
 numWorkerNodes="$1"
 startNodeNum=0
 endNodeNum=$((0 + numWorkerNodes))
-ocmd="kill $(ps aux | grep '[b]ash topFile.sh' | awk '{print $2}')"
+ocmd="pkill -f 'bash topFile.sh'"
 wcmd="$ocmd && exit"
 for i in $(seq $startNodeNum $endNodeNum);
 do	
