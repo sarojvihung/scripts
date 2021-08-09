@@ -9,7 +9,8 @@ numWorkerNodes="$1"
 pcsRepo="$2"
 startNodeNum=0
 endNodeNum=$((0 + numWorkerNodes))
-rcmd="cd /opt/$pcsRepo/ && git pull && exit"
+ocmd="cd /opt/$pcsRepo/ && git pull"
+wcmd="$ocmd && exit"
 for i in $(seq $startNodeNum $endNodeNum);
 do	
 	node=node$i
@@ -17,9 +18,9 @@ do
 	echo "Starting git-pull script on Node - $node"
 	echo ""
     if [[ $i -eq 0 ]] ; then
-        cd /opt/$pcsRepo/ && git pull
+        eval "$ocmd"
     else
-        ssh -o StrictHostKeyChecking=no root@$node "$rcmd"
+        ssh -o StrictHostKeyChecking=no root@$node "$wcmd"
     fi
 	echo ""
 	echo "Finished git-pull script on Node - $node"

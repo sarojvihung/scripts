@@ -9,7 +9,8 @@ numWorkerNodes="$1"
 pcsDir="$2"
 startNodeNum=0
 endNodeNum=$((0 + numWorkerNodes))
-rcmd="cd /opt/scripts/ && bash topFile.sh > /dev/null 2>&1 & && exit"
+ocmd="cd /opt/scripts/ && mkdir $pcsDir && cd $pcsDir && cp /opt/scripts/topFile.sh . && (bash topFile.sh > /dev/null 2>&1 &)"
+wcmd="$ocmd && exit"
 for i in $(seq $startNodeNum $endNodeNum);
 do	
 	node=node$i
@@ -17,9 +18,9 @@ do
 	echo "Starting top-start script on Node - $node"
 	echo ""
     if [[ $i -eq 0 ]] ; then
-        cd /opt/scripts/ && bash topFile.sh > /dev/null 2>&1 &
+        eval "$ocmd"
     else
-        ssh -o StrictHostKeyChecking=no root@$node "$rcmd"
+        ssh -o StrictHostKeyChecking=no root@$node "$wcmd"
     fi
 	echo ""
 	echo "Started top-start script on Node - $node"
