@@ -11,6 +11,7 @@ experimentDir="$3"
 startNodeNum=0
 endNodeNum=$((0 + numWorkerNodes))
 ocmd="cd /opt/ && mkdir -p Experiments && cd Experiments && mkdir -p $experimentDir && cd $experimentDir && mkdir -p $pcsDir && cd $pcsDir && rm -f top_data.txt && (bash /opt/scripts/topFile.sh > /dev/null 2>&1 &)"
+ktcmd="cd /opt/Experiments/$experimentDir/$pcsDir && rm -f kt_data.txt && (bash /opt/scripts/ktopFile.sh > /dev/null 2>&1 &)"
 wcmd="$ocmd && exit"
 for i in $(seq $startNodeNum $endNodeNum);
 do	
@@ -20,6 +21,7 @@ do
 	echo ""
     if [[ $i -eq 0 ]] ; then
         eval "$ocmd"
+        eval "$ktcmd"
     else
         ssh -o StrictHostKeyChecking=no root@$node "$wcmd"
     fi

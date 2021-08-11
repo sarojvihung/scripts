@@ -9,6 +9,7 @@ numWorkerNodes="$1"
 startNodeNum=0
 endNodeNum=$((0 + numWorkerNodes))
 ocmd="pkill -f 'bash topFile.sh'"
+ktcmd="pkill -f 'bash ktopFile.sh'"
 wcmd="$ocmd && exit"
 for i in $(seq $startNodeNum $endNodeNum);
 do	
@@ -18,6 +19,7 @@ do
 	echo ""
     if [[ $i -eq 0 ]] ; then
         eval "$ocmd"
+        eval "$ktcmd"
     else
         ssh -o StrictHostKeyChecking=no root@$node "$wcmd"
     fi
