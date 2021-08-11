@@ -28,7 +28,7 @@ subexpdir=${s}
 numSession=${n}
 edir="/opt/Experiments/$expdir/$subexpdir"
 cmd1="(mkdir -p $edir && cd $edir && nr-ue -c /opt/UERANSIM/config/open5gs/1ue.yaml -n $numSession > $edir/uesim.logs 2>&1 &) && exit"
-cmd2="sleep 30 && pkill -f nr-ue && sleep 5 && rm -f $edir/*"
+cmd2="(sleep 30 && pkill -f nr-ue && sleep 5 && rm -f $edir/* &) && exit"
 cmd3="(mkdir -p $edir && cd $edir && nr-ue -c /opt/UERANSIM/config/open5gs/ue.yaml -n $numSession > $edir/uesim.logs 2>&1 &) && exit"
 for i in "${ues[@]}"; do
     node=node$i
