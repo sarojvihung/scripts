@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-usage() { echo "Usage: $0 [-e <string>] [-s <string>] [-n <string>] [-u <string>]" 1>&2; exit 1; }
+usage() { echo "Usage: $0 [-e <string>] [-s <string>] [-n <string>]" 1>&2; exit 1; }
 
 while getopts ":e:s:n:u:" o; do
     case "${o}" in
@@ -13,9 +13,6 @@ while getopts ":e:s:n:u:" o; do
         n)
             n=${OPTARG}
             ;;
-        u)
-            ues+=("$OPTARG")
-            ;;
         *)
             usage
             ;;
@@ -27,47 +24,15 @@ expdir=${e}
 subexpdir=${s}
 numSession=${n}
 edir="/opt/Experiments/$expdir/$subexpdir"
-cmd1="mkdir -p $edir && cd $edir && (nr-ue -c /opt/UERANSIM/config/open5gs/1ue.yaml -n $numSession > $edir/uesim.logs 2>&1 &) && exit"
-cmd2="pkill -f nr-ue && sleep 2 && rm -f $edir/* && exit"
-cmd3="mkdir -p $edir && cd $edir && (nr-ue -c /opt/UERANSIM/config/open5gs/ue.yaml -n $numSession > $edir/uesim.logs 2>&1 &) && exit"
+cmd1="mkdir -p $edir && cd $edir && rm -f $edir/* && (nr-ue -c /opt/UERANSIM/config/open5gs/1ue.yaml -n $numSession > $edir/uesim.logs 2>&1 &)"
+cmd2="pkill -f nr-ue && sleep 2 && rm -f $edir/*"
+cmd3="mkdir -p $edir && cd $edir && rm -f $edir/* && (nr-ue -c /opt/UERANSIM/config/open5gs/ue.yaml -n $numSession > $edir/uesim.logs 2>&1 &)"
+
 
 if [[ $numSession -eq 1 ]] ; then
-    for i in "${ues[@]}";
-    do
-        node=node$i
-        echo ""
-        echo "Starting UE Sim on Node - $node"
-        echo ""
-        ssh -o StrictHostKeyChecking=no root@$node "$cmd1"
-        echo ""
-        echo "Started UE Sim on Node - $node"
-            echo ""
-            nodeNum=$((nodeNum + 1))
-    done
+    eval "$cmd1"
     sleep 20
-    for i in "${ues[@]}";
-    do
-        node=node$i
-        echo ""
-        echo "Stopping UE Sim on Node - $node"
-        echo ""
-        ssh -o StrictHostKeyChecking=no root@$node "$cmd2"
-        echo ""
-        echo "Stopped UE Sim on Node - $node"
-            echo ""
-            nodeNum=$((nodeNum + 1))
-    done
+    eval "$cmd2"
 else
-    for i in "${ues[@]}";
-    do
-        node=node$i
-        echo ""
-        echo "Starting UE Sim on From Node - $node"
-        echo ""
-        ssh -o StrictHostKeyChecking=no root@$node "$cmd3"
-        echo ""
-        echo "Started UE Sim on Node - $node"
-            echo ""
-            nodeNum=$((nodeNum + 1))
-    done
+    eval "$cmd3"
 fi
