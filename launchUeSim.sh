@@ -26,6 +26,7 @@ shift $((OPTIND-1))
 expdir=${e}
 subexpdir=${s}
 numSession=${n}
+edir="/opt/Experiments/$expdir/$subexpdir"
 cmd="mkdir -p $edir && cd $edir && (bash /opt/scripts/startUeCalls.sh -e $expdir -s $subexpdir -n $numSession &) && exit"
 
 for i in "${ues[@]}";
