@@ -15,7 +15,7 @@ for i in $(seq $startNodeNum $endNodeNum);
 do	
 	node=node$i
 	echo ""
-	echo "Starting top-start script on Node - $node"
+	echo "Starting SCP from Node - $node"
 	echo ""
     cd /opt/Node_Ops && mkdir -p $node
     if [[ $i -eq 0 ]] ; then
@@ -26,7 +26,7 @@ do
         ssh -o StrictHostKeyChecking=no root@$node "$wcmd"
     fi
 	echo ""
-	echo "Started top-start script on Node - $node"
+	echo "Finished SCP from Node - $node"
         echo ""
         nodeNum=$((nodeNum + 1))
 done
