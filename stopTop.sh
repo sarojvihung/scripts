@@ -10,7 +10,9 @@ startNodeNum=0
 endNodeNum=$((0 + numWorkerNodes))
 ocmd="pkill -f 'bash topFile.sh'"
 ktcmd="pkill -f 'bash ktopFile.sh'"
+dscmd="pkill -f 'bash dockerStats.sh'"
 wcmd="$ocmd && exit"
+dswcmd="$dscmd && exit"
 for i in $(seq $startNodeNum $endNodeNum);
 do	
 	node=node$i
@@ -20,8 +22,10 @@ do
     if [[ $i -eq 0 ]] ; then
         eval "$ocmd"
         eval "$ktcmd"
+        eval "$dscmd"
     else
         ssh -o StrictHostKeyChecking=no root@$node "$wcmd"
+        ssh -o StrictHostKeyChecking=no root@$node "$dswcmd"
     fi
 	echo ""
 	echo "Stopped top-start script on Node - $node"

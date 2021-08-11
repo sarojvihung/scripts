@@ -39,7 +39,7 @@ mkdir k8s
 cd k8s
 curl -sL https://run.linkerd.io/install | sh
 curl https://docs.projectcalico.org/manifests/calico.yaml -O
-wget https://raw.githubusercontent.com/pythianarora/total-practice/master/sample-kubernetes-code/metrics-server.yaml
+wget https://raw.githubusercontent.com/UmakantKulkarni/myCodes/master/k8/metrics-server.yaml
 
 cd /opt/
 git clone https://github.com/UmakantKulkarni/opensource-5g-core
