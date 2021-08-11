@@ -27,9 +27,10 @@ expdir=${e}
 subexpdir=${s}
 numSession=${n}
 edir="/opt/Experiments/$expdir/$subexpdir"
-cmd1="(mkdir -p $edir && cd $edir && nr-ue -c /opt/UERANSIM/config/open5gs/1ue.yaml -n $numSession > $edir/uesim.logs 2>&1 &) && exit"
-cmd2="(pkill -f nr-ue && sleep 5 && rm -f $edir/* 2>&1 &) && exit"
-cmd3="(mkdir -p $edir && cd $edir && nr-ue -c /opt/UERANSIM/config/open5gs/ue.yaml -n $numSession > $edir/uesim.logs 2>&1 &) && exit"
+cmd1="mkdir -p $edir && cd $edir && (nr-ue -c /opt/UERANSIM/config/open5gs/1ue.yaml -n $numSession > $edir/uesim.logs 2>&1 &) && exit"
+cmd2="pkill -f nr-ue && sleep 2 && rm -f $edir/* && exit"
+cmd3="mkdir -p $edir && cd $edir && (nr-ue -c /opt/UERANSIM/config/open5gs/ue.yaml -n $numSession > $edir/uesim.logs 2>&1 &) && exit"
+
 if [[ $numSession -eq 1 ]] ; then
     for i in "${ues[@]}";
     do
@@ -43,7 +44,7 @@ if [[ $numSession -eq 1 ]] ; then
             echo ""
             nodeNum=$((nodeNum + 1))
     done
-    sleep 30
+    sleep 20
     for i in "${ues[@]}";
     do
         node=node$i
