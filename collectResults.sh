@@ -9,7 +9,7 @@ do
     do
         f2=`basename $subexp`
         mkdir -p /opt/Results/$f1/$f2/
-        cmd = "scp -o StrictHostKeyChecking=no $subexp/* /opt/Results/$f1/$f2/"
+        cmd="scp -o StrictHostKeyChecking=no $subexp/* /opt/Results/$f1/$f2/"
         eval "$cmd"
     done
 done
@@ -25,7 +25,7 @@ do
             
             f3=`basename $subexp`
             mkdir -p /opt/Results/$f2/$f3/
-            cmd = "scp -o StrictHostKeyChecking=no $subexp/* /opt/Results/$f2/$f3/"
+            cmd="scp -o StrictHostKeyChecking=no $subexp/* /opt/Results/$f2/$f3/"
             eval "$cmd"
         done
     done
@@ -42,7 +42,7 @@ do
             
             f3=`basename $subexp`
             mkdir -p /opt/Results/$f2/$f3/
-            cmd = "scp -o StrictHostKeyChecking=no $subexp/* /opt/Results/$f2/$f3/"
+            cmd="scp -o StrictHostKeyChecking=no $subexp/* /opt/Results/$f2/$f3/"
             eval "$cmd"
         done
     done
