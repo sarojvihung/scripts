@@ -27,7 +27,7 @@ expdir=${e}
 subexpdir=${s}
 numSession=${n}
 edir="/opt/Experiments/$expdir/$subexpdir"
-cmd="mkdir -p $edir && cd $edir && (bash /opt/scripts/startUeCalls.sh -e $expdir -s $subexpdir -n $numSession &) && exit"
+cmd="mkdir -p $edir && cd $edir && (bash /opt/scripts/startUeCalls.sh -e $expdir -s $subexpdir -n $numSession > /dev/null 2>&1 &) && exit"
 
 for i in "${ues[@]}";
 do
