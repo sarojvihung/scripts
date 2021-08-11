@@ -27,15 +27,15 @@ expdir=${e}
 subexpdir=${s}
 numSession=${n}
 edir="/opt/Experiments/$expdir/$subexpdir"
-cmd1="(mkdir -p $edir && cd $edir && nr-ue -c /opt/UERANSIM/config/open5gs/1ue.yaml -n $numSession > $edir/uesim.logs &) && exit"
-cmd2="(pkill -f nr-ue && sleep 5 && rm -f $edir/* &) && exit"
-cmd3="(mkdir -p $edir && cd $edir && nr-ue -c /opt/UERANSIM/config/open5gs/ue.yaml -n $numSession > $edir/uesim.logs &) && exit"
+cmd1="(mkdir -p $edir && cd $edir && nr-ue -c /opt/UERANSIM/config/open5gs/1ue.yaml -n $numSession > $edir/uesim.logs 2>&1 &) && exit"
+cmd2="(pkill -f nr-ue && sleep 5 && rm -f $edir/* 2>&1 &) && exit"
+cmd3="(mkdir -p $edir && cd $edir && nr-ue -c /opt/UERANSIM/config/open5gs/ue.yaml -n $numSession > $edir/uesim.logs 2>&1 &) && exit"
 if [[ $numSession -eq 1 ]] ; then
     for i in "${ues[@]}";
     do
         node=node$i
         echo ""
-        echo "Starting UE Sim on From Node - $node"
+        echo "Starting UE Sim on Node - $node"
         echo ""
         ssh -o StrictHostKeyChecking=no root@$node "$cmd1"
         echo ""
@@ -48,7 +48,7 @@ if [[ $numSession -eq 1 ]] ; then
     do
         node=node$i
         echo ""
-        echo "Stopping UE Sim on From Node - $node"
+        echo "Stopping UE Sim on Node - $node"
         echo ""
         ssh -o StrictHostKeyChecking=no root@$node "$cmd2"
         echo ""
