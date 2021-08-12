@@ -6,8 +6,8 @@ if [[ $# -ne 3 ]] ; then
 fi
 
 numWorkerNodes="$1"
-pcsDir="$2"
-experimentDir="$3"
+experimentDir="$2"
+pcsDir="$3"
 startNodeNum=0
 endNodeNum=$((0 + numWorkerNodes))
 ocmd="cd /opt/ && mkdir -p Experiments && cd Experiments && mkdir -p $experimentDir && cd $experimentDir && mkdir -p $pcsDir && cd $pcsDir && rm -f top_data_*.txt && (bash /opt/scripts/topFile.sh > /dev/null 2>&1 &)"
