@@ -26,7 +26,7 @@ numSession=${n}
 edir="/opt/Experiments/$expdir/$subexpdir"
 cmd1="mkdir -p $edir && cd $edir && rm -f $edir/* && (nr-ue -c /opt/UERANSIM/config/open5gs/1ue.yaml -n $numSession > $edir/uesim.logs 2>&1 &)"
 cmd2="pkill -f nr-ue && sleep 2 && rm -f $edir/*"
-cmd3="mkdir -p $edir && cd $edir && rm -f $edir/* && (nr-ue -c /opt/UERANSIM/config/open5gs/ue.yaml -n $numSession > $edir/uesim.logs 2>&1 &)"
+cmd3="mkdir -p $edir && cd $edir && rm -f $edir/* && (nr-ue -c /opt/UERANSIM/config/open5gs/ue.yaml -n $numSession | tee $edir/uesim.logs)"
 
 
 if [[ $numSession -eq 1 ]] ; then
