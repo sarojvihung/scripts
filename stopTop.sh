@@ -8,10 +8,10 @@ fi
 numWorkerNodes="$1"
 startNodeNum=0
 endNodeNum=$((0 + numWorkerNodes))
-ocmd="pkill -f 'bash topFile.sh'"
-ktcmd="pkill -f 'bash ktopFile.sh'"
-dscmd="pkill -f 'bash dockerStats.sh'"
-psscmd="pkill -f 'bash ssPodOp.sh'"
+ocmd="pkill -f topFile.sh"
+ktcmd="pkill -f ktopFile.sh"
+dscmd="pkill -f dockerStats.sh"
+psscmd="pkill -f ssPodOp.sh"
 wcmd="$ocmd && exit"
 dswcmd="$dscmd && exit"
 for i in $(seq $startNodeNum $endNodeNum);
