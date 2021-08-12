@@ -1,15 +1,21 @@
 #!/usr/bin/env bash
 
+#apt-get update && apt -y install git vim
+
 if [[ $# -eq 3 ]] ; then
 	timeDur="$3"
     experimentDir="$2"
 	echo "mongotop duration = $timeDur"
     echo "Experiment Directory = $experimentDir"
 elif [[ $# -eq 2 ]] ; then
+    timeDur=60
 	experimentDir="$2"
+    echo "mongotop duration = $timeDur"
 	echo "Experiment Directory = $experimentDir"
 elif [[ $# -eq 1 ]] ; then
+    timeDur=60
     experimentDir=`date '+%F_%H-%M-%S'`
+    echo "mongotop duration = $timeDur"
     echo "Experiment Directory = $experimentDir"
 else
 	echo "Expected at least 1 CLI arguments - Directory to save output"
