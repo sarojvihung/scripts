@@ -17,7 +17,7 @@ experimentDir="$1"
 pcsDir="$2"
 sleepTime=$((10 + timeDur))
 scmd="cd /opt/ && mkdir -p Experiments && cd Experiments && mkdir -p $experimentDir && cd $experimentDir && mkdir -p $pcsDir && cd $pcsDir && rm -f mongo_stats.txt && (mongostat -o='host,mem.bits,metrics.document.returned.diff()=returned diff,metrics.document.returned=returned,metrics.document.inserted.diff()=inserted diff,metrics.document.inserted=inserted,metrics.document.updated.diff()=updated diff,metrics.document.updated=updated,metrics.document.deleted.diff()=deleted diff,metrics.document.deleted=deleted,getmore,command,dirty,used,flushes,vsize,res,qrw,arw,net_in,net_out,conn,time' >> /opt/Experiments/$experimentDir/$pcsDir/mongo_stats.txt &)"
-tcmd="cd /opt/ && mkdir -p Experiments && cd Experiments && mkdir -p $experimentDir && cd $experimentDir && mkdir -p $pcsDir && cd $pcsDir && rm -f mongo_top.txt && (mongotop $timeDur >> /opt/Experiments/$experimentDir/$pcsDir/mongo_top.txt &)"
+tcmd="cd /opt/ && mkdir -p Experiments && cd Experiments && mkdir -p $experimentDir && cd $experimentDir && mkdir -p $pcsDir && cd $pcsDir && rm -f mongo_top.txt && (mongotop --json $timeDur >> /opt/Experiments/$experimentDir/$pcsDir/mongo_top.txt &)"
 
 echo ""
 echo "Starting mongostat script"
