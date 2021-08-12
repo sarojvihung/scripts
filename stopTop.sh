@@ -11,6 +11,7 @@ endNodeNum=$((0 + numWorkerNodes))
 ocmd="pkill -f 'bash topFile.sh'"
 ktcmd="pkill -f 'bash ktopFile.sh'"
 dscmd="pkill -f 'bash dockerStats.sh'"
+psscmd="pkill -f 'bash ssPodOp.sh'"
 wcmd="$ocmd && exit"
 dswcmd="$dscmd && exit"
 for i in $(seq $startNodeNum $endNodeNum);
@@ -23,6 +24,7 @@ do
         eval "$ocmd"
         eval "$ktcmd"
         eval "$dscmd"
+        eval "$psscmd"
     else
         ssh -o StrictHostKeyChecking=no root@$node "$wcmd"
         ssh -o StrictHostKeyChecking=no root@$node "$dswcmd"
