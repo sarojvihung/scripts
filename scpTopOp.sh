@@ -10,7 +10,7 @@ cd /opt/ && mkdir -p Node_Ops
 numWorkerNodes="$1"
 startNodeNum=0
 endNodeNum=$((0 + numWorkerNodes))
-ocmd="scp -o StrictHostKeyChecking=no -r /opt/Experiments root@node0:/opt/Node_Ops"
+ocmd="scp -o StrictHostKeyChecking=no -r /opt/Experiments/* root@node0:/opt/Node_Ops"
 for i in $(seq $startNodeNum $endNodeNum);
 do	
 	node=node$i

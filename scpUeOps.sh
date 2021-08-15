@@ -2,7 +2,7 @@
 
 cd /opt/ && mkdir -p Ue_Ops
 
-ocmd="scp -o StrictHostKeyChecking=no -r /opt/Experiments root@node0:/opt/Ue_Ops"
+ocmd="scp -o StrictHostKeyChecking=no -r /opt/Experiments/* root@node0:/opt/Ue_Ops"
 for i in "$@"
 do	
 	node=node$i
