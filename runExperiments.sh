@@ -26,9 +26,9 @@ do
 
 
     #start-ran
-    sh /opt/scripts/runNodeCmd.sh "nr-gnb -c /opt/UERANSIM/config/open5gs/gnb.yaml > /dev/null 2>&1 &" 11 13
+    bash /opt/scripts/runNodeCmd.sh "nr-gnb -c /opt/UERANSIM/config/open5gs/gnb.yaml > /dev/null 2>&1 &" 11 13
 
-    sh /opt/scripts/runNodeCmd.sh "/opt/scripts/launchUeSim.py > /dev/null 2>&1 &" 12 14
+    bash /opt/scripts/runNodeCmd.sh "/opt/scripts/launchUeSim.py > /dev/null 2>&1 &" 12 14
 
 
     #start-monitoring
@@ -37,32 +37,32 @@ do
     mcmd="curl --verbose --request POST --header \"Content-Type:application/json\" --data '{\"expDir\":\"$experimentDir\",\"subExpDir\":\"$pcsDir\",\"runTime\":30}' http://$mongoPodIp:15692"
     eval "$mcmd > /dev/null 2>&1 &"
 
-    sh /opt/scripts/startTop.sh $numWorkerNodes $experimentDir $pcsDir
+    bash /opt/scripts/startTop.sh $numWorkerNodes $experimentDir $pcsDir
 
 
     #start-ue
-    sh /opt/scripts/startUeCalls.sh $numSessions $experimentDir $pcsDir 0.3
+    bash /opt/scripts/startUeCalls.sh $numSessions $experimentDir $pcsDir 0.3
 
     sleep 15
 
 
     #stop-monitoring
-    sh /opt/scripts/stopTop.sh $numWorkerNodes
+    bash /opt/scripts/stopTop.sh $numWorkerNodes
 
-    sh /opt/scripts/savePodLogs.sh $experimentDir $pcsDir
+    bash /opt/scripts/savePodLogs.sh $experimentDir $pcsDir
 
     sleep 30
 
     #stop-ran
-    sh /opt/scripts/runNodeCmd.sh "pkill -f nr-ue" 12 14
+    bash /opt/scripts/runNodeCmd.sh "pkill -f nr-ue" 12 14
 
     sleep 5
 
-    sh /opt/scripts/runNodeCmd.sh "pkill -f nr-gnb" 11 13
+    bash /opt/scripts/runNodeCmd.sh "pkill -f nr-gnb" 11 13
 
     sleep 5
     
-    sh /opt/scripts/runNodeCmd.sh "pkill -f launchUeSim.py" 12 14
+    bash /opt/scripts/runNodeCmd.sh "pkill -f launchUeSim.py" 12 14
 
     sleep 5
 
