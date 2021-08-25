@@ -30,10 +30,10 @@ class S(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(json_str.encode(encoding='utf_8'))
 
-        data = json.loads(self.data_string)
+        data = json.loads(self.data_string.decode('utf-8'))
         expDir = data['expDir']
         subExpDir = data['subExpDir']
-        runTime = data['runTime']
+        runTime = int(data['runTime'])
         os.makedirs("/opt/Experiments/", exist_ok=True)
         os.makedirs("/opt/Experiments/{}/".format(expDir), exist_ok=True)
         os.makedirs("/opt/Experiments/{}/{}/".format(expDir,

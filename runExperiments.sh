@@ -22,7 +22,7 @@ do
     #cleanup
     kubectl get pods --no-headers=true | awk '/upf|amf|bsf|pcf|udm|ausf|nrf|nssf|udr|smf/{print $1}'| xargs  kubectl delete pod
 
-    sleep 120
+    sleep 60
 
 
     #start-ran
@@ -35,6 +35,7 @@ do
     kubectl exec $mongoPod -- bash -c "/scripts/mongoMonitor.py" &
     mongoPodIp=$(kubectl get pod $mongoPod --template={{.status.podIP}})
     mcmd="curl --verbose --request POST --header \"Content-Type:application/json\" --data '{\"expDir\":\"$experimentDir\",\"subExpDir\":\"$pcsDir\",\"runTime\":30}' http://$mongoPodIp:15692"
+    echo "Mongo CMD is $mcmd"
     eval "$mcmd > /dev/null 2>&1 &"
 
     bash /opt/scripts/startTop.sh $numWorkerNodes $experimentDir $pcsDir
