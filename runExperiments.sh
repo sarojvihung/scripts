@@ -13,6 +13,8 @@ kubectl exec -it $mongoPod -- bash -c "apt-get update && apt -y install git vim 
 
 declare -a subDir=("100" "200" "300" "400" "500" "600" "700" "800" "900" "1000")
 
+declare -a ueNodes=("10.10.1.13" "10.10.1.15")
+
 for pcsDir in "${subDir[@]}"
 do
 
@@ -42,7 +44,14 @@ do
 
 
     #start-ue
-    bash /opt/scripts/startUeCalls.sh $numSessions $experimentDir $pcsDir 0.3 10.10.1.13 10.10.1.15
+    for ueNodeIp in "${ueNodes[@]}"
+    do
+        sleep 0.3
+        echo "UE-SIM IP Address is $ueNodeIp"
+        ucmd="curl --verbose --request POST --header \"Content-Type:application/json\" --data '{\"numSessions\":\"$numSessions\",\"expDir\":\"$experimentDir\",\"subExpDir\":\"$pcsDir\"}'  http://$ueNodeIp:15692"
+        echo "CMD is $ucmd"
+        eval "$ucmd > /dev/null 2>&1 &"
+    done
 
     sleep 15
 
