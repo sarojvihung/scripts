@@ -43,7 +43,7 @@ class S(BaseHTTPRequestHandler):
             os.remove(fl)
         cmd = "nr-ue -c /opt/UERANSIM/config/open5gs/ue.yaml -n {} | tee {}/uesim.logs".format(
             numSession, edir)
-        os.system("cd {} && timeout 120 {}".format(edir, cmd))
+        os.system("cd {} && timeout 120 {} > /dev/null 2>&1 &".format(edir, cmd))
 
         return
 
