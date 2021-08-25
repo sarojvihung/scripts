@@ -13,11 +13,11 @@ kubectl exec -it $mongoPod -- bash -c "apt-get update && apt -y install git vim 
 
 declare -a subDir=("100" "200" "300" "400" "500" "600" "700" "800" "900" "1000")
 
-for pcs_it in "${subDir[@]}"
+for pcsDir in "${subDir[@]}"
 do
 
-    echo "Sub-dir is $pcs_it"
-    numSessions=$(( pcs_it / 2 ))
+    echo "Sub-dir is $pcsDir"
+    numSessions=$(( pcsDir / 2 ))
 
     #cleanup
     kubectl get pods --no-headers=true | awk '/upf|amf|bsf|pcf|udm|ausf|nrf|nssf|udr|smf/{print $1}'| xargs  kubectl delete pod
@@ -31,7 +31,10 @@ do
 
 
     #start-monitoring
-    kubectl exec -it $mongoPod -- /bin/bash /scripts/mongoMonitor.sh $experimentDir $pcsDir 30
+    kubectl exec -it $mongoPod -- bash -c "/scripts/mongoMonitor.py > /dev/null 2>&1 &"
+    mongoPodIp=$(kubectl get pod $mongoPod --template={{.status.podIP}})
+    mcmd="curl --verbose --request POST --header \"Content-Type:application/json\" --data '{\"expDir\":\"$experimentDir\",\"subExpDir\":\"$pcsDir\",\"runTime\":30}' http://$mongoPodIp:15692"
+    eval "$mcmd > /dev/null 2>&1 &"
 
     sh /opt/scripts/startTop.sh $numWorkerNodes $experimentDir $pcsDir
 
@@ -46,15 +49,7 @@ do
 
     sh /opt/scripts/savePodLogs.sh $experimentDir $pcsDir
 
-    sleep 25
-    kubectl exec -it $mongoPod -- bash -c "pkill -f mongostat"
-    kubectl exec -it $mongoPod -- bash -c "pkill -f mongotop"
-
-
-    #save-db-sessions
-    kubectl exec -it $mongoPod -- bash -c "mongo pcs_db --eval \"db.amf.count({'pcs-update-done':1})\" | tail -1 >> opt/Experiments/$experimentDir/$subDir/sessCount.txt"
-    kubectl exec -it $mongoPod -- bash -c "mongo pcs_db --eval \"db.smf.count({'pcs-update-done':1})\" | tail -1 >> opt/Experiments/$experimentDir/$subDir/sessCount.txt"
-    kubectl exec -it $mongoPod -- bash -c "mongo pcs_db --eval \"db.upf.count({'pcs-pfcp-update-done':1})\" | tail -1 >> opt/Experiments/$experimentDir/$subDir/sessCount.txt"
+    sleep 30
 
     #stop-ran
     sh /opt/scripts/runNodeCmd.sh "pkill -f nr-ue" 12 14
@@ -64,6 +59,9 @@ do
     sleep 5
     
     sh /opt/scripts/runNodeCmd.sh "pkill -f launchUeSim.py" 12 14
+    sleep 5
+
+    kubectl exec -it $mongoPod -- bash -c "pkill -f mongoMonitor.py"
     sleep 5
 
 done

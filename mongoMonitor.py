@@ -31,9 +31,9 @@ class S(BaseHTTPRequestHandler):
         self.wfile.write(json_str.encode(encoding='utf_8'))
 
         data = json.loads(self.data_string)
-        numSession = data['numSessions']
         expDir = data['expDir']
         subExpDir = data['subExpDir']
+        runTime = data['runTime']
         os.makedirs("/opt/Experiments/", exist_ok=True)
         os.makedirs("/opt/Experiments/{}/".format(expDir), exist_ok=True)
         os.makedirs("/opt/Experiments/{}/{}/".format(expDir,
@@ -42,9 +42,8 @@ class S(BaseHTTPRequestHandler):
         dirFiles = glob.glob('{}/*'.format(edir))
         for fl in dirFiles:
             os.remove(fl)
-        cmd = "nr-ue -c /opt/UERANSIM/config/open5gs/ue.yaml -n {} | tee {}/uesim.logs".format(
-            numSession, edir)
-        os.system("cd {} && timeout 120 {} > /dev/null 2>&1 &".format(edir, cmd))
+        cmd = "/scripts/mongoMonitor.sh {} {} {}".format(expDir, subExpDir, runTime)
+        os.system("cd {} && timeout {} {} > /dev/null 2>&1 &".format(edir, runTime+20, cmd))
 
         return
 
