@@ -21,6 +21,7 @@ do
 
     #cleanup
     kubectl get pods --no-headers=true | awk '/upf|amf|bsf|pcf|udm|ausf|nrf|nssf|udr|smf/{print $1}'| xargs  kubectl delete pod
+
     sleep 120
 
 
@@ -31,7 +32,7 @@ do
 
 
     #start-monitoring
-    kubectl exec -it $mongoPod -- bash -c "/scripts/mongoMonitor.py > /dev/null 2>&1 &"
+    kubectl exec $mongoPod -- bash -c "/scripts/mongoMonitor.py" &
     mongoPodIp=$(kubectl get pod $mongoPod --template={{.status.podIP}})
     mcmd="curl --verbose --request POST --header \"Content-Type:application/json\" --data '{\"expDir\":\"$experimentDir\",\"subExpDir\":\"$pcsDir\",\"runTime\":30}' http://$mongoPodIp:15692"
     eval "$mcmd > /dev/null 2>&1 &"
@@ -41,6 +42,7 @@ do
 
     #start-ue
     sh /opt/scripts/startUeCalls.sh $numSessions $experimentDir $pcsDir 0.3
+
     sleep 15
 
 
@@ -53,15 +55,19 @@ do
 
     #stop-ran
     sh /opt/scripts/runNodeCmd.sh "pkill -f nr-ue" 12 14
+
     sleep 5
 
     sh /opt/scripts/runNodeCmd.sh "pkill -f nr-gnb" 11 13
+
     sleep 5
     
     sh /opt/scripts/runNodeCmd.sh "pkill -f launchUeSim.py" 12 14
+
     sleep 5
 
     kubectl exec -it $mongoPod -- bash -c "pkill -f mongoMonitor.py"
+
     sleep 5
 
 done
