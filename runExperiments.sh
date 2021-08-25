@@ -41,7 +41,7 @@ do
 
 
     #start-ue
-    bash /opt/scripts/startUeCalls.sh $numSessions $experimentDir $pcsDir 0.3
+    bash /opt/scripts/startUeCalls.sh $numSessions $experimentDir $pcsDir 0.3 10.10.1.13 10.10.1.15
 
     sleep 15
 
