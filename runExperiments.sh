@@ -36,7 +36,7 @@ do
     #start-monitoring
     #kubectl exec $mongoPod -- bash -c "/scripts/mongoMonitor.py" &
     mongoPodIp=$(kubectl get pod $mongoPod --template={{.status.podIP}})
-    curl --verbose --request POST --header "Content-Type:application/json" --data '{"expDir":"$experimentDir","subExpDir":"$pcsDir","runTime":30}' http://$mongoPodIp:15692
+    curl --verbose --request POST --header "Content-Type:application/json" --data "{\"expDir\":\"$experimentDir\",\"subExpDir\":\"$pcsDir\",\"runTime\":30}" http://$mongoPodIp:15692
     
     bash /opt/scripts/startTop.sh $numWorkerNodes $experimentDir $pcsDir
 
@@ -46,7 +46,7 @@ do
     do
         sleep 0.3
         echo "UE-SIM IP Address is $ueNodeIp"
-        curl --verbose --request POST --header "Content-Type:application/json" --data '{"numSessions":"$numSessions","expDir":"$experimentDir","subExpDir":"$pcsDir"}'  http://$ueNodeIp:15692
+        curl --verbose --request POST --header "Content-Type:application/json" --data "{\"numSessions\":\"$numSessions\",\"expDir\":\"$experimentDir\",\"subExpDir\":\"$pcsDir\"}"  http://$ueNodeIp:15692
     done
 
     sleep 15
