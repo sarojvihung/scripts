@@ -44,7 +44,11 @@ do
     #start-ue
     for ueNodeIp in "${ueNodes[@]}"
     do
-        sleep 0.3
+        if (( pcsDir > 500 )); then
+            sleep 0.3
+        else
+            sleep 0.2
+        fi
         echo "UE-SIM IP Address is $ueNodeIp"
         curl --verbose --request POST --header "Content-Type:application/json" --data '{"numSessions":"'$numSessions'","expDir":"'$experimentDir'","subExpDir":"'$pcsDir'"}'  http://$ueNodeIp:15692
     done
