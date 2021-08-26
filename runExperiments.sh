@@ -30,13 +30,11 @@ do
     #start-ran
     bash /opt/scripts/runNodeCmd.sh "nr-gnb -c /opt/UERANSIM/config/open5gs/gnb.yaml > /dev/null 2>&1 &" 11 13
 
-    bash /opt/scripts/runNodeCmd.sh "/opt/scripts/launchUeSim.py > /dev/null 2>&1 &" 12 14
+    #bash /opt/scripts/runNodeCmd.sh "/opt/scripts/launchUeSim.py > /dev/null 2>&1 &" 12 14
 
 
     #start-monitoring
-    kubectl exec $mongoPod -- bash -c "/scripts/mongoMonitor.py" &
-
-    sleep 2
+    #kubectl exec $mongoPod -- bash -c "/scripts/mongoMonitor.py" &
     mongoPodIp=$(kubectl get pod $mongoPod --template={{.status.podIP}})
     curl --verbose --request POST --header "Content-Type:application/json" --data '{"expDir":"'$experimentDir'","subExpDir":"'$pcsDir'","runTime":30}' http://$mongoPodIp:15692
     
@@ -70,12 +68,12 @@ do
 
     sleep 5
     
-    bash /opt/scripts/runNodeCmd.sh "pkill -f launchUeSim.py" 12 14
+    #bash /opt/scripts/runNodeCmd.sh "pkill -f launchUeSim.py" 12 14
 
-    sleep 5
+    #sleep 5
 
-    kubectl exec -it $mongoPod -- bash -c "pkill -f mongoMonitor.py"
+    #kubectl exec -it $mongoPod -- bash -c "pkill -f mongoMonitor.py"
 
-    sleep 5
+    #sleep 5
 
 done
