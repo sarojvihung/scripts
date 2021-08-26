@@ -52,9 +52,9 @@ echo ""
 echo "Recording session count in DB"
 echo ""
 
-amfSessCount=$(mongo pcs_db --eval "db.amf.count({\"pcs-update-done\":1})")
-smfSessCount=$(mongo pcs_db --eval "db.smf.count({\"pcs-update-done\":1})")
-upfSessCount=$(mongo pcs_db --eval "db.upf.count({\"pcs-pfcp-update-done\":1})")
+amfSessCount=$(mongo pcs_db --eval "db.amf.count({\"pcs-update-done\":1})" | tail -1)
+smfSessCount=$(mongo pcs_db --eval "db.smf.count({\"pcs-update-done\":1})" | tail -1)
+upfSessCount=$(mongo pcs_db --eval "db.upf.count({\"pcs-pfcp-update-done\":1})" | tail -1)
 
 echo "AMF,$amfSessCount" >> /opt/Experiments/$experimentDir/$pcsDir/sessCount.txt
 echo "SMF,$smfSessCount" >> /opt/Experiments/$experimentDir/$pcsDir/sessCount.txt
