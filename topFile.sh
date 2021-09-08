@@ -2,8 +2,16 @@
 Hostname=$(hostname --short)
 while true
 do
-        date +"%F--%T.%N" >> top_data_$Hostname.txt
-        COLUMNS=500 top -b -n 1 >> top_data_$Hostname.txt 2>&1 &
         echo " " >> top_data_$Hostname.txt
-        sleep 0.2
+        date +"%F--%T.%N" >> top_data_$Hostname.txt
+        pids=( $(top -b -n 1 | grep "open5gs\|docker\|kube\|calico\|container\|bash\|python" | awk '{print $1}') )
+        numpids=${#pids[@]}
+        topcmd="top -b -n 1"
+        for i in "${pids[@]}"
+        do
+            topcmd="$topcmd -p $i"
+        done
+        COLUMNS=500 $topcmd >> top_data_$Hostname.txt 2>&1 &
+        echo " " >> top_data_$Hostname.txt
+        #sleep 0.1
 done
