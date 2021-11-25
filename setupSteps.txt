@@ -1,0 +1,67 @@
+
+cd /opt/scripts && git pull
+./gitPullNodes.sh 14 scripts
+
+apt-get update && apt-get -y upgrade && apt-get update
+./runNodeCmd.sh "apt-get update && apt-get -y upgrade && apt-get update"  1 2 3 4 5 6 7 8 9 10 11 12 13 14
+
+ifconfig
+./configK8Nodes.sh ens1f0 10 15
+
+source ~/.bashrc
+
+kn
+kp
+ks
+kt
+kn
+./labelK8sNodes.sh 10 
+
+cd /opt/opensource-5g-core/
+git pull
+
+cd /opt/scripts/
+./nukeOpen5gs.sh
+
+
+kubectl patch svc amf-open5gs-sctp -n open5gs -p '{"spec": {"type": "LoadBalancer", "externalIPs":["10.10.1.2"]}}
+./deletePod.sh amf
+
+#exec to test pod
+cd scripts && git pull
+./addMongoSubs.py 2000
+
+gNBs:
+11 - 10.10.1.12
+13 - 10.10.1.14
+
+UEs: 
+12 - (imsi = 1)
+14 - (imsi = 601)
+
+ssh root@node11
+cd /opt/UERANSIM/config/open5gs/
+echo "export PCS_SETUP_TUN_INTF=false" >> ~/.bashrc
+source ~/.bashrc
+
+
+kubectl get pods --no-headers=true | awk '/upf|amf|bsf|pcf|udm|ausf|nrf|nssf|udr|smf/{print $1}'| xargs  kubectl delete pod
+
+./runNodeCmd.sh "rm -rf /opt/Experiment* /opt/Node_Ops /opt/Ue_Ops /opt/Udsf_Ops /opt/Results" 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14
+
+./runNodeCmd.sh "find /var/log -type f -delete" 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14
+
+
+#exec to mongo pod
+cd scripts && git pull
+./mongoMonitor.py  > /dev/null 2>&1 &
+
+
+#exec to UE nodes
+/opt/scripts/launchUeSim.py > /dev/null 2>&1 &
+
+
+./runExperiments.sh Fully-Transactional-Stateless
+
+
+
