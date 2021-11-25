@@ -16,6 +16,7 @@ ks
 kt
 kn
 ./labelK8sNodes.sh 10 
+kn --show-labels
 
 cd /opt/opensource-5g-core/
 git pull
