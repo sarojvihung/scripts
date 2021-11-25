@@ -16,6 +16,10 @@ export PATH=$PATH:$GOPATH/bin:$GOROOT/bin
 sh /opt/scripts/dockerInstall.sh
 systemctl enable docker.service
 swapoff -a
+echo '{"exec-opts": ["native.cgroupdriver=systemd"]}' | jq . > /etc/docker/daemon.json
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+sudo systemctl restart kubelet
 kubeadm reset --force
 systemctl restart kubelet
 eval $kjoincmd
