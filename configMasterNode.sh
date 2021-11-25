@@ -10,6 +10,10 @@ ip=$(ip addr show $intf | grep -o "inet [0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | grep -
 sh /opt/scripts/dockerInstall.sh
 systemctl enable docker.service
 swapoff -a
+echo '{"exec-opts": ["native.cgroupdriver=systemd"]}' | jq . > /etc/docker/daemon.json
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+sudo systemctl restart kubelet
 kubeadm reset --force
 systemctl restart kubelet
 kubeadm init --pod-network-cidr=10.244.0.0/16 --token-ttl=0 --apiserver-advertise-address=$ip
