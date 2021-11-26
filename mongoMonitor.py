@@ -42,7 +42,7 @@ class S(BaseHTTPRequestHandler):
         dirFiles = glob.glob('{}/*'.format(edir))
         for fl in dirFiles:
             os.remove(fl)
-        cmd = "/scripts/mongoMonitor.sh {} {} {}".format(
+        cmd = "/root/scripts/mongoMonitor.sh {} {} {}".format(
             expDir, subExpDir, runTime)
         os.system(
             "cd {} && timeout {} {} > /dev/null 2>&1 &".format(edir, runTime+20, cmd))
