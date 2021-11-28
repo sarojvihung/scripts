@@ -9,14 +9,15 @@ do
     rm -f $exp/$f1-data.csv
     for subexp in `seq 100 100 1000`
     do
-        echo "$subexp-Sessions, ueSessCount, dbAmfSessCount, dbSmfSessCount, dbUpfSessCount, amfQueueLength, smfQueueLength, upfQueueLength, amfTimeTaken, smfTimeTaken, upfTimeTaken" >> $exp/$f1-data.csv
+        echo "$subexp-Sessions, ueSessCount, dbAmfSessCount, dbSmfSessCount, dbUpfSessCount, amfQueueLength, smfQueueLength, upfQueueLength, amfTimeTaken, smfTimeTaken, upfTimeTaken, amfDbReadTime, amfDbWriteTime, amfDbTotalTime" >> $exp/$f1-data.csv
         for j in `seq 1 1 10`
         do
             ueipn12File=$exp/$f1-$j/$subexp/pcs_ueips.txt_node12
             ueipn14File=$exp/$f1-$j/$subexp/pcs_ueips.txt_node14
             dbSessCntFile=$exp/$f1-$j/$subexp/sessCount.txt
-            nfFile=$exp/$f1-$j/$subexp/nf_max_queue.txt            
-            if [ -f "$ueipn12File" ] && [ -f "$ueipn14File" ] && [ -f "$dbSessCntFile" ] && [ -f "$nfFile" ]; then
+            nfFile=$exp/$f1-$j/$subexp/nf_max_queue.txt
+            mongoTopFIle=$exp/$f1-$j/$subexp/mongo_top.txt            
+            if [ -f "$ueipn12File" ] && [ -f "$ueipn14File" ] && [ -f "$dbSessCntFile" ] && [ -f "$mongoTopFIle" ] && [ -f "$nfFile" ]; then
                 ueSessCount=$(($(cat $ueipn12File | wc -l) + $(cat $ueipn14File | wc -l)))
                 dbAmfSessCount=$(cat $dbSessCntFile | grep AMF | cut -d "," -f2)
                 dbSmfSessCount=$(cat $dbSessCntFile | grep SMF | cut -d "," -f2)
@@ -27,7 +28,10 @@ do
                 amfTimeTaken=$(printf '%.9f\n' $(cat $nfFile | grep amf | cut -d "," -f3))
                 smfTimeTaken=$(printf '%.9f\n' $(cat $nfFile | grep smf | cut -d "," -f3))
                 upfTimeTaken=$(printf '%.9f\n' $(cat $nfFile | grep upf | cut -d "," -f3))
-                echo "$f1-$j, $ueSessCount, $dbAmfSessCount, $dbSmfSessCount, $dbUpfSessCount, $amfQueueLength, $smfQueueLength, $upfQueueLength, $amfTimeTaken, $smfTimeTaken, $upfTimeTaken" >> $exp/$f1-data.csv
+                amfDbReadTime=$(cat $mongoTopFIle | jq -r '.totals."pcs_db.amf".read.time')
+                amfDbWriteTime=$(cat $mongoTopFIle | jq -r '.totals."pcs_db.amf".write.time')
+                amfDbTotalTime=$(cat $mongoTopFIle | jq -r '.totals."pcs_db.amf".total.time')
+                echo "$f1-$j, $ueSessCount, $dbAmfSessCount, $dbSmfSessCount, $dbUpfSessCount, $amfQueueLength, $smfQueueLength, $upfQueueLength, $amfTimeTaken, $smfTimeTaken, $upfTimeTaken, $amfDbReadTime, $amfDbWriteTime, $amfDbTotalTime" >> $exp/$f1-data.csv
             fi
         done
         echo "Mean" >> $exp/$f1-data.csv
