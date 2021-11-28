@@ -1,25 +1,16 @@
 #!/usr/bin/env bash
 
-exp_dirs = {'Fully-Stateful':'Stateful',
-            'Blocking-Api-Disabled':'Non-Blocking',
-            'N1n2-Amf-Update-Api-Disabled': 'Delete-Create API',
-            'TS-Amf-Smf-Share-UDSF':'AMF-SMF Share Database',
-            'Fully-Procedural-Stateless':'Procedural Stateless',
-            'N1n2-Smf-Update-Api-Disabled':'I dont really care',
-            'TS-All-NFs-Share-UDSF':'All NFs Share Database',
-            'Fully-Transactional-Stateless':'Transactional Stateless'}
+exp=/proj/sfcs-PG0/opt/Results
 
-declare -a experimentDirAry=("Fully-Stateful" "Fully-Procedural-Stateless" "Fully-Transactional-Stateless" "All-NFs-Share-Udsf" "Amf-Smf-Share-UDSF" "$experimentDirPrefix-6" "$experimentDirPrefix-7" "$experimentDirPrefix-8" "$experimentDirPrefix-9" "$experimentDirPrefix-10")
+declare -a experimentDirAry=("Fully-Stateful" "Fully-Procedural-Stateless" "Fully-Transactional-Stateless" "All-NFs-Share-Udsf" "Amf-Smf-Share-Udsf" "N1n2-Amf-Update-Api-Disabled" "Nonblocking-Api-Enabled")
 
-for exp in /proj/sfcs-PG0/opt/Results/* ;
+for f1 in "${experimentDirAry[@]}"
 do
-    echo $exp
-    f1=`basename $exp`
     rm -f $exp/$f1-data.csv
     for subexp in `seq 100 100 1000`
     do
         echo "$subexp-Sessions, ueSessCount, dbAmfSessCount, dbSmfSessCount, dbUpfSessCount, amfQueueLength, smfQueueLength, upfQueueLength, amfTimeTaken, smfTimeTaken, upfTimeTaken" >> $exp/$f1-data.csv
-        for j in `seq 0 1 10`
+        for j in `seq 1 1 10`
         do
             ueipn12File=$exp/$f1-$j/$subexp/pcs_ueips.txt_node12
             ueipn14File=$exp/$f1-$j/$subexp/pcs_ueips.txt_node14
