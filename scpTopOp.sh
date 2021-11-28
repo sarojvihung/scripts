@@ -5,21 +5,22 @@ if [[ $# -ne 1 ]] ; then
     exit 1
 fi
 
-cd /opt/ && mkdir -p Node_Ops
+cd /proj/sfcs-PG0/opt/ && mkdir -p Node_Ops
 
 numWorkerNodes="$1"
 startNodeNum=0
 endNodeNum=$((0 + numWorkerNodes))
-ocmd="scp -o StrictHostKeyChecking=no -r /opt/Experiments/* root@node0:/opt/Node_Ops"
+mecmd="scp -o StrictHostKeyChecking=no -r /proj/sfcs-PG0/opt/Experiments/* root@node0:/proj/sfcs-PG0/opt/Node_Ops"
+ocmd="scp -o StrictHostKeyChecking=no -r /opt/Experiments/* root@node0:/proj/sfcs-PG0/opt/Node_Ops"
 for i in $(seq $startNodeNum $endNodeNum);
 do	
 	node=node$i
 	echo ""
 	echo "Starting SCP from Node - $node"
 	echo ""
-    cd /opt/Node_Ops && mkdir -p $node
+    cd /proj/sfcs-PG0/opt/Node_Ops && mkdir -p $node
     if [[ $i -eq 0 ]] ; then
-        mcmd="$ocmd/$node/"
+        mcmd="$mecmd/$node/"
         eval "$mcmd"
     else
         wcmd="$ocmd/$node/ && exit"
