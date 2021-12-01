@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 
-exp=/proj/sfcs-PG0/opt/Results
+exp=Results2
 
 declare -a experimentDirAry=("Fully-Stateful" "Fully-Procedural-Stateless" "Fully-Transactional-Stateless" "All-NFs-Share-Udsf" "Amf-Smf-Share-Udsf" "N1n2-Amf-Update-Api-Disabled" "Nonblocking-Api-Enabled")
 
 for f1 in "${experimentDirAry[@]}"
 do
     rm -f $exp/$f1-data.csv
+    echo "numSessions,ueSessCount,dbAmfSessCount,dbSmfSessCount,dbUpfSessCount,amfQueueLength,smfQueueLength,upfQueueLength,amfTimeTaken,smfTimeTaken,upfTimeTaken,amfDbReadTime,amfDbWriteTime,amfDbTotalTime" >> $exp/$f1-data.csv
     for subexp in `seq 100 100 1000`
     do
-        echo "$subexp-Sessions, ueSessCount, dbAmfSessCount, dbSmfSessCount, dbUpfSessCount, amfQueueLength, smfQueueLength, upfQueueLength, amfTimeTaken, smfTimeTaken, upfTimeTaken, amfDbReadTime, amfDbWriteTime, amfDbTotalTime" >> $exp/$f1-data.csv
         for j in `seq 1 1 10`
         do
             ueipn12File=$exp/$f1-$j/$subexp/pcs_ueips.txt_node12
@@ -31,10 +31,9 @@ do
                 amfDbReadTime=$(cat $mongoTopFIle | jq -r '.totals."pcs_db.amf".read.time')
                 amfDbWriteTime=$(cat $mongoTopFIle | jq -r '.totals."pcs_db.amf".write.time')
                 amfDbTotalTime=$(cat $mongoTopFIle | jq -r '.totals."pcs_db.amf".total.time')
-                echo "$f1-$j, $ueSessCount, $dbAmfSessCount, $dbSmfSessCount, $dbUpfSessCount, $amfQueueLength, $smfQueueLength, $upfQueueLength, $amfTimeTaken, $smfTimeTaken, $upfTimeTaken, $amfDbReadTime, $amfDbWriteTime, $amfDbTotalTime" >> $exp/$f1-data.csv
+                echo "$f1-$j-$subexp,$ueSessCount,$dbAmfSessCount,$dbSmfSessCount,$dbUpfSessCount,$amfQueueLength,$smfQueueLength,$upfQueueLength,$amfTimeTaken,$smfTimeTaken,$upfTimeTaken,$amfDbReadTime,$amfDbWriteTime,$amfDbTotalTime" >> $exp/$f1-data.csv
             fi
         done
-        echo "Mean" >> $exp/$f1-data.csv
-        echo "" >> $exp/$f1-data.csv
+        echo "Mean-$subexp, 0,0,0,0,0,0,0,0,0,0,0,0,0" >> $exp/$f1-data.csv
     done
 done
