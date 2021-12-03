@@ -19,24 +19,38 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 my_file_name = os.path.basename(__file__)
 path = Path("{}/{}".format(dir_path, my_file_name)).parent.parent
 
-CREATE_COMPARISON_CSVS = 1
-FIGURE3 = 1
-FIGURE4 = 1
-FIGURE5 = 1
-FIGURE6 = 1
-FIGURE7 = 1
+CREATE_COMPARISON_CSVS = 0
+MIN_MAX_COMPARISON = 1
+FIGURE3 = 0
+FIGURE4 = 0
+FIGURE5 = 0
+FIGURE6 = 0
+FIGURE7 = 0
+FIGURE8 = 0
 
-dict_map = {"Fully-Stateful": {"amfTimeTaken": [], "plotname": "Stateful", "amfDbReadTime": [], "amfDbWriteTime": [], "amfDbTotalTime": [], "valied_1000_runs": [i for i in range(1, 11)], "amfQueueLength": 0},
-            "Fully-Procedural-Stateless": {"amfTimeTaken": [], "plotname": "Procedural Stateless", "amfDbReadTime": [], "amfDbWriteTime": [], "amfDbTotalTime": [], "valied_1000_runs": [], "amfQueueLength": 0},
-            "Fully-Transactional-Stateless": {"amfTimeTaken": [], "plotname": "Transactional Stateless", "amfDbReadTime": [], "amfDbWriteTime": [], "amfDbTotalTime": [], "valied_1000_runs": [1, 3, 4, 6, 8], "amfQueueLength": 0},
-            "Nonblocking-Api-Enabled": {"amfTimeTaken": [], "plotname": "Non-Blocking", "amfDbReadTime": [], "amfDbWriteTime": [], "amfDbTotalTime": [], "valied_1000_runs": [1, 2, 3, 4, 7, 8, 9, 10], "amfQueueLength": 0},
-            "N1n2-Amf-Update-Api-Disabled": {"amfTimeTaken": [], "plotname": "Delete-Create API", "amfDbReadTime": [], "amfDbWriteTime": [], "amfDbTotalTime": [], "valied_1000_runs": [], "amfQueueLength": 0},
-            "Amf-Smf-Share-Udsf": {"amfTimeTaken": [], "plotname": "AMF-SMF Share Database", "amfDbReadTime": [], "amfDbWriteTime": [], "amfDbTotalTime": [], "valied_1000_runs": [1, 2, 4, 5, 7, 8, 9], "amfQueueLength": 0},
-            "All-NFs-Share-Udsf": {"amfTimeTaken": [], "plotname": "All NFs Share Database", "amfDbReadTime": [], "amfDbWriteTime": [], "amfDbTotalTime": [], "valied_1000_runs": [], "amfQueueLength": 0}
+dict_map = {"Fully-Stateful": {"amfTimeTaken": [], "plotname": "Stateful", "amfDbReadTime": [], "amfDbWriteTime": [], "amfDbTotalTime": [], "valied_1000_runs": [i for i in range(1, 11)], "amfQueueLength": 0, "amfMinTime": [], "amfMaxTime": [], "dbMinTime": [], "dbMaxTime": []},
+            "Fully-Procedural-Stateless": {"amfTimeTaken": [], "plotname": "Procedural Stateless", "amfDbReadTime": [], "amfDbWriteTime": [], "amfDbTotalTime": [], "valied_1000_runs": [], "amfQueueLength": 0, "amfMinTime": [], "amfMaxTime": [], "dbMinTime": [], "dbMaxTime": []},
+            "Fully-Transactional-Stateless": {"amfTimeTaken": [], "plotname": "Transactional Stateless", "amfDbReadTime": [], "amfDbWriteTime": [], "amfDbTotalTime": [], "valied_1000_runs": [1, 3, 4, 6, 8], "amfQueueLength": 0, "amfMinTime": [], "amfMaxTime": [], "dbMinTime": [], "dbMaxTime": []},
+            "Nonblocking-Api-Enabled": {"amfTimeTaken": [], "plotname": "Non-Blocking", "amfDbReadTime": [], "amfDbWriteTime": [], "amfDbTotalTime": [], "valied_1000_runs": [1, 2, 3, 4, 7, 8, 9, 10], "amfQueueLength": 0, "amfMinTime": [], "amfMaxTime": [], "dbMinTime": [], "dbMaxTime": []},
+            "N1n2-Amf-Update-Api-Disabled": {"amfTimeTaken": [], "plotname": "Delete-Create API", "amfDbReadTime": [], "amfDbWriteTime": [], "amfDbTotalTime": [], "valied_1000_runs": [], "amfQueueLength": 0, "amfMinTime": [], "amfMaxTime": [], "dbMinTime": [], "dbMaxTime": []},
+            "Amf-Smf-Share-Udsf": {"amfTimeTaken": [], "plotname": "AMF-SMF Share Database", "amfDbReadTime": [], "amfDbWriteTime": [], "amfDbTotalTime": [], "valied_1000_runs": [1, 2, 4, 5, 7, 8, 9], "amfQueueLength": 0, "amfMinTime": [], "amfMaxTime": [], "dbMinTime": [], "dbMaxTime": []},
+            "All-NFs-Share-Udsf": {"amfTimeTaken": [], "plotname": "All NFs Share Database", "amfDbReadTime": [], "amfDbWriteTime": [], "amfDbTotalTime": [], "valied_1000_runs": [], "amfQueueLength": 0, "amfMinTime": [], "amfMaxTime": [], "dbMinTime": [], "dbMaxTime": []}
             }
 
 dict_map_keys = list(dict_map.keys()).copy()
 session_list = [i*100 for i in range(1,11)]
+
+def calc_min_max (i,j,param="amfTime"):
+    if param == "amfTime":
+        p1 = "amfMaxTime"
+        p2 = "amfMinTime"
+    elif param == "dbTime":
+        p1 = "dbMaxTime"
+        p2 = "dbMinTime"
+    a = dict_map[dict_map_keys[j]][p1]
+    b = dict_map[dict_map_keys[i]][p2]
+    max_diff = np.mean([(a_i - b_i)*(100/b_i) for a_i, b_i in zip(a, b)])
+    print("Max time difference between {} and {} is {}".format(dict_map_keys[j], dict_map_keys[i], max_diff))
 
 def plot_q_cpu_instance(ax,df_t,df_q,NF,label=False):
     
@@ -46,8 +60,8 @@ def plot_q_cpu_instance(ax,df_t,df_q,NF,label=False):
 
     df_t['CPU-Usage'] = df_t['CPU-Usage'].astype(int)
     from matplotlib.ticker import MaxNLocator
-    ax1 = df_t['CPU-Usage'].plot(ax=ax,label='CPU',marker='x',style='#34495e')
-    ax1.set_ylabel('CPU (%)')
+    ax1 = df_t['CPU-Usage'].plot(ax=ax,label='CPU',marker='x',style='#34495e',ms=4)
+    ax1.set_ylabel('CPU (%)', fontsize=13)
     ax1.yaxis.set_major_locator(MaxNLocator(integer=True,nbins=4))
     # ax1.yaxis.set_major_formatter(PercentFormatter(100))  # percentage using 1 for 100%
 
@@ -56,19 +70,21 @@ def plot_q_cpu_instance(ax,df_t,df_q,NF,label=False):
     #print(df_q.head())
 
     df_q['Q Length'].plot(secondary_y=True,style="#2ecc71",ax=ax)
-    ax1.right_ax.set_ylabel('Q Length')
+    ax1.right_ax.set_ylabel('Q Length', fontsize=13)
     #sb.set_ylim(5,16)
     if NF == "UPF":
         #ax1.right_ax.set_ylim(-0.1,1)
         ck = [0,1]
-        ax1.right_ax.set_yticks(ck)
+        ax1.right_ax.set_yticks(ck, fontsize=13)
         #ax1.right_ax.set_yticks(np.arange(min(ck), max(ck)+10, 10))
 
     if label == True:
         lines = ax.get_lines() + ax.right_ax.get_lines()
-        ax.legend(lines, [l.get_label() for l in lines], loc='lower center',frameon=True,ncol=2)
+        ax.legend(lines, [l.get_label() for l in lines], loc='upper left',frameon=True,ncol=1, fontsize=11, bbox_to_anchor=(0,1.035))
 
-    ax.set_title(NF, y=1.0, pad=-14, x=.051)
+    #ax.set_title(NF, y=1.0, pad=-14, x=.051)
+    ax.set_title(NF, y=1.02, pad=-14, x=.5835, fontsize=13)
+    #ax.set_title(NF, y=1.02, pad=-14, x=.5, fontsize=13)
 
 
 def q_cpu_time_series():
@@ -143,6 +159,8 @@ def main():
                 df[col].values[this_mean_index] = col_mean
                 if col == "amfTimeTaken":
                     dict_map[folder_name]["amfTimeTaken"].append(col_mean)
+                    dict_map[folder_name]["amfMinTime"].append(min(col_values))
+                    dict_map[folder_name]["amfMaxTime"].append(max(col_values))
                     df_new = pd.DataFrame()
                     df_new["amfTimeTaken"] = col_values
                     df_new["Config"] = dict_map[folder_name]["plotname"]
@@ -159,6 +177,8 @@ def main():
                     df_new["amfDbWriteTime"] = col_values
                 elif col == "amfDbTotalTime":
                     dict_map[folder_name]["amfDbTotalTime"].append(col_mean)
+                    dict_map[folder_name]["dbMinTime"].append(min(col_values))
+                    dict_map[folder_name]["dbMaxTime"].append(max(col_values))
                     df_new["amfDbTotalTime"] = col_values
             df_all = df_all.append(df_new, ignore_index=True)
             prev_mean_index = this_mean_index+1
@@ -185,52 +205,66 @@ def main():
     df_queue_cpu["Config"] = valid_cpuq_folders
     df_queue_cpu["Value"] = cpu_q_values
 
+    if MIN_MAX_COMPARISON:
+        calc_min_max(0,1)
+        calc_min_max(0,2)
+        calc_min_max(3,2)
+        calc_min_max(4,2)
+        calc_min_max(5,2)
+        calc_min_max(6,2)
+        calc_min_max(4,2,"dbTime")
+
 
     if CREATE_COMPARISON_CSVS:
 
         df = pd.DataFrame({"Number-of-Sessions": session_list, "Time-{}".format(dict_map_keys[0]): dict_map[dict_map_keys[0]]["amfTimeTaken"], "Time-{}".format(dict_map_keys[2]): dict_map[dict_map_keys[2]]["amfTimeTaken"], "Change %": [0]*10})
         df['Change %'] = (df["Time-{}".format(dict_map_keys[2])] - df["Time-{}".format(dict_map_keys[0])])*(100/(df["Time-{}".format(dict_map_keys[0])]))
         df1 = df.append({"Number-of-Sessions": "Average", "Time-{}".format(dict_map_keys[0]): "-", "Time-{}".format(dict_map_keys[2]): "-", 'Change %': np.mean(df["Change %"].values)}, ignore_index=True)
-        df1.to_csv("Stateful-Vs-Stateless-TimeTaken.csv", index=False)
+        df1.to_csv("Stateful-Vs-Stateless-Avg-Time-Taken.csv", index=False)
+
+        df = pd.DataFrame({"Number-of-Sessions": session_list, "Time-{}".format(dict_map_keys[0]): dict_map[dict_map_keys[0]]["amfTimeTaken"], "Time-{}".format(dict_map_keys[1]): dict_map[dict_map_keys[1]]["amfTimeTaken"], "Change %": [0]*10})
+        df['Change %'] = (df["Time-{}".format(dict_map_keys[1])] - df["Time-{}".format(dict_map_keys[0])])*(100/(df["Time-{}".format(dict_map_keys[0])]))
+        df1 = df.append({"Number-of-Sessions": "Average", "Time-{}".format(dict_map_keys[0]): "-", "Time-{}".format(dict_map_keys[1]): "-", 'Change %': np.mean(df["Change %"].values)}, ignore_index=True)
+        df1.to_csv("Stateful-Vs-Procedural-Avg-Time-Taken.csv", index=False)
 
         df = pd.DataFrame({"Number-of-Sessions": session_list, "Time-{}".format(dict_map_keys[1]): dict_map[dict_map_keys[1]]["amfTimeTaken"], "Time-{}".format(dict_map_keys[2]): dict_map[dict_map_keys[2]]["amfTimeTaken"], "Change %": [0]*10})
         df['Change %'] = (df["Time-{}".format(dict_map_keys[2])] - df["Time-{}".format(dict_map_keys[1])])*(100/(df["Time-{}".format(dict_map_keys[1])]))
         df2 = df.append({"Number-of-Sessions": "Average", "Time-{}".format(dict_map_keys[1]): "-", "Time-{}".format(dict_map_keys[2]): "-", 'Change %': np.mean(df["Change %"].values)}, ignore_index=True)
-        df2.to_csv("Procedural-Vs-Transactional-Time-Taken.csv", index=False)
+        df2.to_csv("Procedural-Vs-Transactional-Avg-Time-Taken.csv", index=False)
 
         df = pd.DataFrame({"Number-of-Sessions": session_list, "Time-{}".format(dict_map_keys[3]): dict_map[dict_map_keys[3]]["amfTimeTaken"], "Time-Blocking-Api-Enabled": dict_map[dict_map_keys[2]]["amfTimeTaken"], "Change %": [0]*10})
         df['Change %'] = (df["Time-Blocking-Api-Enabled"] - df["Time-{}".format(dict_map_keys[3])])*(100/(df["Time-{}".format(dict_map_keys[3])]))
         df3 = df.append({"Number-of-Sessions": "Average", "Time-{}".format(dict_map_keys[3]): "-", "Time-Blocking-Api-Enabled": "-", 'Change %': np.mean(df["Change %"].values)}, ignore_index=True)
-        df3.to_csv("Blocking-Vs-Nonblocking-Time-Taken.csv", index=False)
+        df3.to_csv("Blocking-Vs-Nonblocking-Avg-Time-Taken.csv", index=False)
 
         df = pd.DataFrame({"Number-of-Sessions": session_list, "Time-Delete-Create-Api-Enabled": dict_map[dict_map_keys[4]]["amfTimeTaken"], "Time-Update-Api-Enabled": dict_map[dict_map_keys[2]]["amfTimeTaken"], "Change %": [0]*10})
         df['Change %'] = (df["Time-Update-Api-Enabled"] - df["Time-Delete-Create-Api-Enabled"])*(100/(df["Time-Delete-Create-Api-Enabled"]))
         df4 = df.append({"Number-of-Sessions": "Average", "Time-Delete-Create-Api-Enabled": "-", "Time-Update-Api-Enabled": "-", 'Change %': np.mean(df["Change %"].values)}, ignore_index=True)
-        df4.to_csv("Update-Vs-Delete-Create-Time-Taken.csv", index=False)
+        df4.to_csv("Update-Vs-Delete-Create-Avg-Time-Taken.csv", index=False)
 
         df = pd.DataFrame({"Number-of-Sessions": session_list, "Time-{}".format(dict_map_keys[5]): dict_map[dict_map_keys[5]]["amfTimeTaken"], "Time-{}".format(dict_map_keys[6]): dict_map[dict_map_keys[6]]["amfTimeTaken"], "Time-Not-Sharing-Udsf": dict_map[dict_map_keys[2]]["amfTimeTaken"], "Change - AmfSmf Vs Unshared": [0]*10, "Change - AllShared Vs Unshared": [0]*10})
         df['Change - AmfSmf Vs Unshared'] = (df["Time-Not-Sharing-Udsf"] - df["Time-{}".format(dict_map_keys[5])])*(100/(df["Time-{}".format(dict_map_keys[5])]))
         df['Change - AllShared Vs Unshared'] = (df["Time-Not-Sharing-Udsf"] - df["Time-{}".format(dict_map_keys[6])])*(100/(df["Time-{}".format(dict_map_keys[6])]))
         df5 = df.append({"Number-of-Sessions": "Average", "Time-{}".format(dict_map_keys[5]): "-", "Time-{}".format(dict_map_keys[6]): "-", "Time-Not-Sharing-Udsf": "-", 'Change - AmfSmf Vs Unshared': np.mean(df["Change - AmfSmf Vs Unshared"].values), 'Change - AllShared Vs Unshared': np.mean(df["Change - AllShared Vs Unshared"].values)}, ignore_index=True)
-        df5.to_csv("Shared-Vs-Unshared-Udsf-Time-Taken.csv", index=False)
+        df5.to_csv("Shared-Vs-Unshared-Udsf-Avg-Time-Taken.csv", index=False)
 
         df = pd.DataFrame({"Number-of-Sessions": session_list, "Time-Delete-Create-Api-Enabled": dict_map[dict_map_keys[4]]["amfDbReadTime"], "Time-Update-Api-Enabled": dict_map[dict_map_keys[2]]["amfDbReadTime"], "Change %": [0]*len(dict_map[dict_map_keys[2]]["amfDbReadTime"])})
         df['Change %'] = (df["Time-Update-Api-Enabled"] - df["Time-Delete-Create-Api-Enabled"])*(100/(df["Time-Delete-Create-Api-Enabled"]))
         df6 = df.append({"Number-of-Sessions": "Average", "Time-Delete-Create-Api-Enabled": "-", "Time-Update-Api-Enabled": "-", 'Change %': np.mean(df["Change %"].values)}, ignore_index=True)
-        df6.to_csv("Update-Vs-Delete-Create-Db-Read-Time-Taken.csv", index=False)
+        df6.to_csv("Update-Vs-Delete-Create-Db-Read-Avg-Time-Taken.csv", index=False)
 
         df = pd.DataFrame({"Number-of-Sessions": session_list, "Time-Delete-Create-Api-Enabled": dict_map[dict_map_keys[4]]["amfDbWriteTime"], "Time-Update-Api-Enabled": dict_map[dict_map_keys[2]]["amfDbWriteTime"], "Change %": [0]*10})
         df['Change %'] = (df["Time-Update-Api-Enabled"] - df["Time-Delete-Create-Api-Enabled"])*(100/(df["Time-Delete-Create-Api-Enabled"]))
         df6 = df.append({"Number-of-Sessions": "Average", "Time-Delete-Create-Api-Enabled": "-", "Time-Update-Api-Enabled": "-", 'Change %': np.mean(df["Change %"].values)}, ignore_index=True)
-        df6.to_csv("Update-Vs-Delete-Create-Db-Write-Time-Taken.csv", index=False)
+        df6.to_csv("Update-Vs-Delete-Create-Db-Write-Avg-Time-Taken.csv", index=False)
 
         df = pd.DataFrame({"Number-of-Sessions": session_list, "Time-Delete-Create-Api-Enabled": dict_map[dict_map_keys[4]]["amfDbTotalTime"], "Time-Update-Api-Enabled": dict_map[dict_map_keys[2]]["amfDbTotalTime"], "Change %": [0]*10})
         df['Change %'] = (df["Time-Update-Api-Enabled"] - df["Time-Delete-Create-Api-Enabled"])*(100/(df["Time-Delete-Create-Api-Enabled"]))
         df6 = df.append({"Number-of-Sessions": "Average", "Time-Delete-Create-Api-Enabled": "-", "Time-Update-Api-Enabled": "-", 'Change %': np.mean(df["Change %"].values)}, ignore_index=True)
-        df6.to_csv("Update-Vs-Delete-Create-Db-Total-Time-Taken.csv", index=False)
+        df6.to_csv("Update-Vs-Delete-Create-Db-Total-Avg-Time-Taken.csv", index=False)
 
 
-    df_plot = df_all[df_all['Rate'] > 500]
+    df_plot = df_all[df_all['Rate'] > 500].copy()
 
     if FIGURE3:
         config_filter = ['Fully-Stateful','Fully-Procedural-Stateless', 'Fully-Transactional-Stateless']
@@ -244,7 +278,7 @@ def main():
         sb.legend_.set_title(None)
         plt.tight_layout()
         plt.legend(loc="best")
-        plt.savefig('figure3.pdf', bbox_inches='tight', pad_inches=0)
+        plt.savefig('figure3.pdf', bbox_inches='tight')
         plt.show()
         plt.close()
     
@@ -260,7 +294,7 @@ def main():
         sb.legend_.set_title(None)
         plt.tight_layout()
         plt.legend(loc="best")
-        plt.savefig('figure4.pdf', bbox_inches='tight', pad_inches=0)
+        plt.savefig('figure4.pdf', bbox_inches='tight')
         plt.show()
         plt.close()
     
@@ -270,7 +304,7 @@ def main():
         flatui = ["#3498db", "#2ecc71"]
         sns.set_palette(flatui)
         sb = sns.barplot(data=df_plot, x='Rate', y='amfDbTotalTime', hue='Config', palette=flatui, hue_order=order_list)
-        sb.set_ylim(550,1000)
+        sb.set_ylim(550,1010)
         l1 = mpatches.Patch(color=flatui[0], label='Delete-Create API')
         l2 = mpatches.Patch(color=flatui[1], label='Update API')
         plt.ylabel('Time (ms)')
@@ -281,6 +315,27 @@ def main():
         plt.savefig('figure5.pdf', bbox_inches='tight', pad_inches=0)
         plt.show()
         plt.close()
+    
+    if FIGURE8:
+        config_filter = [dict_map_keys[4], dict_map_keys[2]]
+        order_list = [dict_map[x]["plotname"] for x in config_filter]
+        order_list[1] = "Update API"
+        config_list = [order_list[0]]*5
+        config_list.extend([order_list[1]]*5)
+        df_mongo = pd.DataFrame()
+        df_mongo["Config"] = config_list
+        amfRdTime = dict_map[config_filter[0]]["amfDbReadTime"][5:].copy()
+        amfRdTime.extend(dict_map[config_filter[1]]["amfDbReadTime"][5:].copy())
+        amfWrTime = dict_map[config_filter[0]]["amfDbWriteTime"][5:].copy()
+        amfWrTime.extend(dict_map[config_filter[1]]["amfDbWriteTime"][5:].copy())
+        df_mongo["amfDbReadTime"] = amfRdTime
+        df_mongo["amfDbWriteTime"] = amfWrTime
+        df_mongo["Rate"] = session_list[5:]*2
+        #ax = df_mongo.plot(x="Rate", y="amfDbWriteTime", kind="bar")
+        #df_mongo.plot(x="Rate", y="amfDbReadTime", kind="bar", ax=ax, color="C2")
+        #df_mongo[["Rate", "amfDbWriteTime", "amfDbReadTime"]].plot(x="Rate", kind="bar")
+        df_mongo.set_index('Rate').plot(kind='bar', stacked=True, y = ["amfDbReadTime","amfDbWriteTime"], color=['steelblue', 'red'])
+        plt.show()
     
     if FIGURE6:
 
@@ -298,25 +353,23 @@ def main():
 
         fig, ax1 = plt.subplots()
         flatui = ["#34495e","#2ecc71"]
-        sns.set_context(context="paper",font_scale=1)
         sb = sns.barplot(data=df_queue_cpu, x='Config', y='Value', hue='Type',palette=sns.color_palette(flatui),
                         ax=ax1,hue_order=['CPU','Q Length'],
                         order = ['Stateful','Transactional\nStateless','AMF-SMF\nShare DB','Non-Blocking'])
-        ax1.set_ylabel('CPU', fontsize=12)
+        ax1.set_ylabel('CPU', fontsize=14)
         ax2 = ax1.twinx()
         ax2.set_ylim(ax1.get_ylim())
         ax1.yaxis.set_major_formatter(PercentFormatter(100)) # percentage using 1 for 100%
-        ax1.tick_params(labelsize=12)
-        ax2.tick_params(labelsize=12)
-        ax2.set_ylabel('Queue Length', fontsize=12)
+        ax1.tick_params(labelsize=13)
+        ax2.tick_params(labelsize=13)
+        ax2.set_ylabel('Queue Length', fontsize=14)
         ax1.set_xlabel('')
         sb.legend_.set_title(None)
         plt.tight_layout()
-        plt.legend(loc="best")
+        plt.legend(loc="best", fontsize=1)
         plt.savefig('figure6.pdf', bbox_inches='tight', pad_inches=0)
         plt.show()
         plt.close()
-        sns.set_context(context="paper",font_scale=1.6)
     
     if FIGURE7:
         q_cpu_time_series()
