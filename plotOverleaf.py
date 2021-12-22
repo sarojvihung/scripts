@@ -18,11 +18,14 @@ sns.set_context(context="paper",font_scale=1.6)
 dir_path = os.path.dirname(os.path.realpath(__file__))
 my_file_name = os.path.basename(__file__)
 path = Path("{}/{}".format(dir_path, my_file_name)).parent.parent
+file_format = "pdf"
 
 CREATE_COMPARISON_CSVS = 0
 MIN_MAX_COMPARISON = 1
 FIGURE3 = 0
 FIGURE4 = 0
+FIGURE4_1 = 0
+FIGURE4_2 = 1
 FIGURE5 = 0
 FIGURE6 = 0
 FIGURE7 = 0
@@ -133,7 +136,7 @@ def q_cpu_time_series():
         plt.subplots_adjust(hspace=.0,top = 0.96)
         pos+=1
 
-    plt.savefig('figure7.pdf', bbox_inches='tight', pad_inches=0)
+    plt.savefig('figure7.{}'.format(file_format), bbox_inches='tight', pad_inches=0)
     plt.show()
     plt.close()
 
@@ -278,7 +281,7 @@ def main():
         sb.legend_.set_title(None)
         plt.tight_layout()
         plt.legend(loc="best")
-        plt.savefig('figure3.pdf', bbox_inches='tight')
+        plt.savefig('figure3.{}'.format(file_format), bbox_inches='tight')
         plt.show()
         plt.close()
     
@@ -294,7 +297,41 @@ def main():
         sb.legend_.set_title(None)
         plt.tight_layout()
         plt.legend(loc="best")
-        plt.savefig('figure4.pdf', bbox_inches='tight')
+        plt.savefig('figure4.{}'.format(file_format), bbox_inches='tight')
+        plt.show()
+        plt.close()
+    
+    if FIGURE4_1:
+        config_filter = [dict_map_keys[5], dict_map_keys[6], dict_map_keys[2]]
+        order_list = [dict_map[x]["plotname"] for x in config_filter]
+        flatui = [ "#3498db","#95a5a6", "#2ecc71"]
+        sns.set_palette(flatui)
+        sb = sns.barplot(data=df_plot, x='Rate', y='amfTimeTaken', hue='Config', palette=flatui, hue_order=order_list)
+        sb.set_ylim(8,16)
+        plt.ylabel('Time (s)')
+        plt.xlabel("Simultaneous Requests")
+        sb.legend_.set_title(None)
+        plt.tight_layout()
+        plt.legend(loc="best")
+        plt.savefig('figure4_1.{}'.format(file_format), bbox_inches='tight')
+        plt.show()
+        plt.close()
+    
+    if FIGURE4_2:
+        config_filter = [dict_map_keys[3], dict_map_keys[2]]
+        order_list = [dict_map[x]["plotname"] for x in config_filter]
+        flatui = [ "#34495e", "#2ecc71"]
+        sns.set_palette(flatui)
+        sb = sns.barplot(data=df_plot, x='Rate', y='amfTimeTaken', hue='Config', palette=flatui, hue_order=order_list)
+        sb.set_ylim(8,16)
+        l1 = mpatches.Patch(color=flatui[0], label='Non-Blocking')
+        l2 = mpatches.Patch(color=flatui[1], label='Blocking')
+        plt.ylabel('Time (s)')
+        plt.xlabel("Simultaneous Requests")
+        sb.legend_.set_title(None)
+        plt.tight_layout()
+        plt.legend(loc="best", handles=[l1,l2])
+        plt.savefig('figure4_2.{}'.format(file_format), bbox_inches='tight')
         plt.show()
         plt.close()
     
@@ -312,7 +349,7 @@ def main():
         sb.legend_.set_title(None)
         plt.tight_layout()
         plt.legend(loc="best", handles=[l1,l2])
-        plt.savefig('figure5.pdf', bbox_inches='tight', pad_inches=0)
+        plt.savefig('figure5.{}'.format(file_format), bbox_inches='tight', pad_inches=0)
         plt.show()
         plt.close()
     
@@ -367,7 +404,7 @@ def main():
         sb.legend_.set_title(None)
         plt.tight_layout()
         plt.legend(loc="best", fontsize=1)
-        plt.savefig('figure6.pdf', bbox_inches='tight', pad_inches=0)
+        plt.savefig('figure6.{}'.format(file_format), bbox_inches='tight', pad_inches=0)
         plt.show()
         plt.close()
     
