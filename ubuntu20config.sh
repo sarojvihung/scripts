@@ -16,15 +16,15 @@ apt-get install -y kubelet kubeadm kubectl
 systemctl enable docker.service
 swapoff -a
 
-wget https://github.com/Kitware/CMake/releases/download/v3.21.0/cmake-3.21.0.tar.gz && tar -xvzf cmake-3.21.0.tar.gz
+wget https://github.com/Kitware/CMake/releases/download/v3.22.1/cmake-3.22.1.tar.gz && tar -xvzf cmake-3.22.1.tar.gz
 
-cd cmake-3.21.0 && ./bootstrap -- -DCMAKE_BUILD_TYPE:STRING=Release && make && make install
+cd cmake-3.22.1 && ./bootstrap -- -DCMAKE_BUILD_TYPE:STRING=Release && make && make install
 
 cd .. && rm -rf cmake-*
 
 cmake --version
 
-git clone -b 375d538_v3.2.2 https://github.com/UmakantKulkarni/UERANSIM && cd UERANSIM && make
+git clone -b 8e36839_v3.2.5 https://github.com/UmakantKulkarni/UERANSIM && cd UERANSIM && make
 
 cp build/nr-* /usr/local/bin/
 cd ..
@@ -45,7 +45,7 @@ cd /opt/
 git clone https://github.com/UmakantKulkarni/opensource-5g-core
 git clone https://github.com/UmakantKulkarni/free5gmano
 git clone https://github.com/UmakantKulkarni/scripts
-git clone --recursive -b 1326fc8_mongo https://github.com/UmakantKulkarni/open5gs
+git clone --recursive -b a0f2535_mongo https://github.com/UmakantKulkarni/open5gs
 git clone https://github.com/UmakantKulkarni/free5gc
 git clone https://github.com/UmakantKulkarni/amf
 git clone https://github.com/UmakantKulkarni/upf
