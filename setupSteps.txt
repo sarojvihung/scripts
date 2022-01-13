@@ -69,3 +69,51 @@ cd scripts && git pull
 
 
 
+
+
+
+Result collection and analysis:
+
+1. Copy Experiment directory from mongo pod to purdue-mc machine in scratch directory:
+ke open5gs-mongodb-6bdddb9c4b-twb9t -- bash
+scp -r /opt/Experiments ukulkarn@mc21.cs.purdue.edu:/homes/ukulkarn/scratch/
+
+
+2. Create mongo_op directory in 
+cd /proj/sfcs-PG0/opt/
+rm -rf *
+mkdir mongo_op
+
+
+3. Reverse copy all mongo files from purdue-mc machine to mongo_op directory:
+cd /proj/sfcs-PG0/opt/mongo_op
+scp -r ukulkarn@mc21.cs.purdue.edu:/homes/ukulkarn/scratch/Experiments/* .
+
+
+4. Copy Experiments directory of node0 to /proj/sfcs-PG0/opt/ (To avoid disk space issues):
+scp -r /opt/Experiments /proj/sfcs-PG0/opt/
+
+
+5. Copy top o/p files from other nodes:
+cd /opt/scripts
+./scpTopOp.sh 10
+
+
+6. Copy UE o/p files from other nodes:
+cd /opt/scripts
+./scpUeOps.sh 12 14
+
+
+7. Collect all results in single directory:
+cd /opt/scripts
+./collectResults.sh
+
+
+8. Get CPU and Queue-length analysis files:
+cd /opt/scripts
+./getCpuVsQueue.sh
+
+
+9. Generate CSV summary files:
+cd /opt/scripts
+./exportToCsv.sh

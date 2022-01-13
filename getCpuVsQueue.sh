@@ -19,6 +19,7 @@ do
     elif [[ $f1 == "Nonblocking-Api-Enabled" ]]; then
         jarray=(1 2 3 4 7 8 9 10)
     fi
+    jarray=(1 2 3 4 5 6 7 8 9 10)
     for j in ${jarray[@]}
     do
         amfTopFile=$exp/$f1-$j/$subexp/top_data_node1.txt
@@ -30,7 +31,7 @@ do
         echo "Working on $topCpuOpFile"
         sjCount=$(cat $amfTopFile | grep systemd-journal | wc -l)
         echo "UTC-Time, Time-Diff, CPU-Usage" >> $topCpuOpFile
-        timestamps=( $(cat $amfTopFile | grep 2021- | grep -o '\-\-.*' | cut -c 3-) )
+        timestamps=( $(cat $amfTopFile | grep 2022- | grep -o '\-\-.*' | cut -c 3-) )
         if (( $sjCount < 5 )); then
             timestamps=("${timestamps[@]:1}")
         fi

@@ -2,7 +2,7 @@
 
 cd /proj/sfcs-PG0/opt/ && mkdir -p Results
 
-for exp in /proj/sfcs-PG0/mongo_op/* ; 
+for exp in /proj/sfcs-PG0/opt/mongo_op/* ; 
 do
     f1=`basename $exp`
     for subexp in $exp/* ; 
