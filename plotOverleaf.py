@@ -20,12 +20,12 @@ my_file_name = os.path.basename(__file__)
 path = Path("{}/{}".format(dir_path, my_file_name)).parent.parent
 file_format = "pdf"
 
-CREATE_COMPARISON_CSVS = 0
+CREATE_COMPARISON_CSVS = 1
 MIN_MAX_COMPARISON = 1
 FIGURE3 = 0
 FIGURE4 = 0
 FIGURE4_1 = 0
-FIGURE4_2 = 1
+FIGURE4_2 = 0
 FIGURE5 = 0
 FIGURE6 = 0
 FIGURE7 = 0
@@ -188,25 +188,26 @@ def main():
         df.to_csv(csv_file, index=False)
     df_all.to_csv("op.csv", index=False)
     
-    valid_cpuq_folders = []
-    cpu_q_values = []
-    for folder_name in dict_map_keys:
-        val_1000_runs = dict_map[folder_name]["valied_1000_runs"]
-        mean_cpus = []
-        if val_1000_runs:
-            for sub_folder in val_1000_runs:
-                cpu_file_name = "{}/Results2/{}-{}/1000/topCpuOp.csv".format(path, folder_name, sub_folder)
-                df_cpu_sub = pd.read_csv(cpu_file_name)
-                mean_cpus.append(df_cpu_sub[df_cpu_sub[" CPU-Usage"] > 0][" CPU-Usage"].mean())
-            cpu_q_values.append(dict_map[folder_name]["amfQueueLength"])
-            cpu_q_values.append(np.mean(mean_cpus))
-            valid_cpuq_folders.append(dict_map[folder_name]["plotname"])
-            valid_cpuq_folders.append(dict_map[folder_name]["plotname"])
-    df_queue_cpu = pd.DataFrame()
-    df_queue_cpu["Rate"] = [1000]*8
-    df_queue_cpu["Type"] = ["Q Length", "CPU"]*4
-    df_queue_cpu["Config"] = valid_cpuq_folders
-    df_queue_cpu["Value"] = cpu_q_values
+    if FIGURE6:
+        valid_cpuq_folders = []
+        cpu_q_values = []
+        for folder_name in dict_map_keys:
+            val_1000_runs = dict_map[folder_name]["valied_1000_runs"]
+            mean_cpus = []
+            if val_1000_runs:
+                for sub_folder in val_1000_runs:
+                    cpu_file_name = "{}/Results2/{}-{}/1000/topCpuOp.csv".format(path, folder_name, sub_folder)
+                    df_cpu_sub = pd.read_csv(cpu_file_name)
+                    mean_cpus.append(df_cpu_sub[df_cpu_sub[" CPU-Usage"] > 0][" CPU-Usage"].mean())
+                cpu_q_values.append(dict_map[folder_name]["amfQueueLength"])
+                cpu_q_values.append(np.mean(mean_cpus))
+                valid_cpuq_folders.append(dict_map[folder_name]["plotname"])
+                valid_cpuq_folders.append(dict_map[folder_name]["plotname"])
+        df_queue_cpu = pd.DataFrame()
+        df_queue_cpu["Rate"] = [1000]*8
+        df_queue_cpu["Type"] = ["Q Length", "CPU"]*4
+        df_queue_cpu["Config"] = valid_cpuq_folders
+        df_queue_cpu["Value"] = cpu_q_values
 
     if MIN_MAX_COMPARISON:
         calc_min_max(0,1)
