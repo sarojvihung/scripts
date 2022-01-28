@@ -5,7 +5,8 @@ if [[ $# -ne 2 ]] ; then
     exit 1
 fi
 
-declare -a arr=("master" "amf" "smf" "upf" "udsf" "udm" "pcf" "bsf" "nrf" "ausf" "udr")
+#declare -a arr=("master" "amf" "smf" "upf" "udsf" "udm" "pcf" "bsf" "nrf" "ausf" "udr")
+declare -a arr=("master" "amf" "smf" "upf" "udsf")
 
 numWorkerNodes="$1"
 nodePrefix="$2"

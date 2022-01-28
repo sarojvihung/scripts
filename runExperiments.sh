@@ -6,16 +6,16 @@ if [[ $# -ne 1 ]] ; then
 fi
 
 experimentDirPrefix="$1"
-numWorkerNodes=10
+numWorkerNodes=4
 
 mongoPod=`kubectl -n open5gs get po -o json |  jq '.items[] | select(.metadata.name|contains("open5gs"))| .metadata.name' | grep "mongo" | sed 's/"//g'`
-kubectl exec -it $mongoPod -- bash -c "apt-get update && apt -y install git vim python3-pip && git clone https://github.com/UmakantKulkarni/scripts"
+#kubectl exec -it $mongoPod -- bash -c "apt-get update && apt -y install git vim python3-pip && git clone https://github.com/UmakantKulkarni/scripts"
 
 declare -a subDir=("100" "200" "300" "400" "500" "600" "700" "800" "900" "1000")
 
 declare -a experimentDirAry=("$experimentDirPrefix-1" "$experimentDirPrefix-2" "$experimentDirPrefix-3" "$experimentDirPrefix-4" "$experimentDirPrefix-5" "$experimentDirPrefix-6" "$experimentDirPrefix-7" "$experimentDirPrefix-8" "$experimentDirPrefix-9" "$experimentDirPrefix-10")
 
-declare -a ueNodes=("10.10.1.13" "10.10.1.15")
+declare -a ueNodes=("10.10.1.7" "10.10.1.9")
 
 for experimentDir in "${experimentDirAry[@]}"
 do
@@ -32,7 +32,7 @@ do
 
 
         #start-ran
-        bash /opt/scripts/runNodeCmd.sh "nr-gnb -c /opt/UERANSIM/config/open5gs/gnb.yaml > /dev/null 2>&1 &" 11 13
+        bash /opt/scripts/runNodeCmd.sh "nr-gnb -c /opt/UERANSIM/config/open5gs/gnb.yaml > /dev/null 2>&1 &" 5 7
 
         #bash /opt/scripts/runNodeCmd.sh "/opt/scripts/launchUeSim.py > /dev/null 2>&1 &" 12 14
 
@@ -68,11 +68,11 @@ do
         sleep 30
 
         #stop-ran
-        bash /opt/scripts/runNodeCmd.sh "pkill -f nr-ue" 12 14
+        bash /opt/scripts/runNodeCmd.sh "pkill -f nr-ue" 6 8
 
         sleep 5
 
-        bash /opt/scripts/runNodeCmd.sh "pkill -f nr-gnb" 11 13
+        bash /opt/scripts/runNodeCmd.sh "pkill -f nr-gnb" 5 7
 
         sleep 5
         

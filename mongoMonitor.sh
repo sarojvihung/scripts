@@ -20,7 +20,7 @@ scmd="cd /opt/ && mkdir -p Experiments && cd Experiments && mkdir -p $experiment
 tcmd="cd /opt/ && mkdir -p Experiments && cd Experiments && mkdir -p $experimentDir && cd $experimentDir && mkdir -p $pcsDir && cd $pcsDir && rm -f mongo_top.txt && (mongotop --json $timeDur >> /opt/Experiments/$experimentDir/$pcsDir/mongo_top.txt &)"
 
 mongo pcs_db --eval "db.amf.drop(); db.smf.drop(); db.upf.drop()"
-mongo pcs_db --eval "db.createCollection(\"amf\"); db.createCollection(\"smf\"); db.createCollection(\"upf\")"
+mongo pcs_db --eval "db.createCollection(\"amf\"); db.createCollection(\"smf\"); db.createCollection(\"upf\"); db.smf.createIndex({\"SMF-N4-SEID\": 1})"
 sleep 2
 
 echo ""

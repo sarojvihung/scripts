@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import sys
+import os
 import pymongo
 import bson
 
@@ -8,6 +9,7 @@ num_subs = int(sys.argv[1])
 #mongo_ip = sys.argv[2]
 #mongo_port = 27017
 imsi = 208930000000000
+mongo_uri = os.environ.get('DB_URI', 'mongodb://mongodb-svc:27017/')
 
 slice_data = [
     {
@@ -29,7 +31,7 @@ slice_data = [
 sub_data = {
     "imsi": "208930000000000",
     "subscribed_rau_tau_timer": 12,
-    "network_access_mode": 2,
+    "network_access_mode": 0,
     "subscriber_status": 0,
     "access_restriction_data": 32,
     "slice": slice_data,
@@ -46,7 +48,7 @@ sub_data = {
 }
 
 #myclient = pymongo.MongoClient("mongodb://" + str(mongo_ip) + ":" + str(mongo_port) + "/")
-myclient = pymongo.MongoClient("mongodb://mongodb-svc:27017/")
+myclient = pymongo.MongoClient(mongo_uri)
 mydb = myclient["open5gs"]
 mycol = mydb["subscribers"]
 
