@@ -2,7 +2,7 @@
 
 exp=/proj/sfcs-PG0/opt/Results
 
-declare -a experimentDirAry=("Fully-Stateful" "Fully-Procedural-Stateless" "Fully-Transactional-Stateless" "All-NFs-Share-Udsf" "Amf-Smf-Share-Udsf" "N1n2-Amf-Update-Api-Disabled" "Nonblocking-Api-Enabled")
+declare -a experimentDirAry=("Fully-Stateful" "Fully-Procedural-Stateless" "Fully-Transactional-Stateless" "All-NFs-Share-Udsf" "Amf-Smf-Share-Udsf" "N1n2-Amf-Update-Api-Disabled" "Nonblocking-Api-Enabled" "Upsert-Api-Enabled" "Replace-Api-Enabled" "Single-Read-Enabled")
 
 for f1 in "${experimentDirAry[@]}"
 do
