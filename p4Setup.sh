@@ -1,6 +1,6 @@
 #Auto-method
 sudo apt-get install cmake g++ git automake libtool libgc-dev bison flex \
-libfl-dev libgmp-dev libboost-dev libboost-iostreams-dev \
+libfl-dev libgmp-dev libboost-dev libboost-iostreams-dev mininet \
 libboost-graph-dev llvm pkg-config python3 python3-pip \
 tcpdump
 
@@ -17,7 +17,7 @@ sudo apt install p4lang-p4c
 apt-get update && apt-get -y upgrade && apt-get update
 
 sudo apt-get install cmake g++ git automake libtool libgc-dev bison flex \
-libfl-dev libgmp-dev libboost-dev libboost-iostreams-dev \
+libfl-dev libgmp-dev libboost-dev libboost-iostreams-dev mininet \
 libboost-graph-dev llvm pkg-config python3 python3-pip \
 tcpdump doxygen graphviz texlive-full python-dev
 
