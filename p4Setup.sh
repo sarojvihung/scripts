@@ -2,7 +2,7 @@
 sudo apt-get install cmake g++ git automake libtool libgc-dev bison flex \
 libfl-dev libgmp-dev libboost-dev libboost-iostreams-dev mininet \
 libboost-graph-dev llvm pkg-config python3 python3-pip \
-tcpdump
+tcpdump doxygen graphviz texlive-full
 
 pip3 install ipaddr scapy ply
 
@@ -13,16 +13,38 @@ sudo apt-get update
 sudo apt install p4lang-p4c
 
 
-#Manual method
-apt-get update && apt-get -y upgrade && apt-get update
+#Docker-method
+docker pull kevinbird61/new_p4env_v1
+docker run -d --privileged -it 789b8b616dbb
+docker ps
+docker exec -it     bash
+git clone https://github.com/UmakantKulkarni/p4-researching
 
+
+#Manual method
+DEBIAN_FRONTEND=noninteractive
+cd /opt
 sudo apt-get install cmake g++ git automake libtool libgc-dev bison flex \
 libfl-dev libgmp-dev libboost-dev libboost-iostreams-dev mininet \
 libboost-graph-dev llvm pkg-config python3 python3-pip \
-tcpdump doxygen graphviz texlive-full python-dev
+tcpdump doxygen graphviz texlive-full
 
-pip install ipaddr scapy ply
+pip3 install ipaddr scapy ply psutil 2to3 mininet grpcio grpcio-tools
+sudo apt -y install gnupg
 
+git clone https://github.com/kevinbird61/p4-researching
+mkdir p3-researching
+scp -r p4-researching/* p3-researching/
+2to3 -W -n p3-researching/
+
+
+curl -fsSL https://bazel.build/bazel-release.pub.gpg | gpg --dearmor > bazel.gpg
+sudo mv bazel.gpg /etc/apt/trusted.gpg.d/
+echo "deb [arch=amd64] https://storage.googleapis.com/bazel-apt stable jdk1.8" | sudo tee /etc/apt/sources.list.d/bazel.list
+sudo apt -y update && sudo apt -y install bazel
+bazel --version
+
+cd /opt
 git clone https://github.com/protocolbuffers/protobuf.git
 cd protobuf
 git checkout v3.18.1
@@ -35,44 +57,41 @@ sudo make install
 sudo ldconfig
 cd ..
 
-git clone --recursive https://github.com/p4lang/p4c.git
-cd p4c
-mkdir build
-cd build
-cmake .. -DENABLE_MULTITHREAD=ON -DCMAKE_INSTALL_PREFIX=/mydata/p4c/
-make -j4
-make -j4 check
-sudo make install
-cd ../../
 
-git clone https://github.com/p4lang/behavioral-model.git
-cd behavioral-model
-./install_deps.sh
-./autogen.sh
-./configure
-make
-sudo make install
-sudo ldconfig
-cd ..
-
-
-python2.7 -m pip install psutil grpcio-tools rpc
-
-
-git clone https://github.com/p4lang/p4runtime
-sudo python2.7 setup.py install
-sudo apt install curl gnupg
-curl -fsSL https://bazel.build/bazel-release.pub.gpg | gpg --dearmor > bazel.gpg
-sudo mv bazel.gpg /etc/apt/trusted.gpg.d/
-echo "deb [arch=amd64] https://storage.googleapis.com/bazel-apt stable jdk1.8" | sudo tee /etc/apt/sources.list.d/bazel.list
-sudo apt update && sudo apt install bazel
-bazel --version
-
+cd /opt
 git clone https://github.com/p4lang/p4runtime
 cd p4runtime
 cd proto && bazel build //...
 cd ../py/
-sudo python2.7 setup.py install
+sudo python3 setup.py install
+
+cd /opt
+git clone --depth=1 -b v1.43.2 https://github.com/google/grpc.git
+cd grpc/
+git submodule update --init --recursive
+make
+cd cmake
+mkdir build
+cd build
+cmake ../.. -DgRPC_INSTALL=ON -DCMAKE_BUILD_TYPE=Release -DgRPC_PROTOBUF_PROVIDER=package -DgRPC_SSL_PROVIDER=package -DgRPC_ZLIB_PROVIDER=package -DBUILD_DEPS=ON
+make
+make install
+
+cd /opt
+git clone https://github.com/p4lang/PI
+cd PI
+git submodule update --init
+./autogen.sh
+./configure --with-proto
+make
+make check
+sudo make install
+
+
+
+
+
+
 
 
 

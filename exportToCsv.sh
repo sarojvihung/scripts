@@ -4,6 +4,34 @@ exp=/proj/sfcs-PG0/opt/Results
 
 declare -a experimentDirAry=("Fully-Stateful" "Fully-Procedural-Stateless" "Fully-Transactional-Stateless" "All-NFs-Share-Udsf" "Amf-Smf-Share-Udsf" "N1n2-Amf-Update-Api-Disabled" "Nonblocking-Api-Enabled" "Upsert-Api-Enabled" "Replace-Api-Enabled" "Single-Read-Enabled")
 
+ declare -a amf_params=("CSCAmfReadIOTime" "CSCAmfReadSDTime" "CSCAmfWriteIOTime" "CSCAmfWriteSDTime" "N1N2AmfReadIOTime" "N1N2AmfReadSDTime" "N1N2AmfWriteIOTime" "N1N2AmfWriteSDTime" "USCAmfReadIOTime" "USCAmfReadSDTime" "USCAmfWriteIOTime" "USCAmfWriteSDTime")
+    
+declare -a smf_params=("CSCAmfReadIOTime" "CSCAmfReadSDTime" "CSCAmfWriteIOTime" "CSCAmfWriteSDTime" "N1N2AmfReadIOTime" "N1N2AmfReadSDTime" "N1N2AmfWriteIOTime" "N1N2AmfWriteSDTime" "USCAmfReadIOTime" "USCAmfReadSDTime" "USCAmfWriteIOTime" "USCAmfWriteSDTime")
+    
+declare -a upf_params=("CSCAmfReadIOTime" "CSCAmfReadSDTime" "CSCAmfWriteIOTime" "CSCAmfWriteSDTime" "N1N2AmfReadIOTime" "N1N2AmfReadSDTime" "N1N2AmfWriteIOTime" "N1N2AmfWriteSDTime" "USCAmfReadIOTime" "USCAmfReadSDTime" "USCAmfWriteIOTime" "USCAmfWriteSDTime")
+
+serialize_trans_times () {
+    nf_file="$1"
+    tran_times=""
+
+    for tra in "${amf_params[@]}"
+    do
+        param_time=$(cat $nf_file | grep $tra | cut -d "," -f2)
+        tran_times=$tran_times,$param_time
+    done
+    for tra in "${smf_params[@]}"
+    do
+        param_time=$(cat $nf_file | grep $tra | cut -d "," -f2)
+        tran_times=$tran_times,$param_time
+    done
+    for tra in "${upf_params[@]}"
+    do
+        param_time=$(cat $nf_file | grep $tra | cut -d "," -f2)
+        tran_times=$tran_times,$param_time
+    done
+    echo $tran_times
+}
+
 for f1 in "${experimentDirAry[@]}"
 do
     rm -f $exp/$f1-data.csv
@@ -31,6 +59,8 @@ do
                 amfDbReadTime=$(cat $mongoTopFIle | jq -r '.totals."pcs_db.amf".read.time')
                 amfDbWriteTime=$(cat $mongoTopFIle | jq -r '.totals."pcs_db.amf".write.time')
                 amfDbTotalTime=$(cat $mongoTopFIle | jq -r '.totals."pcs_db.amf".total.time')
+                local nf_trans_times=$(serialize_trans_times "$nfFile")
+                echo $nf_trans_times
                 echo "$f1-$j-$subexp,$ueSessCount,$dbAmfSessCount,$dbSmfSessCount,$dbUpfSessCount,$amfQueueLength,$smfQueueLength,$upfQueueLength,$amfTimeTaken,$smfTimeTaken,$upfTimeTaken,$amfDbReadTime,$amfDbWriteTime,$amfDbTotalTime" >> $exp/$f1-data.csv
             fi
         done
