@@ -2,7 +2,10 @@
 sudo apt-get install cmake g++ git automake libtool libgc-dev bison flex \
 libfl-dev libgmp-dev libboost-dev libboost-iostreams-dev mininet \
 libboost-graph-dev llvm pkg-config python3 python3-pip \
-tcpdump doxygen graphviz texlive-full
+tcpdump doxygen graphviz texlive-full libnanomsg-dev automake \
+build-essential g++ libboost-dev libboost-system-dev libboost-thread-dev \
+libtool pkg-config libpcre3-dev libavl-dev libev-dev libprotobuf-c-dev \
+protobuf-c-compiler
 
 pip3 install ipaddr scapy ply
 
@@ -80,15 +83,12 @@ make install
 cd /opt
 git clone https://github.com/p4lang/PI
 cd PI
-git submodule update --init
+git submodule update --init --recursive
 ./autogen.sh
-./configure --with-proto
+./configure --with-proto --with-internal-rpc --with-sysrepo
 make
 make check
 sudo make install
-
-
-
 
 
 
