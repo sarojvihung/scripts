@@ -4,7 +4,9 @@ apt -y update
 
 apt -y upgrade
 
-apt -y install docker.io curl apache2-utils default-jre default-jdk wget git vim nano make g++ libsctp-dev lksctp-tools net-tools iproute2 libssl-dev tcpdump curl jq iputils-ping apt-transport-https nghttp2-client bash-completion xauth gcc autoconf libtool pkg-config libmnl-dev libyaml-dev sshpass python3-pip
+apt -y update
+
+apt -y install docker.io curl apache2-utils default-jre default-jdk wget git vim nano make g++ libsctp-dev lksctp-tools net-tools iproute2 libssl-dev tcpdump curl jq iputils-ping apt-transport-https nghttp2-client bash-completion xauth gcc autoconf libtool pkg-config libmnl-dev libyaml-dev sshpass python3-pip x11-apps feh
 
 pip3 install h2
 
@@ -13,8 +15,8 @@ echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt
 apt -y update
 apt-get install -y kubelet kubeadm kubectl
 
-systemctl enable docker.service
-swapoff -a
+#systemctl enable docker.service
+#swapoff -a
 
 cmake_ver=3.22.2
 
@@ -25,6 +27,8 @@ cd cmake-$cmake_ver && ./bootstrap -- -DCMAKE_BUILD_TYPE:STRING=Release && make 
 cd .. && rm -rf cmake-*
 
 cmake --version
+
+cd /opt/
 
 git clone -b 384636f_v3.2.6 https://github.com/UmakantKulkarni/UERANSIM && cd UERANSIM && make
 
@@ -47,13 +51,13 @@ cd /opt/
 git clone https://github.com/UmakantKulkarni/opensource-5g-core
 git clone https://github.com/UmakantKulkarni/free5gmano
 git clone https://github.com/UmakantKulkarni/scripts
-git clone --recursive -b a0f2535_mongo https://github.com/UmakantKulkarni/open5gs
+git clone --recursive https://github.com/UmakantKulkarni/open5gs
 git clone https://github.com/UmakantKulkarni/free5gc
 git clone https://github.com/UmakantKulkarni/amf
 git clone https://github.com/UmakantKulkarni/upf
 
-cd /opt/scripts 
-chmod +x *
+#cd /opt/scripts 
+#chmod +x *
 
 cd /opt/k8s
 wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
