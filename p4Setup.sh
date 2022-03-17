@@ -90,6 +90,7 @@ make
 make check
 sudo make install
 
+curl -sSL https://raw.githubusercontent.com/nsg-ethz/p4-utils/master/install-tools/scripts/protoinitfix.py | sudo python3
 
 
 
