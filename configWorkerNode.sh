@@ -22,4 +22,6 @@ sudo systemctl restart docker
 sudo systemctl restart kubelet
 kubeadm reset --force
 systemctl restart kubelet
+rm /etc/containerd/config.toml
+systemctl restart containerd
 eval $kjoincmd
