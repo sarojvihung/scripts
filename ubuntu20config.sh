@@ -18,7 +18,7 @@ apt-get install -y kubelet kubeadm kubectl
 #systemctl enable docker.service
 #swapoff -a
 
-cmake_ver=3.22.2
+cmake_ver=3.23.1
 
 wget https://github.com/Kitware/CMake/releases/download/v$cmake_ver/cmake-$cmake_ver.tar.gz && tar -xvzf cmake-$cmake_ver.tar.gz
 
@@ -49,38 +49,40 @@ wget https://raw.githubusercontent.com/UmakantKulkarni/myCodes/master/k8/metrics
 
 cd /opt/
 git clone https://github.com/UmakantKulkarni/opensource-5g-core
-git clone https://github.com/UmakantKulkarni/free5gmano
 git clone https://github.com/UmakantKulkarni/scripts
 git clone --recursive https://github.com/UmakantKulkarni/open5gs
-git clone https://github.com/UmakantKulkarni/free5gc
-git clone https://github.com/UmakantKulkarni/amf
-git clone https://github.com/UmakantKulkarni/upf
+#git clone https://github.com/UmakantKulkarni/free5gmano
+#git clone https://github.com/UmakantKulkarni/free5gc
+#git clone https://github.com/UmakantKulkarni/amf
+#git clone https://github.com/UmakantKulkarni/upf
 
 #cd /opt/scripts 
 #chmod +x *
 
-cd /opt/k8s
-wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-apt -y install ./google-chrome-stable_current_amd64.deb
+#cd /opt/k8s
+#wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+#apt -y install ./google-chrome-stable_current_amd64.deb
 
-cd ~/.
-apt -y remove golang-go
-rm -rf /usr/local/go
-wget https://dl.google.com/go/go1.14.4.linux-amd64.tar.gz
-tar -C /usr/local -zxvf go1.14.4.linux-amd64.tar.gz
-rm -rf go1.14.4.linux-amd64.tar.gz
-mkdir -p ~/go/{bin,pkg,src}
-echo "export GOPATH=$HOME/go" >> ~/.bashrc
-echo "export GOROOT=/usr/local/go" >> ~/.bashrc
-echo "export GO111MODULE=auto" >> ~/.bashrc
-source ~/.bashrc
-export PATH=$PATH:$GOPATH/bin:$GOROOT/bin
-apt -y update
-go get -u github.com/sirupsen/logrus
-sysctl -w net.ipv4.ip_forward=1
-#iptables -t nat -A POSTROUTING -o eno49 -j MASQUERADE
-iptables -A FORWARD -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --set-mss 1400
-systemctl stop ufw
+if (( 0 )) ; then
+    cd ~/.
+    apt -y remove golang-go
+    rm -rf /usr/local/go
+    wget https://dl.google.com/go/go1.14.4.linux-amd64.tar.gz
+    tar -C /usr/local -zxvf go1.14.4.linux-amd64.tar.gz
+    rm -rf go1.14.4.linux-amd64.tar.gz
+    mkdir -p ~/go/{bin,pkg,src}
+    echo "export GOPATH=$HOME/go" >> ~/.bashrc
+    echo "export GOROOT=/usr/local/go" >> ~/.bashrc
+    echo "export GO111MODULE=auto" >> ~/.bashrc
+    source ~/.bashrc
+    export PATH=$PATH:$GOPATH/bin:$GOROOT/bin
+    apt -y update
+    go get -u github.com/sirupsen/logrus
+    sysctl -w net.ipv4.ip_forward=1
+    #iptables -t nat -A POSTROUTING -o eno49 -j MASQUERADE
+    iptables -A FORWARD -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --set-mss 1400
+    systemctl stop ufw
+fi
 
 cd /opt/
 modprobe -r gtp5g
