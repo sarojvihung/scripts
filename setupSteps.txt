@@ -7,7 +7,7 @@ apt-get update && apt-get -y upgrade && apt-get update
 ./runNodeCmd.sh "rm -rf /mnt/*" 0 1 2 3 4 5 6 7 8
 
 ifconfig
-./configK8Nodes.sh ens1f0 4 9
+./configK8Nodes.sh eno1d1 4 9
 
 source ~/.bashrc
 
