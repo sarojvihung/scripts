@@ -20,9 +20,9 @@ save_trans_times () {
     if [[ "$nfName" == "amf" ]] ; then
         declare -a params=("CSCAmfReadIOTime" "CSCAmfReadSDTime" "CSCAmfWriteIOTime" "CSCAmfWriteSDTime" "N1N2AmfReadIOTime" "N1N2AmfReadSDTime" "N1N2AmfWriteIOTime" "N1N2AmfWriteSDTime" "USCAmfReadIOTime" "USCAmfReadSDTime" "USCAmfWriteIOTime" "USCAmfWriteSDTime")
     elif [[ "$nfName" == "smf" ]] ; then
-        declare -a params=("CSCAmfReadIOTime" "CSCAmfReadSDTime" "CSCAmfWriteIOTime" "CSCAmfWriteSDTime" "N1N2AmfReadIOTime" "N1N2AmfReadSDTime" "N1N2AmfWriteIOTime" "N1N2AmfWriteSDTime" "USCAmfReadIOTime" "USCAmfReadSDTime" "USCAmfWriteIOTime" "USCAmfWriteSDTime")
+        declare -a params=("CSCSmfReadIOTime" "CSCSmfReadSDTime" "CSCSmfWriteIOTime" "CSCSmfWriteSDTime" "N1N2SmfReadIOTime" "N1N2SmfReadSDTime" "N1N2SmfWriteIOTime" "N1N2SmfWriteSDTime" "USCSmfReadIOTime" "USCSmfReadSDTime" "USCSmfWriteIOTime" "USCSmfWriteSDTime" "PERSmfReadIOTime" "PERSmfReadSDTime" "PERSmfWriteIOTime" "PERSmfWriteSDTime")
     elif [[ "$nfName" == "upf" ]] ; then
-        declare -a params=("CSCAmfReadIOTime" "CSCAmfReadSDTime" "CSCAmfWriteIOTime" "CSCAmfWriteSDTime" "N1N2AmfReadIOTime" "N1N2AmfReadSDTime" "N1N2AmfWriteIOTime" "N1N2AmfWriteSDTime" "USCAmfReadIOTime" "USCAmfReadSDTime" "USCAmfWriteIOTime" "USCAmfWriteSDTime")
+        declare -a params=("CreateUpfReadIOTime" "CreateUpfReadSDTime" "CreateUpfWriteIOTime" "CreateUpfWriteSDTime" "UpdateUpfReadIOTime" "UpdateUpfReadSDTime" "UpdateUpfWriteIOTime" "UpdateUpfWriteSDTime")
     else
         return 1
     fi
