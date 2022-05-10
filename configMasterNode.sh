@@ -19,7 +19,6 @@ systemctl restart kubelet
 containerd config default>/etc/containerd/config.toml
 systemctl restart containerd
 systemctl enable containerd
-systemctl status  containerd
 systemctl enable kubelet
 kubeadm init --pod-network-cidr=10.244.0.0/16 --token-ttl=0 --apiserver-advertise-address=$ip
 export KUBECONFIG=/etc/kubernetes/admin.conf

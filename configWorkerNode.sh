@@ -25,6 +25,5 @@ systemctl restart kubelet
 containerd config default>/etc/containerd/config.toml
 systemctl restart containerd
 systemctl enable containerd
-systemctl status  containerd
 systemctl enable kubelet
 eval $kjoincmd
