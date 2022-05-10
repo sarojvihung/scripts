@@ -16,8 +16,11 @@ sudo systemctl restart docker
 sudo systemctl restart kubelet
 kubeadm reset --force
 systemctl restart kubelet
-rm /etc/containerd/config.toml
+containerd config default>/etc/containerd/config.toml
 systemctl restart containerd
+systemctl enable containerd
+systemctl status  containerd
+systemctl enable kubelet
 kubeadm init --pod-network-cidr=10.244.0.0/16 --token-ttl=0 --apiserver-advertise-address=$ip
 export KUBECONFIG=/etc/kubernetes/admin.conf
 kubectl get node
