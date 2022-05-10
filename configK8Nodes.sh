@@ -29,7 +29,7 @@ echo ""
 
 mcmd="bash /opt/scripts/configMasterNode.sh $intf $cri_socket"
 eval $mcmd
-kjoincmd=$(kubeadm token create --print-join-command --cri-socket $cri_socket)
+kjoincmd=$(kubeadm token create --print-join-command)
 
 echo ""
 echo "Finished Configuring Master Node. Sleep for 120 seconds..."

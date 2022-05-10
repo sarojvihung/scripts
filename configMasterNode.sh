@@ -29,7 +29,7 @@ cd /opt/k8s && curl https://docs.projectcalico.org/manifests/calico.yaml -O
 cd /opt/k8s && kubectl apply -f calico.yaml
 cd /opt/k8s && kubectl create -f metrics-server.yaml
 kubectl get pods -A
-kjoincmd=$(kubeadm token create --print-join-command --cri-socket $cri_socket)
+kjoincmd=$(kubeadm token create --print-join-command)
 
 echo "export KUBECONFIG=/etc/kubernetes/admin.conf" >> ~/.bashrc
 echo "alias k='kubectl'" >> ~/.bashrc
