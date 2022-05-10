@@ -1,15 +1,12 @@
 #!/usr/bin/env bash
 
-if [[ $# -ne 1 ]] ; then
-    echo 'Expected 1 CLI argument - Interface name'
+if [[ $# -ne 2 ]] ; then
+    echo 'Expected 2 CLI arguments - Interface name and cri_socket'
     exit 1
 fi
 
-#cri_socket="/var/run/crio/crio.sock"
-#cri_socket="/run/containerd/containerd.sock"
-cri_socket="/run/cri-dockerd.sock"
-
 intf="$1"
+cri_socket="$2"
 ip=$(ip addr show $intf | grep -o "inet [0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | grep -o "[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*")
 sh /opt/scripts/dockerInstall.sh
 systemctl enable docker.service
@@ -18,7 +15,7 @@ echo '{"exec-opts": ["native.cgroupdriver=systemd"]}' | jq . > /etc/docker/daemo
 sudo systemctl daemon-reload
 sudo systemctl restart docker
 sudo systemctl restart kubelet
-kubeadm reset --force
+kubeadm reset --force --cri-socket $cri_socket
 systemctl restart kubelet
 containerd config default>/etc/containerd/config.toml
 systemctl restart containerd
@@ -32,7 +29,7 @@ cd /opt/k8s && curl https://docs.projectcalico.org/manifests/calico.yaml -O
 cd /opt/k8s && kubectl apply -f calico.yaml
 cd /opt/k8s && kubectl create -f metrics-server.yaml
 kubectl get pods -A
-kjoincmd=$(kubeadm token create --print-join-command)
+kjoincmd=$(kubeadm token create --print-join-command --cri-socket $cri_socket)
 
 echo "export KUBECONFIG=/etc/kubernetes/admin.conf" >> ~/.bashrc
 echo "alias k='kubectl'" >> ~/.bashrc

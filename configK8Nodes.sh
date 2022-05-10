@@ -19,13 +19,17 @@ numTotalNodes="$3"
 #https://computingforgeeks.com/install-mirantis-cri-dockerd-as-docker-engine-shim-for-kubernetes/
 #https://www.tutorialworks.com/difference-docker-containerd-runc-crio-oci/
 
+#cri_socket="unix:///var/run/crio/crio.sock"
+#cri_socket="unix:///run/containerd/containerd.sock"
+cri_socket="unix:///run/cri-dockerd.sock"
+
 echo ""
 echo "Configuring Master Node"
 echo ""
 
-mcmd="bash /opt/scripts/configMasterNode.sh $intf"
+mcmd="bash /opt/scripts/configMasterNode.sh $intf $cri_socket"
 eval $mcmd
-kjoincmd=$(kubeadm token create --print-join-command)
+kjoincmd=$(kubeadm token create --print-join-command --cri-socket $cri_socket)
 
 echo ""
 echo "Finished Configuring Master Node. Sleep for 120 seconds..."
