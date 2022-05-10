@@ -15,6 +15,10 @@ intf="$1"
 numWorkerNodes="$2"
 numTotalNodes="$3"
 
+#https://computingforgeeks.com/deploy-kubernetes-cluster-on-ubuntu-with-kubeadm/
+#https://computingforgeeks.com/install-mirantis-cri-dockerd-as-docker-engine-shim-for-kubernetes/
+#https://www.tutorialworks.com/difference-docker-containerd-runc-crio-oci/
+
 echo ""
 echo "Configuring Master Node"
 echo ""

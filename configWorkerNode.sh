@@ -26,4 +26,5 @@ containerd config default>/etc/containerd/config.toml
 systemctl restart containerd
 systemctl enable containerd
 systemctl enable kubelet
+sh /opt/scripts/installCriDockerd.sh
 eval $kjoincmd

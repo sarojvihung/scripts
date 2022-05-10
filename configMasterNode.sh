@@ -5,6 +5,10 @@ if [[ $# -ne 1 ]] ; then
     exit 1
 fi
 
+#cri_socket="/var/run/crio/crio.sock"
+#cri_socket="/run/containerd/containerd.sock"
+cri_socket="/run/cri-dockerd.sock"
+
 intf="$1"
 ip=$(ip addr show $intf | grep -o "inet [0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | grep -o "[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*")
 sh /opt/scripts/dockerInstall.sh
@@ -20,9 +24,11 @@ containerd config default>/etc/containerd/config.toml
 systemctl restart containerd
 systemctl enable containerd
 systemctl enable kubelet
-kubeadm init --pod-network-cidr=10.244.0.0/16 --token-ttl=0 --apiserver-advertise-address=$ip
+sh /opt/scripts/installCriDockerd.sh
+kubeadm init --pod-network-cidr=10.244.0.0/16 --token-ttl=0 --apiserver-advertise-address=$ip --cri-socket $cri_socket
 export KUBECONFIG=/etc/kubernetes/admin.conf
 kubectl get node
+cd /opt/k8s && curl https://docs.projectcalico.org/manifests/calico.yaml -O
 cd /opt/k8s && kubectl apply -f calico.yaml
 cd /opt/k8s && kubectl create -f metrics-server.yaml
 kubectl get pods -A
