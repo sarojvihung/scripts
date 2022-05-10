@@ -50,8 +50,7 @@ UEs:
 
 ssh root@node5
 cd /opt/UERANSIM/config/open5gs/
-echo "export PCS_SETUP_TUN_INTF=false" >> ~/.bashrc
-source ~/.bashrc
+#Modify ue and gnb.yaml
 
 
 ke open5gs-mongodb-0   -- bash -c 'rm -rf /opt/Experiments/*'
