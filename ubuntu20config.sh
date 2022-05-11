@@ -13,7 +13,8 @@ pip3 install h2
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
 echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
 apt -y update
-apt-get install -y kubelet kubeadm kubectl
+#apt-get install -y kubelet kubeadm kubectl
+apt -y install kubeadm=1.21.0-00 kubectl=1.21.0-00 kubelet=1.21.0-00
 
 #systemctl enable docker.service
 #swapoff -a
@@ -49,7 +50,7 @@ wget https://raw.githubusercontent.com/UmakantKulkarni/myCodes/master/k8/metrics
 
 cd /opt/
 git clone https://github.com/UmakantKulkarni/opensource-5g-core
-git clone https://github.com/UmakantKulkarni/scripts
+#git clone https://github.com/UmakantKulkarni/scripts
 git clone --recursive https://github.com/UmakantKulkarni/open5gs
 #git clone https://github.com/UmakantKulkarni/free5gmano
 #git clone https://github.com/UmakantKulkarni/free5gc
