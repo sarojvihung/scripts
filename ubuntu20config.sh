@@ -18,7 +18,7 @@ apt-get install -y kubelet kubeadm kubectl
 #systemctl enable docker.service
 #swapoff -a
 
-cmake_ver=3.23.1
+cmake_ver=3.23.4
 
 wget https://github.com/Kitware/CMake/releases/download/v$cmake_ver/cmake-$cmake_ver.tar.gz && tar -xvzf cmake-$cmake_ver.tar.gz
 
