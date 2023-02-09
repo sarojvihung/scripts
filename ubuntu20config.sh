@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
 
+DEBIAN_FRONTEND=noninteractive
+
 my_dir=/opt
 
 cd $my_dir
 
 apt-get -y update && apt-get -y upgrade && apt-get -y update && apt-get -y dist-upgrade
 
-apt -y install docker.io curl apache2-utils default-jre default-jdk wget git vim nano make g++ libsctp-dev lksctp-tools net-tools iproute2 libssl-dev tcpdump curl jq iputils-ping nghttp2-client bash-completion xauth gcc autoconf libtool pkg-config libmnl-dev libyaml-dev sshpass python3-pip x11-apps feh tshark
+DEBIAN_FRONTEND=noninteractive apt -y install docker.io curl apache2-utils default-jre default-jdk wget git vim nano make g++ libsctp-dev lksctp-tools net-tools iproute2 libssl-dev tcpdump curl jq iputils-ping nghttp2-client bash-completion xauth gcc autoconf libtool pkg-config libmnl-dev libyaml-dev sshpass python3-pip x11-apps feh tshark
 
 pip3 install -U h2
 
