@@ -1,26 +1,19 @@
 #!/usr/bin/env bash
 
-if [[ $# -ne 2 ]] ; then
-	echo "Expected 2 CLI arguments - Number of worker nodes to label and nodePrefix"
-    exit 1
-fi
+nodePrefix="$1"
+declare -a nodeLabels=("master" "amf" "smf" "upf" "udsf" "ausf" "nrf" "pcf" "udm")
+declare -a workerNodes=("02" "08" "09" "11" "12" "14" "16" "17" "18")
 
-#declare -a arr=("master" "amf" "smf" "upf" "udsf" "udm" "pcf" "bsf" "nrf" "ausf" "udr")
-declare -a arr=("master" "amf" "smf" "upf" "udsf")
-
-numWorkerNodes="$1"
-nodePrefix="$2"
-startNodeNum=0
-endNodeNum=$((0 + numWorkerNodes))
-for i in $(seq $startNodeNum $endNodeNum);
+arrayIndex=0
+for nodeNum in "${workerNodes[@]}"
 do	
-	node=node$i
+	node=node$nodeNum
 	echo ""
 	echo "Labelling Node - $node"
 	echo ""
-    kubectl label --overwrite nodes node$i.$nodePrefix kubernetes.io/pcs-nf-type=${arr[i]}
+    kubectl label --overwrite nodes $node.$nodePrefix kubernetes.io/pcs-nf-type=${nodeLabels[arrayIndex]}
 	echo ""
 	echo "Finished Labelling Node - $node"
-        echo ""
-        nodeNum=$((nodeNum + 1))
+    echo ""
+    arrayIndex=$((arrayIndex + 1))
 done

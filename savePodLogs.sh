@@ -59,7 +59,7 @@ do
         timediff=$(echo "$d2 - $d1" | bc)
         echo "$nfName,$maxQueue,$timediff" >> /opt/Experiments/$experimentDir/$pcsDir/nf_max_queue.txt
         echo " " >> /opt/Experiments/$experimentDir/$pcsDir/nf_max_queue.txt
-        save_trans_times "$nfName" "/opt/Experiments/$experimentDir/$pcsDir/${pod}_logs.txt" "/opt/Experiments/$experimentDir/$pcsDir/nf_max_queue.txt"
+        #save_trans_times "$nfName" "/opt/Experiments/$experimentDir/$pcsDir/${pod}_logs.txt" "/opt/Experiments/$experimentDir/$pcsDir/nf_max_queue.txt"
     elif [[ "$nfName" == "smf" ]] ; then
         startTime=$(cat /opt/Experiments/$experimentDir/$pcsDir/${pod}_logs.txt | grep "\[Added\] Number of SMF-UEs is now" | head -1 | awk '{print $2}' | sed -r "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2})?)?[mGK]//g" | rev | cut -c 2- | rev)
         stopTime=$(cat /opt/Experiments/$experimentDir/$pcsDir/${pod}_logs.txt | grep PCS | grep -v "ogs_queue_size" | tail -1 | awk '{print $2}' | sed -r "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2})?)?[mGK]//g" | rev | cut -c 2- | rev)
@@ -68,7 +68,7 @@ do
         timediff=$(echo "$d2 - $d1" | bc)
         echo "$nfName,$maxQueue,$timediff" >> /opt/Experiments/$experimentDir/$pcsDir/nf_max_queue.txt
         echo " " >> /opt/Experiments/$experimentDir/$pcsDir/nf_max_queue.txt
-        save_trans_times "$nfName" "/opt/Experiments/$experimentDir/$pcsDir/${pod}_logs.txt" "/opt/Experiments/$experimentDir/$pcsDir/nf_max_queue.txt"
+        #save_trans_times "$nfName" "/opt/Experiments/$experimentDir/$pcsDir/${pod}_logs.txt" "/opt/Experiments/$experimentDir/$pcsDir/nf_max_queue.txt"
     elif [[ "$nfName" == "upf" ]] ; then
         startTime=$(cat /opt/Experiments/$experimentDir/$pcsDir/${pod}_logs.txt | grep "\[Added\] Number of UPF-Sessions is now" | head -1 | awk '{print $2}' | sed -r "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2})?)?[mGK]//g" | rev | cut -c 2- | rev)
         stopTime=$(cat /opt/Experiments/$experimentDir/$pcsDir/${pod}_logs.txt | grep PCS | grep -v "ogs_queue_size" | tail -1 | awk '{print $2}' | sed -r "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2})?)?[mGK]//g" | rev | cut -c 2- | rev)
@@ -77,7 +77,7 @@ do
         timediff=$(echo "$d2 - $d1" | bc)
         echo "$nfName,$maxQueue,$timediff" >> /opt/Experiments/$experimentDir/$pcsDir/nf_max_queue.txt
         echo " " >> /opt/Experiments/$experimentDir/$pcsDir/nf_max_queue.txt
-        save_trans_times "$nfName" "/opt/Experiments/$experimentDir/$pcsDir/${pod}_logs.txt" "/opt/Experiments/$experimentDir/$pcsDir/nf_max_queue.txt"
+        #save_trans_times "$nfName" "/opt/Experiments/$experimentDir/$pcsDir/${pod}_logs.txt" "/opt/Experiments/$experimentDir/$pcsDir/nf_max_queue.txt"
     else
         echo "$nfName,$maxQueue" >> /opt/Experiments/$experimentDir/$pcsDir/nf_max_queue.txt
         echo " " >> /opt/Experiments/$experimentDir/$pcsDir/nf_max_queue.txt

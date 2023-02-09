@@ -8,7 +8,7 @@ apt-get -y update && apt-get -y upgrade && apt-get -y update && apt-get -y dist-
 
 apt -y install docker.io curl apache2-utils default-jre default-jdk wget git vim nano make g++ libsctp-dev lksctp-tools net-tools iproute2 libssl-dev tcpdump curl jq iputils-ping nghttp2-client bash-completion xauth gcc autoconf libtool pkg-config libmnl-dev libyaml-dev sshpass python3-pip x11-apps feh tshark
 
-pip3 install -U h2
+pip3 install h2
 
 sudo apt-get update
 sudo apt-get install -y ca-certificates curl
@@ -51,7 +51,7 @@ wget https://raw.githubusercontent.com/UmakantKulkarni/myCodes/master/k8/metrics
 cd $my_dir
 git clone https://github.com/UmakantKulkarni/Secure5G
 git clone -b secure5g https://github.com/UmakantKulkarni/opensource-5g-core
-#git clone -b secure5g https://github.com/UmakantKulkarni/scripts
+git clone -b secure5g https://github.com/UmakantKulkarni/scripts
 git clone -b secure5g --recursive https://github.com/UmakantKulkarni/open5gs
 #git clone https://github.com/UmakantKulkarni/free5gmano
 #git clone https://github.com/UmakantKulkarni/free5gc
