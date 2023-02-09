@@ -29,6 +29,8 @@ kubeadm init --pod-network-cidr=10.244.0.0/16 --token-ttl=0 --apiserver-advertis
 export KUBECONFIG=/etc/kubernetes/admin.conf
 sleep 60
 kubectl get node
+cd /opt/k8s && kubectl create -f tigera-operator.yaml
+cd /opt/k8s && kubectl create -f custom-resources.yaml
 cd /opt/k8s && kubectl apply -f calico.yaml
 cd /opt/k8s && kubectl create -f metrics-server.yaml
 kubectl get pods -A

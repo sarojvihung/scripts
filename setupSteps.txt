@@ -6,6 +6,8 @@ apt-get update && apt-get -y upgrade && apt-get update
 ./runNodeCmd.sh "apt-get update && apt-get -y upgrade && apt-get update"  1 2 3 4 5 6 7 8
 ./runNodeCmd.sh "rm -rf /mnt/*" 0 1 2 3 4 5 6 7 8
 
+curl -L https://git.io/get_helm.sh | bash -s -- --version v3.10.3
+
 ifconfig
 ./configK8Nodes.sh eno1d1 4 9
 
