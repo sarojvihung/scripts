@@ -47,9 +47,14 @@ cd $my_dir
 mkdir k8s
 cd k8s
 curl -sL https://run.linkerd.io/install | sh
-curl https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/tigera-operator.yaml -O
-curl https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/custom-resources.yaml -O
-curl https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/calico.yaml -O
+
+calicoVer="v3.25.0"
+cd $my_dir
+cd k8s
+#https://docs.tigera.io/calico/3.25/getting-started/kubernetes/self-managed-onprem/onpremises
+curl https://raw.githubusercontent.com/projectcalico/calico/$calicoVer/manifests/tigera-operator.yaml -O
+curl https://raw.githubusercontent.com/projectcalico/calico/$calicoVer/manifests/custom-resources.yaml -O
+curl https://raw.githubusercontent.com/projectcalico/calico/$calicoVer/manifests/calico.yaml -O
 wget https://raw.githubusercontent.com/UmakantKulkarni/myCodes/master/k8/metrics-server.yaml
 
 cd $my_dir
