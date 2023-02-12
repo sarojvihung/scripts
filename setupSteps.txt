@@ -43,12 +43,12 @@ db.amf.drop(); db.smf.drop(); db.upf.drop()
 
 
 gNBs:
-5 - 10.10.1.6
-7 - 10.10.1.8
+12 - 10.10.1.13
+14 - 10.10.1.15
 
 UEs: 
-6 - (imsi = 1) - 10.10.1.7
-8 - (imsi = 601) - 10.10.1.9
+13 - (imsi = 1) - 10.10.1.14
+15 - (imsi = 601) - 10.10.1.16
 
 ssh root@node5
 cd /opt/UERANSIM/config/open5gs/
@@ -59,9 +59,9 @@ ke open5gs-mongodb-0   -- bash -c 'rm -rf /opt/Experiments/*'
 
 kubectl get pods --no-headers=true | awk '/upf|amf|bsf|pcf|udm|ausf|nrf|nssf|udr|smf/{print $1}'| xargs  kubectl delete pod
 
-./runNodeCmd.sh "rm -rf /opt/Experiment* /opt/Node_Ops /opt/Ue_Ops /opt/Udsf_Ops /opt/Results" 0 1 2 3 4 5 6 7 8
+./runNodeCmd.sh "rm -rf /opt/Experiment* /opt/Node_Ops /opt/Ue_Ops /opt/Udsf_Ops /opt/Results" 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17
 
-./runNodeCmd.sh "find /var/log -type f -delete" 0 1 2 3 4 5 6 7 8
+./runNodeCmd.sh "find /var/log -type f -delete" 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17
 
 
 #exec to mongo pod
@@ -76,7 +76,7 @@ ps -ef
 ps -ef | grep Ue
 
 
-./runExperiments.sh Fully-Transactional-Stateless
+./runExperiments.sh nonsecure
 
 
 

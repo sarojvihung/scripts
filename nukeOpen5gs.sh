@@ -9,8 +9,9 @@ else
     istio_enabled=0
 fi
 
-kubectl label namespace open5gs istio-injection-
+istioctl uninstall -y --purge
 kubectl delete namespace istio-system
+kubectl label namespace open5gs istio-injection=disabled --overwrite
 
 kubectl delete namespace open5gs
 sleep 30
@@ -19,8 +20,8 @@ sleep 30
 kubectl create namespace open5gs
 
 if [[ $istio_enabled -eq 1 ]] ; then
-    istioctl install --set profile=demo -y
-    kubectl label namespace open5gs istio-injection=enabled
+    istioctl install --set profile=default -y
+    kubectl label namespace open5gs istio-injection=enabled --overwrite
 fi
 
 Hostname=$(hostname)
@@ -44,6 +45,6 @@ metadata:
   name: "default"
 spec:
   mtls:
-    mode: STRICT
+    mode: PERMISSIVE
 EOF
 fi

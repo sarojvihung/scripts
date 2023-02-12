@@ -28,7 +28,7 @@ echo ""
 echo "Configuring Master Node"
 echo ""
 
-mcmd="cd /opt/Secure5G/ && git pull && bash /opt/Secure5G/scripts/configMasterNode.sh $intf $repeatFlag"
+mcmd="cd /opt/scripts/ && bash /opt/scripts/configMasterNode.sh $intf $repeatFlag"
 ssh -o StrictHostKeyChecking=no root@node$masterNode "$mcmd"
 kjoincmdorig="kubeadm token create --print-join-command"
 kjoincmd=$(ssh -o StrictHostKeyChecking=no root@node$masterNode "$kjoincmdorig")
@@ -44,7 +44,7 @@ echo "Configuring Worker Nodes with command - $kjoincmd"
 echo ""
 
 
-wcmd="cd /opt/Secure5G/ && git pull && bash /opt/Secure5G/scripts/configWorkerNode.sh $repeatFlag \"$kjoincmd\" && exit"
+wcmd="cd /opt/scripts/ && bash /opt/scripts/configWorkerNode.sh $repeatFlag \"$kjoincmd\" && exit"
 for nodeNum in "${workerNodes[@]}"
 do	
 	node=node$nodeNum
@@ -66,7 +66,7 @@ if [ $repeatFlag = "0" ] ; then
 	echo "Started Configuring RAN Nodes"
 	echo ""
 
-	rcmd="cd /opt/Secure5G/ && git pull && bash /opt/Secure5G/scripts/configRanNode.sh && exit"
+	rcmd="cd /opt/scripts/ && bash /opt/scripts/configRanNode.sh && exit"
 	for nodeNum in "${ranNodes[@]}"
 	do	
 		node=node$nodeNum

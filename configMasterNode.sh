@@ -17,6 +17,7 @@ echo '{"exec-opts": ["native.cgroupdriver=systemd"]}' | jq . > /etc/docker/daemo
 sudo systemctl daemon-reload
 sudo systemctl restart docker
 sudo systemctl restart kubelet
+rm -rf /etc/cni/net.d
 kubeadm reset --force --cri-socket unix:///var/run/crio/crio.sock
 kubeadm reset --force --cri-socket unix:///run/containerd/containerd.sock
 kubeadm reset --force --cri-socket unix:///run/cri-dockerd.sock
@@ -30,9 +31,13 @@ export KUBECONFIG=/etc/kubernetes/admin.conf
 sleep 60
 kubectl get node
 #https://docs.tigera.io/calico/3.25/getting-started/kubernetes/self-managed-onprem/onpremises
-cd /opt/k8s && kubectl create -f tigera-operator.yaml
-cd /opt/k8s && kubectl create -f custom-resources.yaml
-cd /opt/k8s && kubectl apply -f calico.yaml
+#https://docs.tigera.io/calico/3.25/networking/ipam/ip-autodetection#change-the-autodetection-method
+#Modify custom-resources.yaml:
+
+#cd /opt/k8s && kubectl create -f tigera-operator.yaml
+#cd /opt/k8s && kubectl create -f custom-resources.yaml
+#cd /opt/k8s && kubectl apply -f calico.yaml
+cd /opt/k8s && kubectl apply -f kube-flannel.yml
 cd /opt/k8s && kubectl create -f metrics-server.yaml
 kubectl get pods -A
 kjoincmd=$(kubeadm token create --print-join-command)
