@@ -35,7 +35,7 @@ sleep 10
 kubectl config set-context --current --namespace=open5gs
 
 if [[ $istio_enabled -eq 1 ]] ; then
-    # Enable mTLS strict mode
+    # Enable mTLS strict mode - STRICT, PERMISSIVE
     # https://istio.io/latest/docs/tasks/security/authentication/mtls-migration/#lock-down-to-mutual-tls-by-namespace
     # In case we want to enable it globally - https://istio.io/latest/docs/tasks/security/authentication/authn-policy/#globally-enabling-istio-mutual-tls-in-strict-mode
 kubectl apply -n open5gs -f - <<EOF
