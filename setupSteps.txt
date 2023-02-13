@@ -80,6 +80,8 @@ nohup bash runExperiments.sh nonsecure &
 
 nohup bash runExperiments.sh secure &
 
+nohup bash runExperiments.sh noistio &
+
 
 
 
@@ -104,18 +106,18 @@ cd /proj/sfcs-PG0/opt/mongo_op
 scp -r ukulkarn@mc21.cs.purdue.edu:/homes/ukulkarn/scratch/Experiments/* .
 
 
-4. Copy Experiments directory of node0 to /proj/sfcs-PG0/opt/ (To avoid disk space issues):
-scp -r /opt/Experiments /proj/sfcs-PG0/opt/
+4. Copy Experiments directory of node0 to /opt/ (To avoid disk space issues):
+scp -r /opt/Experiments /opt/
 
 
 5. Copy top o/p files from other nodes:
 cd /opt/scripts
-./scpTopOp.sh 4
+./scpTopOp.sh 11
 
 
 6. Copy UE o/p files from other nodes:
 cd /opt/scripts
-./scpUeOps.sh 6 8
+./scpUeOps.sh 13 15
 
 
 7. Collect all results in single directory:

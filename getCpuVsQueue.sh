@@ -1,23 +1,21 @@
 #!/usr/bin/env bash
 
 commonTZ="MDT"
-exp=/proj/sfcs-PG0/opt/Results
+exp=/opt/Results
 
-declare -a experimentDirAry=("Fully-Stateful" "Fully-Transactional-Stateless" "Amf-Smf-Share-Udsf" "Nonblocking-Api-Enabled")
+declare -a experimentDirAry=("nonsecure" "seure" "noistio")
 
 for f1 in "${experimentDirAry[@]}"
 do
     echo "Working on $exp/$f1"
     echo " "
     subexp=1000
-    if [[ $f1 == "Fully-Stateful" ]]; then
+    if [[ $f1 == "nonsecure" ]]; then
         jarray=(1 2 3 4 5 6 7 8 9 10)
-    elif [[ $f1 == "Fully-Transactional-Stateless" ]]; then
+    elif [[ $f1 == "secure" ]]; then
         jarray=(1 3 4 6 8)
-    elif [[ $f1 == "Amf-Smf-Share-Udsf" ]]; then
+    elif [[ $f1 == "noistio" ]]; then
         jarray=(1 2 4 5 7 8 9)
-    elif [[ $f1 == "Nonblocking-Api-Enabled" ]]; then
-        jarray=(1 2 3 4 7 8 9 10)
     fi
     jarray=(1 2 3 4 5 6 7 8 9 10)
     for j in ${jarray[@]}
