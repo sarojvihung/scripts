@@ -76,7 +76,10 @@ ps -ef
 ps -ef | grep Ue
 
 
-./runExperiments.sh nonsecure
+nohup bash runExperiments.sh nonsecure &
+
+nohup bash runExperiments.sh secure &
+
 
 
 

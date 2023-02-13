@@ -55,6 +55,7 @@ cd k8s
 curl https://raw.githubusercontent.com/projectcalico/calico/$calicoVer/manifests/tigera-operator.yaml -O
 curl https://raw.githubusercontent.com/projectcalico/calico/$calicoVer/manifests/custom-resources.yaml -O
 curl https://raw.githubusercontent.com/projectcalico/calico/$calicoVer/manifests/calico.yaml -O
+#https://github.com/flannel-io/flannel#deploying-flannel-manually
 curl https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml -O
 wget https://raw.githubusercontent.com/UmakantKulkarni/myCodes/master/k8/metrics-server.yaml
 
