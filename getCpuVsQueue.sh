@@ -2,22 +2,20 @@
 
 commonTZ="MDT"
 exp=/opt/Results
+cpuapp="open5gs-amfd"
 
-declare -a experimentDirAry=("nonsecure" "seure" "noistio")
+declare -a experimentDirAry=("secure" "noistio")
 
 for f1 in "${experimentDirAry[@]}"
 do
     echo "Working on $exp/$f1"
     echo " "
-    subexp=1000
-    if [[ $f1 == "nonsecure" ]]; then
-        jarray=(1 2 3 4 5 6 7 8 9 10)
-    elif [[ $f1 == "secure" ]]; then
-        jarray=(1 3 4 6 8)
+    subexp=800
+    if [[ $f1 == "secure" ]]; then
+        jarray=(1 4 5 9)
     elif [[ $f1 == "noistio" ]]; then
-        jarray=(1 2 4 5 7 8 9)
+        jarray=(2 5 7 8 )
     fi
-    jarray=(1 2 3 4 5 6 7 8 9 10)
     for j in ${jarray[@]}
     do
         amfTopFile=$exp/$f1-$j/$subexp/top_data_node1.txt
@@ -29,11 +27,11 @@ do
         echo "Working on $topCpuOpFile"
         sjCount=$(cat $amfTopFile | grep systemd-journal | wc -l)
         echo "UTC-Time, Time-Diff, CPU-Usage" >> $topCpuOpFile
-        timestamps=( $(cat $amfTopFile | grep 2022- | grep -o '\-\-.*' | cut -c 3-) )
+        timestamps=( $(cat $amfTopFile | grep 2023- | grep -o '\-\-.*' | cut -c 3-) )
         if (( $sjCount < 5 )); then
             timestamps=("${timestamps[@]:1}")
         fi
-        cpusage=( $(cat $amfTopFile | grep open5gs-amfd | awk '{print $9}') )
+        cpusage=( $(cat $amfTopFile | grep $cpuapp | awk '{print $9}') )
         basecpu="0.0"
         k=0
         for i in "${!cpusage[@]}";

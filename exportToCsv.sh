@@ -2,9 +2,9 @@
 
 exp=/opt/Results
 
-declare -a experimentDirAry=("nonsecure" "seure" "noistio")
+declare -a experimentDirAry=("nonsecure" "secure" "noistio")
 
- declare -a amf_params=("CSCAmfReadIOTime" "CSCAmfReadSDTime" "CSCAmfWriteIOTime" "CSCAmfWriteSDTime" "N1N2AmfReadIOTime" "N1N2AmfReadSDTime" "N1N2AmfWriteIOTime" "N1N2AmfWriteSDTime" "USCAmfReadIOTime" "USCAmfReadSDTime" "USCAmfWriteIOTime" "USCAmfWriteSDTime")
+declare -a amf_params=("CSCAmfReadIOTime" "CSCAmfReadSDTime" "CSCAmfWriteIOTime" "CSCAmfWriteSDTime" "N1N2AmfReadIOTime" "N1N2AmfReadSDTime" "N1N2AmfWriteIOTime" "N1N2AmfWriteSDTime" "USCAmfReadIOTime" "USCAmfReadSDTime" "USCAmfWriteIOTime" "USCAmfWriteSDTime")
     
 declare -a smf_params=("CSCAmfReadIOTime" "CSCAmfReadSDTime" "CSCAmfWriteIOTime" "CSCAmfWriteSDTime" "N1N2AmfReadIOTime" "N1N2AmfReadSDTime" "N1N2AmfWriteIOTime" "N1N2AmfWriteSDTime" "USCAmfReadIOTime" "USCAmfReadSDTime" "USCAmfWriteIOTime" "USCAmfWriteSDTime")
     
@@ -54,6 +54,6 @@ do
                 echo "$f1-$j-$subexp,$ueSessCount,$amfQueueLength,$smfQueueLength,$upfQueueLength,$amfTimeTaken,$smfTimeTaken,$upfTimeTaken" >> $exp/$f1-data.csv
             fi
         done
-        echo "Mean-$subexp, 0,0,0,0,0,0,0,0,0,0,0,0,0" >> $exp/$f1-data.csv
+        echo "Mean-$subexp, 0,0,0,0,0,0,0" >> $exp/$f1-data.csv
     done
 done
