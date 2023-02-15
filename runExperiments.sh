@@ -48,7 +48,7 @@ do
         #mongoPodIp=$(kubectl get pod $mongoPod --template={{.status.podIP}})
         #curl --verbose --request POST --header "Content-Type:application/json" --data '{"expDir":"'$experimentDir'","subExpDir":"'$pcsDir'","runTime":30}' http://$mongoPodIp:15692
         
-        bash /opt/scripts/startTop.sh $numWorkerNodes $experimentDir $pcsDir
+        bash /opt/scripts/startTop.sh 15 $experimentDir $pcsDir
 
 
         #start-ue
@@ -67,7 +67,7 @@ do
 
 
         #stop-monitoring
-        bash /opt/scripts/stopTop.sh $numWorkerNodes
+        bash /opt/scripts/stopTop.sh 15
 
         bash /opt/scripts/savePodLogs.sh $experimentDir $pcsDir
 
