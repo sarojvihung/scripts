@@ -113,6 +113,7 @@ scp -r /opt/Experiments /opt/
 5. Copy top o/p files from other nodes:
 cd /opt/scripts
 ./scpTopOp.sh 11
+./scpTopOp.sh 15
 
 
 6. Copy UE o/p files from other nodes:
@@ -133,6 +134,7 @@ cd /opt/scripts
 9. Get CPU and Queue-length analysis files:
 cd /opt/scripts
 ./getCpuVsQueue.sh
+./getEnvoyNfCpu.sh
 
 
 10. Copy CSV files to MAC 

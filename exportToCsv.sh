@@ -2,7 +2,7 @@
 
 exp=/opt/Results
 
-declare -a experimentDirAry=("nonsecure" "secure" "noistio")
+declare -a experimentDirAry=("udpvpn" "secure" "noistio")
 
 declare -a amf_params=("CSCAmfReadIOTime" "CSCAmfReadSDTime" "CSCAmfWriteIOTime" "CSCAmfWriteSDTime" "N1N2AmfReadIOTime" "N1N2AmfReadSDTime" "N1N2AmfWriteIOTime" "N1N2AmfWriteSDTime" "USCAmfReadIOTime" "USCAmfReadSDTime" "USCAmfWriteIOTime" "USCAmfWriteSDTime")
     
