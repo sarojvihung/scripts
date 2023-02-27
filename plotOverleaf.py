@@ -172,6 +172,7 @@ H is the hatch used for identification of the different dataframe"""
     axe.add_artist(l1)
     axe.set_ylim(0, 85)
     axe.set_ylabel('CPU (%)')
+    axe.set_xlabel('5G Core NFs')
     plt.tight_layout()
     plt.savefig('nf_cpu.{}'.format(file_format),
                 bbox_inches='tight', pad_inches=0)
@@ -470,6 +471,8 @@ def main():
                 sb.legend(h, order_list, title=None)
                 #sb.set_ylim(2, 27)
                 plt.ylabel('Time (s)')
+                if param == "QueueLength":
+                    plt.ylabel('Queue Length')
                 plt.xlabel("Simultaneous Requests")
                 sb.legend_.set_title(None)
                 noistio_vals = []
