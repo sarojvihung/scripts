@@ -84,8 +84,13 @@ nohup bash runExperiments.sh noistio &
 
 nohup bash runExperiments.sh udpvpn &
 
+nohup bash runExperiments.sh unsecure &
 
+nohup bash runExperiments.sh ranudpvpn &
 
+nohup bash runExperiments.sh allsecure &
+
+nohup bash runExperiments.sh secore &
 
 
 Result collection and analysis:

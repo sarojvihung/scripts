@@ -19,8 +19,8 @@ do
     for j in ${jarray[@]}
     do
         amfTopFile=$exp/$f1-$j/$subexp/top_data_node1.txt
-        topCpuOpFile=$exp/$f1-$j/$subexp/topCpuOp.csv
-        queueLenFile=$exp/$f1-$j/$subexp/queueLen.csv
+        topCpuOpFile=$exp/$f1-$j/$subexp/topCpuOp$j.csv
+        queueLenFile=$exp/$f1-$j/$subexp/queueLen$j.csv
         rm -f $topCpuOpFile
         rm -f $queueLenFile
         

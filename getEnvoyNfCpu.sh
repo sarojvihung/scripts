@@ -21,7 +21,7 @@ do
         for nf in ${networkFunctions[@]}
         do
             nfTopFile=$exp/$f1-$j/$subexp/top_data_node${workerNodes[arrayIndex]}.txt
-            topCpuOpFile=$exp/$f1-$j/$subexp/topCpuOpEnvoy$nf.csv
+            topCpuOpFile=$exp/$f1-$j/$subexp/topCpuOpEnvoy$nf$j.csv
             rm -f $topCpuOpFile
             
             echo "Working on $topCpuOpFile"
