@@ -32,7 +32,7 @@ cmake --version
 
 cd $my_dir
 
-git clone -b secure5g https://github.com/UmakantKulkarni/UERANSIM && cd UERANSIM && make
+git clone -b ztx_01 https://github.com/UmakantKulkarni/UERANSIM && cd UERANSIM && make
 
 cp build/nr-* /usr/local/bin/
 cd ..
@@ -41,7 +41,7 @@ curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share
 sudo apt-get install apt-transport-https --yes
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
 sudo apt-get update
-sudo apt-get install helm
+sudo apt-get install -y helm
 
 cd $my_dir
 mkdir k8s
@@ -60,10 +60,10 @@ curl https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel
 wget https://raw.githubusercontent.com/UmakantKulkarni/myCodes/master/k8/metrics-server.yaml
 
 cd $my_dir
-git clone https://github.com/UmakantKulkarni/Secure5G
-git clone -b secure5g https://github.com/UmakantKulkarni/opensource-5g-core
-#git clone -b secure5g https://github.com/UmakantKulkarni/scripts
-git clone -b secure5g --recursive https://github.com/UmakantKulkarni/open5gs
+git clone -b ztx_01 https://github.com/UmakantKulkarni/Secure5G
+git clone -b ztx_01 https://github.com/UmakantKulkarni/opensource-5g-core
+#git clone -b ztx_01 https://github.com/UmakantKulkarni/scripts
+git clone -b ztx_01 --recursive https://github.com/UmakantKulkarni/open5gs
 #git clone https://github.com/UmakantKulkarni/free5gmano
 #git clone https://github.com/UmakantKulkarni/free5gc
 #git clone https://github.com/UmakantKulkarni/amf
