@@ -50,7 +50,7 @@ sleep 30
 if [ $repeatFlag = "0" ] ; then
     cd /opt
     curl -L https://istio.io/downloadIstio | sh -
-    cd istio-1.16.2
+    cd istio-1.19.1
     echo "export PATH=$PWD/bin:$PATH" >> ~/.bashrc
     export PATH=$PWD/bin:$PATH
 
