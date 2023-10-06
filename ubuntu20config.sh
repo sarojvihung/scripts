@@ -24,7 +24,7 @@ sudo apt-get install -y kubectl kubelet kubeadm
 #swapoff -a
 
 cd $my_dir
-cmake_ver=3.25.2
+cmake_ver=3.27.6
 wget https://github.com/Kitware/CMake/releases/download/v$cmake_ver/cmake-$cmake_ver.tar.gz && tar -xvzf cmake-$cmake_ver.tar.gz
 cd cmake-$cmake_ver && ./bootstrap -- -DCMAKE_BUILD_TYPE:STRING=Release && make && make install
 cd .. && rm -rf cmake-*
@@ -48,7 +48,7 @@ mkdir k8s
 cd k8s
 curl -sL https://run.linkerd.io/install | sh
 
-calicoVer="v3.25.0"
+calicoVer="v3.26.2"
 cd $my_dir
 cd k8s
 #https://docs.tigera.io/calico/3.25/getting-started/kubernetes/self-managed-onprem/onpremises
