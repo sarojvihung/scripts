@@ -13,8 +13,10 @@ fi
 
 intf="$1"
 masterNode="0"
-declare -a workerNodes=("1" "2" "3" "4" "5" "6" "7" "8" "9" "10" "11")
-declare -a ranNodes=("12" "13" "14" "15")
+#declare -a workerNodes=("1" "2" "3" "4" "5" "6" "7" "8" "9" "10" "11")
+declare -a workerNodes=("0")
+#declare -a ranNodes=("12" "13" "14" "15")
+declare -a ranNodes=("0")
 
 #https://computingforgeeks.com/deploy-kubernetes-cluster-on-ubuntu-with-kubeadm/
 #https://computingforgeeks.com/install-mirantis-cri-dockerd-as-docker-engine-shim-for-kubernetes/
