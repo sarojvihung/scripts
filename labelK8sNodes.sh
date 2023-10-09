@@ -1,17 +1,15 @@
 #!/usr/bin/env bash
 
-nodePrefix="$1"
-declare -a nodeLabels=("master" "amf" "smf" "upf" "udsf" "ausf" "bsf" "nrf" "nssf" "pcf" "udm" "udr")
-declare -a workerNodes=("0" "1" "2" "3" "4" "5" "6" "7" "8" "9" "10" "11")
+declare -a nodeLabels=("master" "amf" "smf" "upf" "nf")
+declare -a nodes=("kind-control-plane" "kind-worker" "kind-worker2" "kind-worker3" "kind-worker4")
 
 arrayIndex=0
-for nodeNum in "${workerNodes[@]}"
+for node in "${nodes[@]}"
 do	
-	node=node$nodeNum
 	echo ""
 	echo "Labelling Node - $node"
 	echo ""
-    kubectl label --overwrite nodes $node.$nodePrefix kubernetes.io/pcs-nf-type=${nodeLabels[arrayIndex]}
+    kubectl label --overwrite nodes $node kubernetes.io/pcs-nf-type=${nodeLabels[arrayIndex]}
 	echo ""
 	echo "Finished Labelling Node - $node"
     echo ""
