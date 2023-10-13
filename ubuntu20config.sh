@@ -21,6 +21,11 @@ echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.
 sudo apt-get -y update
 sudo apt-get install -y kubectl kubelet kubeadm
 
+# Install kind For AMD64 / x86_64
+curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-amd64
+chmod +x ./kind
+sudo mv ./kind /usr/local/bin/kind
+
 #systemctl enable docker.service
 #swapoff -a
 
