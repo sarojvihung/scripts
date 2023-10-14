@@ -27,7 +27,7 @@ qemu-img info $WORKDIR/ubuntu-22.04-purdue-ztx.qcow2
 sudo mv $WORKDIR/ubuntu-22.04-purdue-ztx.qcow2 /var/lib/libvirt/images/purdue-ztx/ubuntu-22.04-purdue-ztx.qcow2
 
 wget https://raw.githubusercontent.com/UmakantKulkarni/kvm-setup/main/createvm
-chmod +x /usr/local/bin/createvm
+chmod +x createvm
 sudo mv createvm /usr/local/bin/
 
 createvm master 101
