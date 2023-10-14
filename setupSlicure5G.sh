@@ -36,15 +36,20 @@ createvm worker2 103
 createvm worker3 104
 createvm worker4 105
 
-echo "Waiting for 60 seconds..."
+echo "Waiting for 60 seconds for VMs to boot up..."
 sleep 60
 sudo virsh list --all
 
 master_node_ip=$(sudo virsh domifaddr master | sed -n 3p | awk '{print $4}' | cut -d "/" -f 1)
+echo "Master Node IP is $master_node_ip"
 worker_node1_ip=$(sudo virsh domifaddr worker1 | sed -n 3p | awk '{print $4}' | cut -d "/" -f 1)
+echo "Worker Node 1 IP is $worker_node1_ip"
 worker_node2_ip=$(sudo virsh domifaddr worker2 | sed -n 3p | awk '{print $4}' | cut -d "/" -f 1)
+echo "Worker Node 2 IP is $worker_node2_ip"
 worker_node3_ip=$(sudo virsh domifaddr worker3 | sed -n 3p | awk '{print $4}' | cut -d "/" -f 1)
+echo "Worker Node 3 IP is $worker_node3_ip"
 worker_node4_ip=$(sudo virsh domifaddr worker4 | sed -n 3p | awk '{print $4}' | cut -d "/" -f 1)
+echo "Worker Node 4 IP is $worker_node4_ip"
 declare -a all_k8_node_ips=($master_node_ip $worker_node1_ip $worker_node2_ip $worker_node3_ip $worker_node4_ip)
 declare -a worker_node_ips=($worker_node1_ip $worker_node2_ip $worker_node3_ip $worker_node4_ip)
 
@@ -53,6 +58,7 @@ do
     echo ""
     echo "Preparing K8s node $k8_node_ip"
     echo ""
+    sshpass -p "$VM_PASSWORD" ssh -o StrictHostKeyChecking=no $VM_USERNAME@$k8_node_ip "cd /opt/scripts && git pull"
     sshpass -p "$VM_PASSWORD" ssh -o StrictHostKeyChecking=no $VM_USERNAME@$k8_node_ip "bash /opt/scripts/updateK8Nodes.sh $VM_USERNAME $VM_PASSWORD"
     echo ""
     echo "Prepared node"
@@ -63,7 +69,7 @@ echo "Waiting for 30 seconds..."
 sleep 30
 
 k8s_create_cmd="kubeadm init --pod-network-cidr=10.244.0.0/16 --token-ttl=0 --apiserver-advertise-address=$master_node_ip"
-declare -a master_node_cmds=($k8s_create_cmd "export KUBECONFIG=/etc/kubernetes/admin.conf" "sleep 60" "kubectl get node -owide" "kubectl apply -f /opt/k8s/kube-flannel.yml" "kubectl apply -f /opt/k8s/metrics-server.yaml" "kubectl get pods -A")
+declare -a master_node_cmds=("$k8s_create_cmd" "export KUBECONFIG=/etc/kubernetes/admin.conf" "sleep 60" "kubectl get node -owide" "kubectl apply -f /opt/k8s/kube-flannel.yml" "kubectl apply -f /opt/k8s/metrics-server.yaml" "kubectl get pods -A")
 for master_node_cmd in "${master_node_cmds[@]}"
 do	
     echo ""
