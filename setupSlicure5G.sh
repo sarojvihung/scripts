@@ -24,7 +24,7 @@ sudo mkdir /var/lib/libvirt/images/purdue-ztx
 
 qemu-img info $WORKDIR/ubuntu-22.04-purdue-ztx.qcow2
 
-sudo mv $WORKDIR/ubuntu-22.04-purdue-ztx.qcow2 /var/lib/libvirt/images/purdue-ztx/ubuntu-22.04-purdue-ztx.qcow2
+sudo cp $WORKDIR/ubuntu-22.04-purdue-ztx.qcow2 /var/lib/libvirt/images/purdue-ztx/ubuntu-22.04-purdue-ztx.qcow2
 
 wget https://raw.githubusercontent.com/UmakantKulkarni/kvm-setup/main/createvm
 chmod +x createvm
@@ -36,6 +36,8 @@ createvm worker2 103
 createvm worker3 104
 createvm worker4 105
 
+echo "Waiting for 60 seconds..."
+sleep 60
 sudo virsh list --all
 
 master_node_ip=$(sudo virsh domifaddr master | sed -n 3p | awk '{print $4}' | cut -d "/" -f 1)
