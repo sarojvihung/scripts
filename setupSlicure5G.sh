@@ -2,12 +2,14 @@
 
 DEBIAN_FRONTEND=noninteractive
 WORKDIR=/tmp
-cd $WORKDIR
 
 VM_USERNAME=root
 VM_PASSWORD=purdue@ztx
 
-apt-get -y update && apt-get -y upgrade && apt-get -y update && apt-get -y dist-upgrade
+DEBIAN_FRONTEND=noninteractive apt-get -y update
+DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
+DEBIAN_FRONTEND=noninteractive apt-get -y update
+DEBIAN_FRONTEND=noninteractive apt-get -y dist-upgrade
 
 num_vcpu=$(egrep -c '(vmx|svm)' /proc/cpuinfo)
 if [ "$num_vcpu" -gt 0 ]; then
@@ -17,7 +19,8 @@ else
     exit 1
 fi
 
-source setupPhysicalServer.sh 
+#source setupPhysicalServer.sh 
+cd $WORKDIR
 
 # Create directory for base OS images.
 sudo mkdir /var/lib/libvirt/images/purdue-ztx

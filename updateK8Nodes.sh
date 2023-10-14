@@ -7,7 +7,10 @@ cd $WORKDIR
 VM_USERNAME=$1
 VM_PASSWORD=$2
 
-apt-get -y update && apt-get -y upgrade && apt-get -y update && apt-get -y dist-upgrade
+DEBIAN_FRONTEND=noninteractive apt-get -y update
+DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
+DEBIAN_FRONTEND=noninteractive apt-get -y update
+DEBIAN_FRONTEND=noninteractive apt-get -y dist-upgrade
 
 cd /opt/scripts && git pull
 cd /opt/Secure5G && git pull
