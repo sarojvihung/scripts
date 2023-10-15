@@ -4,6 +4,12 @@
 
 DEBIAN_FRONTEND=noninteractive
 
+HOSTNAME=purdue-ztx
+hostnamectl set-hostname $HOSTNAME
+sed -i -e "s/purdue-ztx/$HOSTNAME/g" /etc/hostname
+sed -i -e "s/purdue-ztx/$HOSTNAME/g" /etc/hosts
+source ~/.bashrc
+
 my_dir=/opt
 
 cd $my_dir
