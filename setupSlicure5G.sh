@@ -124,4 +124,4 @@ do
 done
 
 sshpass -p "$VM_PASSWORD" ssh -o StrictHostKeyChecking=no $VM_USERNAME@$master_node_ip "bash $SCRIPT_DIR/labelK8sNodes.sh"
-#sshpass -p "$VM_PASSWORD" ssh -o StrictHostKeyChecking=no $VM_USERNAME@$master_node_ip "bash $SCRIPT_DIR/nukeOpen5gs.sh 0"
+sshpass -p "$VM_PASSWORD" ssh -o StrictHostKeyChecking=no $VM_USERNAME@$master_node_ip "bash $SCRIPT_DIR/nukeOpen5gs.sh 0"
