@@ -12,6 +12,8 @@ DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
 DEBIAN_FRONTEND=noninteractive apt-get -y update
 DEBIAN_FRONTEND=noninteractive apt-get -y dist-upgrade
 
+echo "nameserver 192.168.122.1" > /etc/resolv.conf
+
 cd /opt/scripts && git pull
 cd /opt/Secure5G && git pull
 cd /opt/opensource-5g-core && git pull
@@ -29,5 +31,3 @@ systemctl restart containerd
 rm -rf /etc/cni/net.d
 kubeadm reset --force --cri-socket unix:///var/run/crio/crio.sock
 kubeadm reset --force --cri-socket unix:///run/containerd/containerd.sock
-
-echo "nameserver 192.168.122.1" > /etc/resolv.conf
