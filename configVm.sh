@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+#virt-install --connect qemu:///system --virt-type kvm --name purdue-ztx --memory 16384 --vcpus=16 --os-variant ubuntu22.04 --disk path=/var/lib/libvirt/images/purdue-ztx/ubuntu-22.04-purdue-ztx.qcow2,format=qcow2 --import --network network=default --noautoconsole --graphics none
+
 DEBIAN_FRONTEND=noninteractive
 
 my_dir=/opt

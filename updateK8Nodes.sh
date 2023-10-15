@@ -15,8 +15,8 @@ DEBIAN_FRONTEND=noninteractive apt-get -y dist-upgrade
 
 echo "nameserver 192.168.122.1" > /etc/resolv.conf
 hostnamectl set-hostname $HOSTNAME
-sed -i -e "s/base/$HOSTNAME/g" /etc/hostname
-sed -i -e "s/base/$HOSTNAME/g" /etc/hosts
+sed -i -e "s/purdue-ztx/$HOSTNAME/g" /etc/hostname
+sed -i -e "s/purdue-ztx/$HOSTNAME/g" /etc/hosts
 source ~/.bashrc
 
 cd /opt/scripts && git pull
