@@ -41,7 +41,9 @@ createvm worker3 104
 createvm worker4 105
 
 echo "Waiting for 60 seconds for VMs to boot up..."
-sleep 60
+sleep 30
+systemctl restart libvirtd
+sleep 30
 virsh list --all
 
 master_node_ip=$(virsh domifaddr master | sed -n 3p | awk '{print $4}' | cut -d "/" -f 1)
