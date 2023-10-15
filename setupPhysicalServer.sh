@@ -51,6 +51,13 @@ apt-get install -y helm
 systemctl restart kubelet
 systemctl enable kubelet
 
+#https://istio.io/latest/docs/setup/getting-started/#download
+cd /opt
+curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.19.3 TARGET_ARCH=x86_64 sh -
+cd istio-1.19.3
+echo "export PATH=$PWD/bin:$PATH" >> ~/.bashrc
+export PATH=$PWD/bin:$PATH
+
 echo "export KUBECONFIG=/etc/kubernetes/admin.conf" >> ~/.bashrc
 echo "alias k='kubectl'" >> ~/.bashrc
 echo "alias kp='kubectl get pods --all-namespaces'" >> ~/.bashrc

@@ -54,7 +54,7 @@ echo "Worker Node 2 IP is $worker_node2_ip"
 worker_node3_ip=$(timeout 5 setsid virsh domifaddr worker3 | sed -n 3p | awk '{print $4}' | cut -d "/" -f 1)
 echo "Worker Node 3 IP is $worker_node3_ip"
 worker_node4_ip=$(timeout 5 setsid virsh domifaddr worker4 | sed -n 3p | awk '{print $4}' | cut -d "/" -f 1)
-echo "Worker Node 4 IP is $worker_node4_ip"
+echo "Worker Node IP is $worker_node4_ip"
 ran_node_ip=$(timeout 5 setsid virsh domifaddr ran | sed -n 3p | awk '{print $4}' | cut -d "/" -f 1)
 echo "RAN Node 4 IP is $ran_node_ip"
 declare -a all_k8_node_ips=($master_node_ip $worker_node1_ip $worker_node2_ip $worker_node3_ip $worker_node4_ip $ran_node_ip)
@@ -123,5 +123,10 @@ do
     echo ""
 done
 
-sshpass -p "$VM_PASSWORD" ssh -o StrictHostKeyChecking=no $VM_USERNAME@$master_node_ip "bash $SCRIPT_DIR/labelK8sNodes.sh"
-sshpass -p "$VM_PASSWORD" ssh -o StrictHostKeyChecking=no $VM_USERNAME@$master_node_ip "bash $SCRIPT_DIR/nukeOpen5gs.sh 0"
+sshpass -p "$VM_PASSWORD" scp -o StrictHostKeyChecking=no -r $VM_USERNAME@$master_node_ip:/etc/kubernetes/admin.conf /etc/kubernetes/admin.conf
+
+bash $SCRIPT_DIR/labelK8sNodes.sh
+
+bash $SCRIPT_DIR/nukeOpen5gs.sh 0
+
+kubectl patch svc amf-open5gs-sctp -n open5gs -p "{\"spec\": {\"type\": \"LoadBalancer\", \"externalIPs\":[\"$worker_node1_ip\"]}}"
