@@ -123,7 +123,11 @@ do
     echo ""
 done
 
+echo "Waiting 60 seconds for nodes to be ready..."
+sleep 60
+
 sshpass -p "$VM_PASSWORD" scp -o StrictHostKeyChecking=no -r $VM_USERNAME@$master_node_ip:/etc/kubernetes/admin.conf /etc/kubernetes/admin.conf
+source ~/.bashrc
 
 bash $SCRIPT_DIR/labelK8sNodes.sh
 

@@ -51,6 +51,14 @@ apt-get install -y helm
 systemctl restart kubelet
 systemctl enable kubelet
 
+cd /opt
+git clone -b ztx_01 https://github.com/UmakantKulkarni/opensource-5g-core
+cd /opt/opensource-5g-core && git pull
+
+cd /opt
+git clone -b ztx_01 https://github.com/UmakantKulkarni/scripts
+cd /opt/scripts && git pull
+
 #https://istio.io/latest/docs/setup/getting-started/#download
 cd /opt
 curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.19.3 TARGET_ARCH=x86_64 sh -
