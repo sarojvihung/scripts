@@ -13,6 +13,9 @@ DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
 DEBIAN_FRONTEND=noninteractive apt-get -y update
 DEBIAN_FRONTEND=noninteractive apt-get -y dist-upgrade
 
+growpart /dev/vda 1
+resize2fs /dev/vda1
+
 echo "nameserver 192.168.122.1" > /etc/resolv.conf
 hostnamectl set-hostname $HOSTNAME
 sed -i -e "s/purdue-ztx/$HOSTNAME/g" /etc/hostname
