@@ -2,6 +2,7 @@
 
 DEBIAN_FRONTEND=noninteractive
 WORKDIR=/tmp
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 VM_USERNAME=root
 VM_PASSWORD=purdue@ztx
@@ -19,7 +20,7 @@ else
     exit 1
 fi
 
-source setupPhysicalServer.sh 
+bash $SCRIPT_DIR/setupPhysicalServer.sh 
 cd $WORKDIR
 
 # Create directory for base OS images.
