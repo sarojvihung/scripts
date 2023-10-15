@@ -17,7 +17,11 @@ cd /opt/Secure5G && git pull
 cd /opt/opensource-5g-core && git pull
 cd /opt/open5gs && git pull
 
-curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh
+#curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh
+rm -rf /var/lib/containerd/
+rm -rf /var/lib/docker/
+apt-get purge -y docker-ce docker-ce-cli docker.io containerd.io
+apt-get install docker.io containerd.io
 systemctl enable docker.service
 swapoff -a
 echo '{"exec-opts": ["native.cgroupdriver=systemd"]}' | jq . > /etc/docker/daemon.json
