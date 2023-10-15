@@ -41,20 +41,18 @@ createvm worker3 104
 createvm worker4 105
 
 echo "Waiting for 60 seconds for VMs to boot up..."
-sleep 30
-systemctl restart libvirtd
-sleep 30
-virsh list --all
+sleep 60
+timeout 5 setsid virsh list --all
 
-master_node_ip=$(virsh domifaddr master | sed -n 3p | awk '{print $4}' | cut -d "/" -f 1)
+master_node_ip=$(timeout 5 setsid virsh domifaddr master | sed -n 3p | awk '{print $4}' | cut -d "/" -f 1)
 echo "Master Node IP is $master_node_ip"
-worker_node1_ip=$(virsh domifaddr worker1 | sed -n 3p | awk '{print $4}' | cut -d "/" -f 1)
+worker_node1_ip=$(timeout 5 setsid virsh domifaddr worker1 | sed -n 3p | awk '{print $4}' | cut -d "/" -f 1)
 echo "Worker Node 1 IP is $worker_node1_ip"
-worker_node2_ip=$(virsh domifaddr worker2 | sed -n 3p | awk '{print $4}' | cut -d "/" -f 1)
+worker_node2_ip=$(timeout 5 setsid virsh domifaddr worker2 | sed -n 3p | awk '{print $4}' | cut -d "/" -f 1)
 echo "Worker Node 2 IP is $worker_node2_ip"
-worker_node3_ip=$(virsh domifaddr worker3 | sed -n 3p | awk '{print $4}' | cut -d "/" -f 1)
+worker_node3_ip=$(timeout 5 setsid virsh domifaddr worker3 | sed -n 3p | awk '{print $4}' | cut -d "/" -f 1)
 echo "Worker Node 3 IP is $worker_node3_ip"
-worker_node4_ip=$(virsh domifaddr worker4 | sed -n 3p | awk '{print $4}' | cut -d "/" -f 1)
+worker_node4_ip=$(timeout 5 setsid virsh domifaddr worker4 | sed -n 3p | awk '{print $4}' | cut -d "/" -f 1)
 echo "Worker Node 4 IP is $worker_node4_ip"
 declare -a all_k8_node_ips=($master_node_ip $worker_node1_ip $worker_node2_ip $worker_node3_ip $worker_node4_ip)
 declare -a worker_node_ips=($worker_node1_ip $worker_node2_ip $worker_node3_ip $worker_node4_ip)
