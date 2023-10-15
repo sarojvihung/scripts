@@ -39,6 +39,7 @@ createvm worker1 102
 createvm worker2 103
 createvm worker3 104
 createvm worker4 105
+createvm ran 106
 
 echo "Waiting for 60 seconds for VMs to boot up..."
 sleep 60
@@ -54,9 +55,11 @@ worker_node3_ip=$(timeout 5 setsid virsh domifaddr worker3 | sed -n 3p | awk '{p
 echo "Worker Node 3 IP is $worker_node3_ip"
 worker_node4_ip=$(timeout 5 setsid virsh domifaddr worker4 | sed -n 3p | awk '{print $4}' | cut -d "/" -f 1)
 echo "Worker Node 4 IP is $worker_node4_ip"
-declare -a all_k8_node_ips=($master_node_ip $worker_node1_ip $worker_node2_ip $worker_node3_ip $worker_node4_ip)
+ran_node_ip=$(timeout 5 setsid virsh domifaddr ran | sed -n 3p | awk '{print $4}' | cut -d "/" -f 1)
+echo "RAN Node 4 IP is $ran_node_ip"
+declare -a all_k8_node_ips=($master_node_ip $worker_node1_ip $worker_node2_ip $worker_node3_ip $worker_node4_ip $ran_node_ip)
 declare -a worker_node_ips=($worker_node1_ip $worker_node2_ip $worker_node3_ip $worker_node4_ip)
-declare -a node_hostnames=("master" "worker1" "worker2" "worker3" "worker4")
+declare -a node_hostnames=("master" "worker1" "worker2" "worker3" "worker4" "ran")
 
 for arr_index in "${!all_k8_node_ips[@]}"
 do

@@ -10,18 +10,18 @@ else
 fi
 
 istioctl uninstall -y --purge
-kubectl delete namespace istio-system
-kubectl label namespace open5gs istio-injection=disabled --overwrite
+kubectl --kubeconfig=/etc/kubernetes/admin.conf delete namespace istio-system
+kubectl --kubeconfig=/etc/kubernetes/admin.conf label namespace open5gs istio-injection=disabled --overwrite
 
-kubectl delete namespace open5gs
+kubectl --kubeconfig=/etc/kubernetes/admin.conf delete namespace open5gs
 sleep 30
-kubectl delete pv mongodb-pv-volume-open5gs
+kubectl --kubeconfig=/etc/kubernetes/admin.conf delete pv mongodb-pv-volume-open5gs
 sleep 30
-kubectl create namespace open5gs
+kubectl --kubeconfig=/etc/kubernetes/admin.conf create namespace open5gs
 
 if [[ $istio_enabled -eq 1 ]] ; then
     istioctl install --set profile=default -y
-    kubectl label namespace open5gs istio-injection=enabled --overwrite
+    kubectl --kubeconfig=/etc/kubernetes/admin.conf label namespace open5gs istio-injection=enabled --overwrite
 fi
 
 Hostname=$(hostname)
@@ -32,13 +32,13 @@ else
 fi
 helm -n open5gs install -f values.yaml 5gcore ./
 sleep 10
-kubectl config set-context --current --namespace=open5gs
+kubectl --kubeconfig=/etc/kubernetes/admin.conf config set-context --current --namespace=open5gs
 
 if [[ $istio_enabled -eq 1 ]] ; then
     # Enable mTLS strict mode - STRICT, PERMISSIVE
     # https://istio.io/latest/docs/tasks/security/authentication/mtls-migration/#lock-down-to-mutual-tls-by-namespace
     # In case we want to enable it globally - https://istio.io/latest/docs/tasks/security/authentication/authn-policy/#globally-enabling-istio-mutual-tls-in-strict-mode
-kubectl apply -n open5gs -f - <<EOF
+kubectl --kubeconfig=/etc/kubernetes/admin.conf apply -n open5gs -f - <<EOF
 apiVersion: security.istio.io/v1beta1
 kind: PeerAuthentication
 metadata:

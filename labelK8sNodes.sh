@@ -9,7 +9,7 @@ do
 	echo ""
 	echo "Labelling Node - $node"
 	echo ""
-    kubectl label --overwrite nodes $node pcs-nf-type=${nodeLabels[arrayIndex]}
+    kubectl --kubeconfig=/etc/kubernetes/admin.conf label --overwrite nodes $node pcs-nf-type=${nodeLabels[arrayIndex]}
 	echo ""
 	echo "Finished Labelling Node - $node"
     echo ""
