@@ -11,13 +11,29 @@ DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
 DEBIAN_FRONTEND=noninteractive apt-get -y update
 DEBIAN_FRONTEND=noninteractive apt-get -y dist-upgrade
 
-DEBIAN_FRONTEND=noninteractive apt -y install python3-pip python3-setuptools python3-wheel ninja-build build-essential flex bison git libsctp-dev libgnutls28-dev libgcrypt-dev libssl-dev libidn11-dev libmongoc-dev libbson-dev libmicrohttpd-dev libcurl4-gnutls-dev meson iproute2 libnghttp2-dev vim iptables cmake gnupg libtins-dev gdb tzdata ntp ntpstat ntpdate libtalloc-dev docker.io apache2-utils default-jre default-jdk wget nano make g++ lksctp-tools net-tools tcpdump curl jq iputils-ping nghttp2-client bash-completion xauth gcc autoconf libtool pkg-config libmnl-dev libyaml-dev sshpass x11-apps feh tshark openssh-client openssh-server systemd systemd-sysv dbus dbus-user-session bridge-utils libvirt-clients libvirt-daemon-system qemu-system-x86 kpartx extlinux cryptsetup qemu-kvm virtinst libvirt-daemon-system cloud-image-utils libfftw3-dev libmbedtls-dev libboost-program-options-dev libconfig++-dev libzmq3-dev libgtest-dev
+DEBIAN_FRONTEND=noninteractive apt -y install python3-pip python3-setuptools python3-wheel ninja-build build-essential flex bison git libsctp-dev libgnutls28-dev libgcrypt-dev libssl-dev libidn11-dev libmongoc-dev libbson-dev libmicrohttpd-dev libcurl4-gnutls-dev meson iproute2 libnghttp2-dev vim iptables cmake gnupg libtins-dev gdb tzdata ntp ntpstat ntpdate libtalloc-dev apache2-utils default-jre default-jdk wget nano make g++ lksctp-tools net-tools tcpdump curl jq iputils-ping nghttp2-client bash-completion xauth gcc autoconf libtool pkg-config libmnl-dev libyaml-dev sshpass x11-apps feh tshark openssh-client openssh-server systemd systemd-sysv dbus dbus-user-session bridge-utils libvirt-clients libvirt-daemon-system qemu-system-x86 kpartx extlinux cryptsetup qemu-kvm virtinst libvirt-daemon-system cloud-image-utils libfftw3-dev libmbedtls-dev libboost-program-options-dev libconfig++-dev libzmq3-dev libgtest-dev
 
-echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
-systemctl restart ssh
-systemctl enable ssh
+#echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
+#systemctl restart ssh
+#systemctl enable ssh
 
 pip3 install -U h2
+
+# Add Docker's official GPG key:
+apt-get -y update
+apt-get -y install ca-certificates curl gnupg
+install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+chmod a+r /etc/apt/keyrings/docker.gpg
+
+# Add the repository to Apt sources:
+echo \
+  "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
+  tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+apt-get -y update
+apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
 #https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
 rm -f /etc/apt/keyrings/kubernetes-apt-keyring.gpg
@@ -30,19 +46,9 @@ apt-get -y update
 apt-get install -y kubectl kubelet kubeadm
 
 # Install kind For AMD64 / x86_64
-curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-amd64
-chmod +x ./kind
-mv ./kind /usr/local/bin/kind
-
-#systemctl enable docker.service
-#swapoff -a
-
-#cd $my_dir
-#cmake_ver=3.27.6
-#wget https://github.com/Kitware/CMake/releases/download/v$cmake_ver/cmake-$cmake_ver.tar.gz && tar -xvzf cmake-$cmake_ver.tar.gz
-#cd cmake-$cmake_ver && ./bootstrap -- -DCMAKE_BUILD_TYPE:STRING=Release && make && make install
-#cd .. && rm -rf cmake-*
-#cmake --version
+#curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-amd64
+#chmod +x ./kind
+#mv ./kind /usr/local/bin/kind
 
 cd $my_dir
 git clone -b ztx_01 https://github.com/UmakantKulkarni/UERANSIM && cd UERANSIM && make
@@ -52,7 +58,7 @@ cd ..
 curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | tee /usr/share/keyrings/helm.gpg > /dev/null
 apt-get install apt-transport-https --yes
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | tee /etc/apt/sources.list.d/helm-stable-debian.list
-apt-get update
+apt-get -y update
 apt-get install -y helm
 
 cd $my_dir
@@ -81,9 +87,6 @@ git clone -b ztx_01 --recursive https://github.com/UmakantKulkarni/open5gs
 #git clone https://github.com/UmakantKulkarni/amf
 #git clone https://github.com/UmakantKulkarni/upf
 
-#cd /opt/scripts 
-#chmod +x *
-
 #cd /opt/k8s
 #wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 #apt -y install ./google-chrome-stable_current_amd64.deb
@@ -97,6 +100,7 @@ make install
 
 
 #Kubernetes & containerd specific config
+# https://kubernetes.io/docs/setup/production-environment/container-runtimes/#forwarding-ipv4-and-letting-iptables-see-bridged-traffic
 
 tee /etc/modules-load.d/k8s.conf <<EOF
 overlay
@@ -117,35 +121,23 @@ EOF
 # Reload sysctl
 sysctl --system
 
-# Install containerd
-apt update
-apt install -y containerd.io
+mkdir -p /etc/containerd
+containerd config default | tee /etc/containerd/config.toml >/dev/null 2>&1
+sed -i 's/SystemdCgroup \= false/SystemdCgroup \= true/g' /etc/containerd/config.toml
 
-#mkdir -p /etc/containerd
-#containerd config default | tee /etc/containerd/config.toml >/dev/null 2>&1
-#sed -i 's/SystemdCgroup \= false/SystemdCgroup \= true/g' /etc/containerd/config.toml
-
-# restart containerd
-systemctl restart containerd
-systemctl enable containerd
-
-curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh
 systemctl enable docker.service
+systemctl enable containerd.service
+systemctl enable kubelet
 swapoff -a
 echo '{"exec-opts": ["native.cgroupdriver=systemd"]}' | jq . > /etc/docker/daemon.json
 systemctl daemon-reload
 systemctl restart docker
 systemctl restart kubelet
+systemctl restart containerd
 rm -rf /etc/cni/net.d
 kubeadm reset --force --cri-socket unix:///var/run/crio/crio.sock
 kubeadm reset --force --cri-socket unix:///run/containerd/containerd.sock
 kubeadm reset --force --cri-socket unix:///run/cri-dockerd.sock
-systemctl restart kubelet
-systemctl restart containerd
-systemctl enable containerd
-systemctl enable kubelet
-echo "Waiting for 30 seconds ..."
-sleep 30
 
 #https://istio.io/latest/docs/setup/getting-started/#download
 cd /opt

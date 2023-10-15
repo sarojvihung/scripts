@@ -11,9 +11,25 @@ DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
 DEBIAN_FRONTEND=noninteractive apt-get -y update
 DEBIAN_FRONTEND=noninteractive apt-get -y dist-upgrade
 
-DEBIAN_FRONTEND=noninteractive apt -y install python3-pip python3-setuptools python3-wheel ninja-build build-essential flex bison git libsctp-dev libgnutls28-dev libgcrypt-dev libssl-dev libidn11-dev libmongoc-dev libbson-dev libmicrohttpd-dev libcurl4-gnutls-dev meson iproute2 libnghttp2-dev vim iptables cmake gnupg libtins-dev gdb tzdata ntp ntpstat ntpdate libtalloc-dev docker.io apache2-utils default-jre default-jdk wget nano make g++ lksctp-tools net-tools tcpdump curl jq iputils-ping nghttp2-client bash-completion xauth gcc autoconf libtool pkg-config libmnl-dev libyaml-dev sshpass x11-apps feh tshark openssh-client openssh-server systemd systemd-sysv dbus dbus-user-session bridge-utils libvirt-clients libvirt-daemon-system qemu-system-x86 kpartx extlinux cryptsetup qemu-kvm virtinst libvirt-daemon-system cloud-image-utils libfftw3-dev libmbedtls-dev libboost-program-options-dev libconfig++-dev libzmq3-dev libgtest-dev
+DEBIAN_FRONTEND=noninteractive apt -y install python3-pip python3-setuptools python3-wheel ninja-build build-essential flex bison git libsctp-dev libgnutls28-dev libgcrypt-dev libssl-dev libidn11-dev libmongoc-dev libbson-dev libmicrohttpd-dev libcurl4-gnutls-dev meson iproute2 libnghttp2-dev vim iptables cmake gnupg libtins-dev gdb tzdata ntp ntpstat ntpdate libtalloc-dev apache2-utils default-jre default-jdk wget nano make g++ lksctp-tools net-tools tcpdump curl jq iputils-ping nghttp2-client bash-completion xauth gcc autoconf libtool pkg-config libmnl-dev libyaml-dev sshpass x11-apps feh tshark openssh-client openssh-server systemd systemd-sysv dbus dbus-user-session bridge-utils libvirt-clients libvirt-daemon-system qemu-system-x86 kpartx extlinux cryptsetup qemu-kvm virtinst libvirt-daemon-system cloud-image-utils libfftw3-dev libmbedtls-dev libboost-program-options-dev libconfig++-dev libzmq3-dev libgtest-dev
 
 pip3 install -U h2
+
+# Add Docker's official GPG key:
+apt-get -y update
+apt-get -y install ca-certificates curl gnupg
+install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+chmod a+r /etc/apt/keyrings/docker.gpg
+
+# Add the repository to Apt sources:
+echo \
+  "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
+  tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+apt-get -y update
+apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
 #https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
 rm -f /etc/apt/keyrings/kubernetes-apt-keyring.gpg
@@ -28,8 +44,9 @@ apt-get install -y kubectl kubelet kubeadm
 curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | tee /usr/share/keyrings/helm.gpg > /dev/null
 apt-get install apt-transport-https --yes
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | tee /etc/apt/sources.list.d/helm-stable-debian.list
-apt-get update
+apt-get -y update
 apt-get install -y helm
+
 systemctl restart kubelet
 systemctl enable kubelet
 

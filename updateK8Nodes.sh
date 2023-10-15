@@ -17,22 +17,16 @@ cd /opt/Secure5G && git pull
 cd /opt/opensource-5g-core && git pull
 cd /opt/open5gs && git pull
 
-#curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh
-rm -rf /var/lib/containerd/
-rm -rf /var/lib/docker/
-apt-get purge -y docker-ce docker-ce-cli docker.io containerd.io
-apt-get install docker.io containerd.io
 systemctl enable docker.service
+systemctl enable containerd.service
+systemctl enable kubelet
 swapoff -a
 echo '{"exec-opts": ["native.cgroupdriver=systemd"]}' | jq . > /etc/docker/daemon.json
 systemctl daemon-reload
 systemctl restart docker
 systemctl restart kubelet
+systemctl restart containerd
 rm -rf /etc/cni/net.d
 kubeadm reset --force --cri-socket unix:///var/run/crio/crio.sock
 kubeadm reset --force --cri-socket unix:///run/containerd/containerd.sock
 kubeadm reset --force --cri-socket unix:///run/cri-dockerd.sock
-systemctl restart kubelet
-systemctl restart containerd
-systemctl enable containerd
-systemctl enable kubelet
