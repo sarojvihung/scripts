@@ -16,6 +16,7 @@ DEBIAN_FRONTEND=noninteractive apt -y install python3-pip python3-setuptools pyt
 pip3 install -U h2
 
 #https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
+rm -f /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 apt-get -y update
 apt-get install -y ca-certificates
 apt-get install -y apt-transport-https
