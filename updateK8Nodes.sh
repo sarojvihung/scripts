@@ -29,4 +29,3 @@ systemctl restart containerd
 rm -rf /etc/cni/net.d
 kubeadm reset --force --cri-socket unix:///var/run/crio/crio.sock
 kubeadm reset --force --cri-socket unix:///run/containerd/containerd.sock
-kubeadm reset --force --cri-socket unix:///run/cri-dockerd.sock

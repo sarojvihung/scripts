@@ -73,7 +73,7 @@ echo "Waiting for 30 seconds..."
 sleep 30
 
 k8s_create_cmd="kubeadm init --pod-network-cidr=10.244.0.0/16 --token-ttl=0 --apiserver-advertise-address=$master_node_ip"
-declare -a master_node_cmds=("$k8s_create_cmd" "export KUBECONFIG=/etc/kubernetes/admin.conf" "sleep 60" "kubectl get node -owide" "kubectl apply -f /opt/k8s/kube-flannel.yml" "kubectl apply -f /opt/k8s/metrics-server.yaml" "kubectl get pods -A")
+declare -a master_node_cmds=("$k8s_create_cmd" "export KUBECONFIG=/etc/kubernetes/admin.conf" "sleep 60" "kubectl get node -owide" "kubectl apply -f /opt/k8s/kube-flannel.yml" "sleep 10" "systemctl restart containerd" "kubectl apply -f /opt/k8s/metrics-server.yaml" "kubectl get pods -A")
 for master_node_cmd in "${master_node_cmds[@]}"
 do	
     echo ""

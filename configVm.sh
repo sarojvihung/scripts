@@ -83,7 +83,7 @@ curl https://raw.githubusercontent.com/projectcalico/calico/$calicoVer/manifests
 curl https://raw.githubusercontent.com/projectcalico/calico/$calicoVer/manifests/custom-resources.yaml -O
 curl https://raw.githubusercontent.com/projectcalico/calico/$calicoVer/manifests/calico.yaml -O
 #https://github.com/flannel-io/flannel#deploying-flannel-manually
-curl https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml -O
+wget https://github.com/flannel-io/flannel/releases/download/v0.22.3/kube-flannel.yml
 wget https://raw.githubusercontent.com/UmakantKulkarni/myCodes/master/k8/metrics-server.yaml
 
 cd $my_dir
@@ -146,7 +146,6 @@ systemctl restart containerd
 rm -rf /etc/cni/net.d
 kubeadm reset --force --cri-socket unix:///var/run/crio/crio.sock
 kubeadm reset --force --cri-socket unix:///run/containerd/containerd.sock
-kubeadm reset --force --cri-socket unix:///run/cri-dockerd.sock
 
 #https://istio.io/latest/docs/setup/getting-started/#download
 cd /opt
