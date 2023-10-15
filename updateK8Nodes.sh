@@ -13,6 +13,7 @@ DEBIAN_FRONTEND=noninteractive apt-get -y update
 DEBIAN_FRONTEND=noninteractive apt-get -y dist-upgrade
 
 echo "nameserver 192.168.122.1" > /etc/resolv.conf
+cd /opt/k8s && wget https://github.com/flannel-io/flannel/releases/download/v0.22.3/kube-flannel.yml
 
 cd /opt/scripts && git pull
 cd /opt/Secure5G && git pull
