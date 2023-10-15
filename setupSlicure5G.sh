@@ -56,14 +56,17 @@ worker_node4_ip=$(timeout 5 setsid virsh domifaddr worker4 | sed -n 3p | awk '{p
 echo "Worker Node 4 IP is $worker_node4_ip"
 declare -a all_k8_node_ips=($master_node_ip $worker_node1_ip $worker_node2_ip $worker_node3_ip $worker_node4_ip)
 declare -a worker_node_ips=($worker_node1_ip $worker_node2_ip $worker_node3_ip $worker_node4_ip)
+declare -a node_hostnames=("master" "worker1" "worker2" "worker3" "worker4")
 
-for k8_node_ip in "${all_k8_node_ips[@]}"
+for arr_index in "${!all_k8_node_ips[@]}"
 do
+    k8_node_ip="${all_k8_node_ips[$arr_index]}"
+    node_hostname="${node_hostnames[$arr_index]}"
     echo ""
     echo "Preparing K8s node $k8_node_ip"
     echo ""
     sshpass -p "$VM_PASSWORD" ssh -o StrictHostKeyChecking=no $VM_USERNAME@$k8_node_ip "cd /opt/scripts && git pull"
-    sshpass -p "$VM_PASSWORD" ssh -o StrictHostKeyChecking=no $VM_USERNAME@$k8_node_ip "bash /opt/scripts/updateK8Nodes.sh $VM_USERNAME $VM_PASSWORD"
+    sshpass -p "$VM_PASSWORD" ssh -o StrictHostKeyChecking=no $VM_USERNAME@$k8_node_ip "bash /opt/scripts/updateK8Nodes.sh $VM_USERNAME $VM_PASSWORD $node_hostname"
     echo ""
     echo "Prepared node"
     echo ""
