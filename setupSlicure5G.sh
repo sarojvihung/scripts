@@ -19,19 +19,19 @@ else
     exit 1
 fi
 
-#source setupPhysicalServer.sh 
+source setupPhysicalServer.sh 
 cd $WORKDIR
 
 # Create directory for base OS images.
-sudo mkdir /var/lib/libvirt/images/purdue-ztx
+mkdir /var/lib/libvirt/images/purdue-ztx
 
 qemu-img info $WORKDIR/ubuntu-22.04-purdue-ztx.qcow2
 
-sudo cp $WORKDIR/ubuntu-22.04-purdue-ztx.qcow2 /var/lib/libvirt/images/purdue-ztx/ubuntu-22.04-purdue-ztx.qcow2
+cp $WORKDIR/ubuntu-22.04-purdue-ztx.qcow2 /var/lib/libvirt/images/purdue-ztx/ubuntu-22.04-purdue-ztx.qcow2
 
 wget https://raw.githubusercontent.com/UmakantKulkarni/kvm-setup/main/createvm
 chmod +x createvm
-sudo mv createvm /usr/local/bin/
+mv createvm /usr/local/bin/
 
 createvm master 101
 createvm worker1 102
@@ -41,17 +41,17 @@ createvm worker4 105
 
 echo "Waiting for 60 seconds for VMs to boot up..."
 sleep 60
-sudo virsh list --all
+virsh list --all
 
-master_node_ip=$(sudo virsh domifaddr master | sed -n 3p | awk '{print $4}' | cut -d "/" -f 1)
+master_node_ip=$(virsh domifaddr master | sed -n 3p | awk '{print $4}' | cut -d "/" -f 1)
 echo "Master Node IP is $master_node_ip"
-worker_node1_ip=$(sudo virsh domifaddr worker1 | sed -n 3p | awk '{print $4}' | cut -d "/" -f 1)
+worker_node1_ip=$(virsh domifaddr worker1 | sed -n 3p | awk '{print $4}' | cut -d "/" -f 1)
 echo "Worker Node 1 IP is $worker_node1_ip"
-worker_node2_ip=$(sudo virsh domifaddr worker2 | sed -n 3p | awk '{print $4}' | cut -d "/" -f 1)
+worker_node2_ip=$(virsh domifaddr worker2 | sed -n 3p | awk '{print $4}' | cut -d "/" -f 1)
 echo "Worker Node 2 IP is $worker_node2_ip"
-worker_node3_ip=$(sudo virsh domifaddr worker3 | sed -n 3p | awk '{print $4}' | cut -d "/" -f 1)
+worker_node3_ip=$(virsh domifaddr worker3 | sed -n 3p | awk '{print $4}' | cut -d "/" -f 1)
 echo "Worker Node 3 IP is $worker_node3_ip"
-worker_node4_ip=$(sudo virsh domifaddr worker4 | sed -n 3p | awk '{print $4}' | cut -d "/" -f 1)
+worker_node4_ip=$(virsh domifaddr worker4 | sed -n 3p | awk '{print $4}' | cut -d "/" -f 1)
 echo "Worker Node 4 IP is $worker_node4_ip"
 declare -a all_k8_node_ips=($master_node_ip $worker_node1_ip $worker_node2_ip $worker_node3_ip $worker_node4_ip)
 declare -a worker_node_ips=($worker_node1_ip $worker_node2_ip $worker_node3_ip $worker_node4_ip)

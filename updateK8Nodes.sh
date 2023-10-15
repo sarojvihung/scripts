@@ -17,12 +17,13 @@ cd /opt/Secure5G && git pull
 cd /opt/opensource-5g-core && git pull
 cd /opt/open5gs && git pull
 
+curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh
 systemctl enable docker.service
 swapoff -a
 echo '{"exec-opts": ["native.cgroupdriver=systemd"]}' | jq . > /etc/docker/daemon.json
-sudo systemctl daemon-reload
-sudo systemctl restart docker
-sudo systemctl restart kubelet
+systemctl daemon-reload
+systemctl restart docker
+systemctl restart kubelet
 rm -rf /etc/cni/net.d
 kubeadm reset --force --cri-socket unix:///var/run/crio/crio.sock
 kubeadm reset --force --cri-socket unix:///run/containerd/containerd.sock
