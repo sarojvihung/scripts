@@ -20,6 +20,7 @@ DEBIAN_FRONTEND=noninteractive apt -y install python3-pip python3-setuptools pyt
 pip3 install -U h2
 
 # Add Docker's official GPG key:
+rm -f /etc/apt/keyrings/docker.gpg
 apt-get -y update
 apt-get -y install ca-certificates curl gnupg
 install -m 0755 -d /etc/apt/keyrings
