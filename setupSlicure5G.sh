@@ -135,7 +135,7 @@ source ~/.bashrc
 
 bash $SCRIPT_DIR/labelK8sNodes.sh
 
-bash $SCRIPT_DIR/nukeOpen5gs.sh 0
+bash $SCRIPT_DIR/nukeOpen5gs.sh 1
 
 echo "Waiting 200 seconds for nodes to be ready..."
 sleep 200
