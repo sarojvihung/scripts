@@ -138,7 +138,9 @@ bash $SCRIPT_DIR/labelK8sNodes.sh
 bash $SCRIPT_DIR/nukeOpen5gs.sh 1
 
 echo "Waiting 200 seconds for nodes to be ready..."
-sleep 200
+sleep 30
+kubectl taint nodes $(kubectl get nodes --selector=node-role.kubernetes.io/control-plane | awk 'FNR==2{print $1}') node-role.kubernetes.io/control-plane-
+sleep 170
 
 kubectl taint nodes $(kubectl get nodes --selector=node-role.kubernetes.io/control-plane | awk 'FNR==2{print $1}') node-role.kubernetes.io/control-plane-
 
