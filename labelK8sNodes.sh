@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-declare -a nodeLabels=("master" "amf" "smf" "upf" "nf")
-declare -a nodes=("master" "worker1" "worker2" "worker3" "worker4")
+declare -a nodeLabels=("master" "amf" "smf" "upf" "nf1" "nf2")
+declare -a nodes=("master" "worker1" "worker2" "worker3" "worker4" "worker5")
 
 arrayIndex=0
 for node in "${nodes[@]}"
