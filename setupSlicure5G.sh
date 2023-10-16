@@ -137,6 +137,11 @@ bash $SCRIPT_DIR/labelK8sNodes.sh
 
 bash $SCRIPT_DIR/nukeOpen5gs.sh 0
 
+echo "Waiting 200 seconds for nodes to be ready..."
+sleep 200
+
+kubectl taint nodes $(kubectl get nodes --selector=node-role.kubernetes.io/control-plane | awk 'FNR==2{print $1}') node-role.kubernetes.io/control-plane-
+
 kubectl patch svc amf-open5gs-sctp -n open5gs -p "{\"spec\": {\"type\": \"LoadBalancer\", \"externalIPs\":[\"$worker_node1_ip\"]}}"
 
 testPod=`kubectl -n open5gs get po -o json |  jq '.items[] | select(.metadata.name|contains("open5gs"))| .metadata.name' | grep "test" | sed 's/"//g'`
