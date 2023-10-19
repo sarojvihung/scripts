@@ -82,5 +82,8 @@ echo "complete -F __start_kubectl k" >> ~/.bashrc
 echo "export PCS_SETUP_TUN_INTF=false" >> ~/.bashrc
 source ~/.bashrc
 
-echo "Download Ubuntu Purdue ZTX QCOW Image and copy it to /tmp directory - https://purdue0-my.sharepoint.com/:u:/g/personal/ukulkarn_purdue_edu/EdOFmLrrJyhFpW58BbmqFpYBf6tpfnBcDTvvefkcYNNPUA?e=TV086M"
+echo "Downloading Ubuntu Purdue ZTX QCOW Image into /tmp directory - https://www.cs.purdue.edu/homes/ukulkarn/ubuntu-22.04-purdue-ztx.qcow2"
+
+cd $my_dir
+wget https://www.cs.purdue.edu/homes/ukulkarn/ubuntu-22.04-purdue-ztx.qcow2
 
