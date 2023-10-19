@@ -85,5 +85,6 @@ source ~/.bashrc
 echo "Downloading Ubuntu Purdue ZTX QCOW Image into /tmp directory - https://www.cs.purdue.edu/homes/ukulkarn/ubuntu-22.04-purdue-ztx.qcow2"
 
 cd $my_dir
+rm -f ubuntu-22.04-purdue-ztx.qcow2
 wget https://www.cs.purdue.edu/homes/ukulkarn/ubuntu-22.04-purdue-ztx.qcow2
 
