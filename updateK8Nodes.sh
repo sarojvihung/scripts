@@ -27,7 +27,7 @@ cd /opt/Secure5G && git pull
 cd /opt/opensource-5g-core && git pull
 cd /opt/open5gs && git pull
 
-rm /etc/containerd/config.toml
+#rm -f /etc/containerd/config.toml
 systemctl enable docker.service
 systemctl enable containerd.service
 systemctl enable kubelet
