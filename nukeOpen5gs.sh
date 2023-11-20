@@ -9,7 +9,7 @@ else
     istio_enabled=0
 fi
 
-/opt/istio-1.19.3/bin/istioctl uninstall -y --purge
+/opt/istio-1.19.3/bin/istioctl uninstall -c /etc/kubernetes/admin.conf -y --purge
 kubectl --kubeconfig=/etc/kubernetes/admin.conf delete namespace istio-system
 kubectl --kubeconfig=/etc/kubernetes/admin.conf label namespace open5gs istio-injection=disabled --overwrite
 
@@ -20,7 +20,7 @@ sleep 30
 kubectl --kubeconfig=/etc/kubernetes/admin.conf create namespace open5gs
 
 if [[ $istio_enabled -eq 1 ]] ; then
-    /opt/istio-1.19.3/bin/istioctl install --set profile=default -y
+    /opt/istio-1.19.3/bin/istioctl install -c /etc/kubernetes/admin.conf --set profile=default -y
     kubectl --kubeconfig=/etc/kubernetes/admin.conf label namespace open5gs istio-injection=enabled --overwrite
 fi
 
