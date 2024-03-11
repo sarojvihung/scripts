@@ -51,7 +51,9 @@ do
     rm -f /opt/Experiments/$experimentDir/$pcsDir/${pod}_istio_logs.txt
     nfName=$(echo $pod | awk -v FS="(open5gs-|-deployment)" '{print $2}')
     kubectl logs $pod -n open5gs -c $nfName > /opt/Experiments/$experimentDir/$pcsDir/${pod}_logs.txt
-    kubectl logs $pod -n open5gs -c istio-proxy > /opt/Experiments/$experimentDir/$pcsDir/${pod}_istio_logs.txt
+    if [[ "$nfName" != "upf" ]] ; then
+        kubectl logs $pod -n open5gs -c istio-proxy > /opt/Experiments/$experimentDir/$pcsDir/${pod}_istio_logs.txt
+    fi
     maxQueue=$(cat /opt/Experiments/$experimentDir/$pcsDir/${pod}_logs.txt | grep " ogs_queue_size is" | grep "PCS " | awk '{print $9}' | sort -rn | head -n 1)
     if [[ "$nfName" == "amf" ]] ; then
         startTime=$(cat /opt/Experiments/$experimentDir/$pcsDir/${pod}_logs.txt | grep InitialUEMessage | head -1 | awk '{print $2}' | sed -r "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2})?)?[mGK]//g" | rev | cut -c 2- | rev)

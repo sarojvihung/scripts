@@ -30,8 +30,8 @@ do
     do
 
         echo "Sub-dir is $pcsDir"
-        rm -rf /opt/Experiments/${pcsDir}
-        mkdir -p /opt/Experiments/${pcsDir}
+        rm -rf /opt/Experiments/${experimentDir}/${pcsDir}
+        mkdir -p /opt/Experiments/${experimentDir}/${pcsDir}
 
         numSessions=$(( pcsDir / 1 ))
         callTime=$(( pcsDir / 25 ))
@@ -39,7 +39,7 @@ do
         #cleanup
         kubectl get pods --no-headers=true | awk '/upf|amf|bsf|pcf|udm|ausf|nrf|nssf|udr|smf/{print $1}'| xargs  kubectl delete pod
 
-        sleep 120
+        sleep 60
 
         rm -rf /opt/Experiments/$experimentDir/$pcsDir/istioPerf
         mkdir -p /opt/Experiments/$experimentDir/$pcsDir/istioPerf
@@ -50,6 +50,7 @@ do
             PODARRAY+=($pod)
         done
 
+        #https://github.com/istio/istio/wiki/Analyzing-Istio-Performance
         for pod in "${PODARRAY[@]}"
         do
 
@@ -90,8 +91,8 @@ do
             PROFILER="heap" # Can also be "heap", for a heap profile
             kubectl exec -n "$NS" "$POD" -c istio-proxy -- curl -X POST -s "http://localhost:15000/${PROFILER}profiler?enable=n"
             kubectl cp -n "$NS" "$POD":/var/lib/istio/data /opt/Experiments/$experimentDir/$pcsDir/istioPerf/${nfName} -c istio-proxy
-            kubectl cp -n "$NS" "$POD":/lib/x86_64-linux-gnu /opt/Experiments/$experimentDir/$pcsDir/istioPerf/${nfName}/lib -c istio-proxy
-            kubectl cp -n "$NS" "$POD":/usr/local/bin/envoy /opt/Experiments/$experimentDir/$pcsDir/istioPerf/${nfName}/lib/envoy -c istio-proxy
+            #kubectl cp -n "$NS" "$POD":/lib/x86_64-linux-gnu /opt/Experiments/$experimentDir/$pcsDir/istioPerf/${nfName}/lib -c istio-proxy
+            #kubectl cp -n "$NS" "$POD":/usr/local/bin/envoy /opt/Experiments/$experimentDir/$pcsDir/istioPerf/${nfName}/lib/envoy -c istio-proxy
         done
 
         #stop-ran
