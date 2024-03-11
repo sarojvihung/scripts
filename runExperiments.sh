@@ -42,6 +42,10 @@ do
 
         sleep 60
 
+        #start-ran
+        #bash /opt/scripts/runNodeCmd.sh "nr-gnb -c /opt/UERANSIM/config/open5gs-gnb.yaml > /dev/null 2>&1 &" 0
+        nr-gnb -c /opt/UERANSIM/config/open5gs-gnb.yaml > /dev/null 2>&1 &
+
         rm -rf /opt/Experiments/$experimentDir/$pcsDir/istioPerf
         mkdir -p /opt/Experiments/$experimentDir/$pcsDir/istioPerf
         PODARRAY=()
@@ -63,19 +67,16 @@ do
             kubectl exec -n "$NS" "$POD" -c istio-proxy -- curl -X POST -s "http://localhost:15000/${PROFILER}profiler?enable=y"
         done
 
-        #start-ran
-        #bash /opt/scripts/runNodeCmd.sh "nr-gnb -c /opt/UERANSIM/config/open5gs-gnb.yaml > /dev/null 2>&1 &" 0
-        nr-gnb -c /opt/UERANSIM/config/open5gs-gnb.yaml > /dev/null 2>&1 &
-
         #bash /opt/scripts/runNodeCmd.sh "/opt/scripts/launchUeSim.py > /dev/null 2>&1 &" 0
-        /opt/scripts/launchUeSim.py > /dev/null 2>&1 &
+        #/opt/scripts/launchUeSim.py > /dev/null 2>&1 &
 
         #start-ue
-        for ueNodeIp in "${ueNodes[@]}"
-        do
-            echo "UE-SIM IP Address is $ueNodeIp"
-            curl --verbose --request POST --header "Content-Type:application/json" --data '{"numSessions":"'$numSessions'","expDir":"'$experimentDir'","subExpDir":"'$pcsDir'"}'  http://$ueNodeIp:15692
-        done
+        #for ueNodeIp in "${ueNodes[@]}"
+        #do
+        #    echo "UE-SIM IP Address is $ueNodeIp"
+        #    curl --verbose --request POST --header "Content-Type:application/json" --data '{"numSessions":"'$numSessions'","expDir":"'$experimentDir'","subExpDir":"'$pcsDir'"}'  http://$ueNodeIp:15692
+        #done
+        nr-ue -c /opt/UERANSIM/config/open5gs-ue.yaml -n $numSessions > /opt/Experiments/${experimentDir}/${pcsDir}/uesim.logs 2>&1 &
 
         sleep $callTime
 
