@@ -18,11 +18,12 @@ experimentDirPrefix="$1"
 
 mkdir -p /opt/Experiments/
 
-declare -a subDir=("100" "200" "300" "400" "500" "600" "700" "800" "900" "1000")
+#declare -a subDir=("100" "200" "300" "400" "500" "600" "700" "800" "900" "1000")
+declare -a subDir=("100")
 
 declare -a experimentDirAry=("$experimentDirPrefix-1")
 
-declare -a ueNodes=("10.10.1.2")
+declare -a ueNodes=("10.10.1.1")
 
 for experimentDir in "${experimentDirAry[@]}"
 do
@@ -34,7 +35,7 @@ do
         mkdir -p /opt/Experiments/${experimentDir}/${pcsDir}
 
         numSessions=$(( pcsDir / 1 ))
-        callTime=$(( pcsDir / 25 ))
+        callTime=$(( pcsDir / 10 ))
 
         #cleanup
         kubectl get pods --no-headers=true | awk '/upf|amf|bsf|pcf|udm|ausf|nrf|nssf|udr|smf/{print $1}'| xargs  kubectl delete pod
@@ -63,9 +64,9 @@ do
         done
 
         #start-ran
-        bash /opt/scripts/runNodeCmd.sh "nr-gnb -c /opt/UERANSIM/config/open5gs-gnb.yaml > /dev/null 2>&1 &" 1
+        bash /opt/scripts/runNodeCmd.sh "nr-gnb -c /opt/UERANSIM/config/open5gs-gnb.yaml > /dev/null 2>&1 &" 0
 
-        #bash /opt/scripts/runNodeCmd.sh "/opt/scripts/launchUeSim.py > /dev/null 2>&1 &" 1
+        bash /opt/scripts/runNodeCmd.sh "/opt/scripts/launchUeSim.py > /dev/null 2>&1 &" 0
 
         #start-ue
         for ueNodeIp in "${ueNodes[@]}"
@@ -96,17 +97,17 @@ do
         done
 
         #stop-ran
-        bash /opt/scripts/runNodeCmd.sh "pkill -f nr-ue" 1
+        bash /opt/scripts/runNodeCmd.sh "pkill -f nr-ue" 0
 
         sleep 5
 
-        bash /opt/scripts/runNodeCmd.sh "pkill -f nr-gnb" 1
+        bash /opt/scripts/runNodeCmd.sh "pkill -f nr-gnb" 0
 
         sleep 5
         
-        #bash /opt/scripts/runNodeCmd.sh "pkill -f launchUeSim.py" 12 14
+        bash /opt/scripts/runNodeCmd.sh "pkill -f launchUeSim" 0
 
-        #sleep 5
+        sleep 5
 
         #kubectl exec -it $mongoPod -- bash -c "pkill -f mongoMonitor.py"
 
