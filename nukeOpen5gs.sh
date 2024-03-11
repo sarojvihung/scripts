@@ -30,6 +30,8 @@ if [ "$Hostname" = "wabash" ] ; then
 else
     cd /opt/opensource-5g-core/helm-chart/
 fi
+cp /etc/kubernetes/admin.conf ~/.kube/config
+export KUBECONFIG=/etc/kubernetes/admin.conf
 helm -n open5gs install -f values.yaml 5gcore ./
 sleep 10
 kubectl --kubeconfig=/etc/kubernetes/admin.conf config set-context --current --namespace=open5gs
