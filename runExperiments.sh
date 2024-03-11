@@ -64,9 +64,11 @@ do
         done
 
         #start-ran
-        bash /opt/scripts/runNodeCmd.sh "nr-gnb -c /opt/UERANSIM/config/open5gs-gnb.yaml > /dev/null 2>&1 &" 0
+        #bash /opt/scripts/runNodeCmd.sh "nr-gnb -c /opt/UERANSIM/config/open5gs-gnb.yaml > /dev/null 2>&1 &" 0
+        nr-gnb -c /opt/UERANSIM/config/open5gs-gnb.yaml > /dev/null 2>&1 &
 
-        bash /opt/scripts/runNodeCmd.sh "/opt/scripts/launchUeSim.py > /dev/null 2>&1 &" 0
+        #bash /opt/scripts/runNodeCmd.sh "/opt/scripts/launchUeSim.py > /dev/null 2>&1 &" 0
+        /opt/scripts/launchUeSim.py > /dev/null 2>&1 &
 
         #start-ue
         for ueNodeIp in "${ueNodes[@]}"
@@ -97,15 +99,18 @@ do
         done
 
         #stop-ran
-        bash /opt/scripts/runNodeCmd.sh "pkill -f nr-ue" 0
+        #bash /opt/scripts/runNodeCmd.sh "pkill -f nr-ue" 0
+        pkill -f nr-ue
 
         sleep 5
 
-        bash /opt/scripts/runNodeCmd.sh "pkill -f nr-gnb" 0
+        #bash /opt/scripts/runNodeCmd.sh "pkill -f nr-gnb" 0
+        pkill -f nr-gnb
 
         sleep 5
         
-        bash /opt/scripts/runNodeCmd.sh "pkill -f launchUeSim" 0
+        #bash /opt/scripts/runNodeCmd.sh "pkill -f launchUeSim" 0
+        pkill -f launchUeSim
 
         sleep 5
 
