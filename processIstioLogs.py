@@ -8,13 +8,13 @@ json_data = []
 
 expName = "/opt/Experiments/IstioBench1"
 IstioCsvLogFile = "/opt/Experiments/IstioBench1.csv"
-NFs = ["amf" "smf" "ausf" "bsf" "pcf" "nrf" "nssf" "udr" "udm"]
+NFs = ["amf", "smf", "ausf", "bsf", "pcf", "nrf", "nssf", "udr", "udm"]
 json_data = []
 
 for runCount in range(1,2):
     expRunDir = "{}-{}".format(expName,runCount)
     for sessionCount in list(range(100, 401, 100)):
-        expSessionDir = os.path.join(expRunDir,sessionCount)
+        expSessionDir = os.path.join(expRunDir,str(sessionCount))
         for nf in NFs:
             nfJsonLogFileList = glob("{}/{}IstioLogs.json".format(expSessionDir, nf))
             if len(nfJsonLogFileList) > 0:

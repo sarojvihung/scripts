@@ -6,7 +6,7 @@ echo $exp
 f1="IstioBench1"
 for subexp in `seq 100 100 400`
 do
-    for j in `seq 0 1 1`
+    for j in `seq 1 1 1`
     do
         ueLogFile=$exp/$f1-$j/$subexp/uesim.logs
         nfFile=$exp/$f1-$j/$subexp/nf_max_queue.txt
