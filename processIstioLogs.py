@@ -22,8 +22,8 @@ file_format = 'pdf'
 
 
 def aggregate_istio_logs():
-    expName = "/opt/Experiments/IstioBench1"
-    IstioCsvLogFile = "/opt/Experiments/IstioBench1.csv"
+    expName = "/opt/Experiments/IstioBench2"
+    IstioCsvLogFile = "/opt/Experiments/IstioBench2.csv"
     NFs = ["amf", "smf", "ausf", "bsf", "pcf", "nrf", "nssf", "udr", "udm"]
     json_data = []
 
@@ -296,5 +296,5 @@ def plot_from_istio_logs():
 
     df.to_csv(IstioCsvLogFile.replace(".csv", "Processed.csv"), index=False)
 
-
-plot_from_istio_logs()
+aggregate_istio_logs()
+#plot_from_istio_logs()
