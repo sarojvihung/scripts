@@ -27,7 +27,7 @@ def aggregate_istio_logs():
     NFs = ["amf", "smf", "ausf", "bsf", "pcf", "nrf", "nssf", "udr", "udm"]
     json_data = []
 
-    for runCount in range(1, 2):
+    for runCount in range(1, 11):
         expRunDir = "{}-{}".format(expName, runCount)
         for sessionCount in list(range(100, 401, 100)):
             expSessionDir = os.path.join(expRunDir, str(sessionCount))
