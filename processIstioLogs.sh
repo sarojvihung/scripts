@@ -6,7 +6,7 @@ echo $exp
 f1="IstioBench2"
 for subexp in `seq 100 100 400`
 do
-    for j in `seq 1 1 1`
+    for j in `seq 1 1 10`
     do
         threshUeCount=$(echo "scale=4; $subexp*0.9" | bc)
         currUeCount=0
@@ -14,7 +14,7 @@ do
         if [ -f "$ueLogFile" ] ; then
             currUeCount=$(cat $ueLogFile | grep 'PCS Skipped setting TUN interface for UE' | wc -l)
         fi
-        if [ $(echo "$currUeCount >= $threshUeCount" | bc) -ne 0 ] then
+        if [ $(echo "$currUeCount >= $threshUeCount" | bc) -ne 0 ] ; then
             nfFile=$exp/$f1-$j/$subexp/nf_max_queue.txt
             for nf in "${NFs[@]}"
             do
