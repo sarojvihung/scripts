@@ -14,7 +14,7 @@ do
         if [ -f "$ueLogFile" ] ; then
             currUeCount=$(cat $ueLogFile | grep 'PCS Skipped setting TUN interface for UE' | wc -l)
         fi
-        if (( currUeCount >= threshUeCount )); then
+        if [ $(echo "$currUeCount >= $threshUeCount" | bc) -ne 0 ] then
             nfFile=$exp/$f1-$j/$subexp/nf_max_queue.txt
             for nf in "${NFs[@]}"
             do
