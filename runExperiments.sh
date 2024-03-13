@@ -43,7 +43,7 @@ do
         sleep 60
         
         #start-ran
-        bash /opt/scripts/runNodeCmd.sh "nr-gnb -c /opt/UERANSIM/config/open5gs-gnb.yaml > /dev/null 2>&1 &" 0
+        bash /opt/scripts/runNodeCmd.sh "nr-gnb -c /opt/UERANSIM/config/open5gs-gnb.yaml > /dev/null 2>&1 &" 1
         #nr-gnb -c /opt/UERANSIM/config/open5gs-gnb.yaml > /dev/null 2>&1 &
         
         rm -rf /opt/Experiments/$experimentDir/$pcsDir/istioPerf
@@ -66,7 +66,7 @@ do
             kubectl exec -n "$NS" "$POD" -c istio-proxy -- curl -X POST -s "http://localhost:15000/${PROFILER}profiler?enable=y"
         done
         
-        #bash /opt/scripts/runNodeCmd.sh "/opt/scripts/launchUeSim.py > /dev/null 2>&1 &" 0
+        #bash /opt/scripts/runNodeCmd.sh "/opt/scripts/launchUeSim.py > /dev/null 2>&1 &" 1
         #/opt/scripts/launchUeSim.py > /dev/null 2>&1 &
         
         #start-ue
@@ -100,17 +100,17 @@ do
         done
         
         #stop-ran
-        bash /opt/scripts/runNodeCmd.sh "pkill -f nr-ue" 0
+        bash /opt/scripts/runNodeCmd.sh "pkill -f nr-ue" 1
         #pkill -f nr-ue
         
         sleep 5
         
-        bash /opt/scripts/runNodeCmd.sh "pkill -f nr-gnb" 0
+        bash /opt/scripts/runNodeCmd.sh "pkill -f nr-gnb" 1
         #pkill -f nr-gnb
         
         sleep 5
         
-        #bash /opt/scripts/runNodeCmd.sh "pkill -f launchUeSim" 0
+        #bash /opt/scripts/runNodeCmd.sh "pkill -f launchUeSim" 1
         #pkill -f launchUeSim
         
         #sleep 5
