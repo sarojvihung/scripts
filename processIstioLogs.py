@@ -55,8 +55,8 @@ def aggregate_istio_logs():
 
 def plot_from_istio_logs():
     numSessions = list(range(100, 401, 100))
-    IstioCsvLogFileDir = "/Users/umakantkulkarni/PurdueOneDrive/OneDrive - purdue.edu/Research/5gSec/Spring2024/IstioBenchmarking"
-    IstioCsvLogFile = os.path.join(IstioCsvLogFileDir, "IstioBench1.csv")
+    IstioCsvLogFileDir = "/Users/umakantkulkarni/PurdueOneDrive/OneDrive - purdue.edu/Research/5gSec/Spring2024/IstioBenchmarking/2"
+    IstioCsvLogFile = os.path.join(IstioCsvLogFileDir, "IstioBench2.csv")
     df = pd.read_csv(IstioCsvLogFile)
     df.dropna(axis=1, how='all', inplace=True)
     df = df.replace(r'^\s*$', np.nan, regex=True)
@@ -296,5 +296,5 @@ def plot_from_istio_logs():
 
     df.to_csv(IstioCsvLogFile.replace(".csv", "Processed.csv"), index=False)
 
-aggregate_istio_logs()
-#plot_from_istio_logs()
+#aggregate_istio_logs()
+plot_from_istio_logs()
