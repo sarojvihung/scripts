@@ -23,7 +23,7 @@ declare -a subDir=("100" "200" "300" "400")
 
 declare -a experimentDirAry=("$experimentDirPrefix-1" "$experimentDirPrefix-2" "$experimentDirPrefix-3" "$experimentDirPrefix-4" "$experimentDirPrefix-5" "$experimentDirPrefix-6" "$experimentDirPrefix-7" "$experimentDirPrefix-8" "$experimentDirPrefix-9" "$experimentDirPrefix-10")
 
-declare -a ueNodes=("10.10.1.1")
+declare -a ueNodes=("10.10.1.2")
 
 for experimentDir in "${experimentDirAry[@]}"
 do
@@ -43,8 +43,8 @@ do
         sleep 60
         
         #start-ran
-        #bash /opt/scripts/runNodeCmd.sh "nr-gnb -c /opt/UERANSIM/config/open5gs-gnb.yaml > /dev/null 2>&1 &" 0
-        nr-gnb -c /opt/UERANSIM/config/open5gs-gnb.yaml > /dev/null 2>&1 &
+        bash /opt/scripts/runNodeCmd.sh "nr-gnb -c /opt/UERANSIM/config/open5gs-gnb.yaml > /dev/null 2>&1 &" 0
+        #nr-gnb -c /opt/UERANSIM/config/open5gs-gnb.yaml > /dev/null 2>&1 &
         
         rm -rf /opt/Experiments/$experimentDir/$pcsDir/istioPerf
         mkdir -p /opt/Experiments/$experimentDir/$pcsDir/istioPerf
@@ -57,8 +57,7 @@ do
         
         #https://github.com/istio/istio/wiki/Analyzing-Istio-Performance
         for pod in "${PODARRAY[@]}"
-        do
-            
+        do  
             POD=$pod
             NS=open5gs
             PROFILER="cpu" # Can also be "heap", for a heap profile
@@ -71,12 +70,12 @@ do
         #/opt/scripts/launchUeSim.py > /dev/null 2>&1 &
         
         #start-ue
-        #for ueNodeIp in "${ueNodes[@]}"
-        #do
-        #    echo "UE-SIM IP Address is $ueNodeIp"
-        #    curl --verbose --request POST --header "Content-Type:application/json" --data '{"numSessions":"'$numSessions'","expDir":"'$experimentDir'","subExpDir":"'$pcsDir'"}'  http://$ueNodeIp:15692
-        #done
-        cd /opt/Experiments/${experimentDir}/${pcsDir} && nr-ue -c /opt/UERANSIM/config/open5gs-ue.yaml -n $numSessions > /opt/Experiments/${experimentDir}/${pcsDir}/uesim.logs 2>&1 &
+        for ueNodeIp in "${ueNodes[@]}"
+        do
+            echo "UE-SIM IP Address is $ueNodeIp"
+            curl --verbose --request POST --header "Content-Type:application/json" --data '{"numSessions":"'$numSessions'","expDir":"'$experimentDir'","subExpDir":"'$pcsDir'"}'  http://$ueNodeIp:15692
+        done
+        #cd /opt/Experiments/${experimentDir}/${pcsDir} && nr-ue -c /opt/UERANSIM/config/open5gs-ue.yaml -n $numSessions > /opt/Experiments/${experimentDir}/${pcsDir}/uesim.logs 2>&1 &
         
         sleep $callTime
         cd /opt/scripts
@@ -101,20 +100,20 @@ do
         done
         
         #stop-ran
-        #bash /opt/scripts/runNodeCmd.sh "pkill -f nr-ue" 0
-        pkill -f nr-ue
+        bash /opt/scripts/runNodeCmd.sh "pkill -f nr-ue" 0
+        #pkill -f nr-ue
         
         sleep 5
         
-        #bash /opt/scripts/runNodeCmd.sh "pkill -f nr-gnb" 0
-        pkill -f nr-gnb
+        bash /opt/scripts/runNodeCmd.sh "pkill -f nr-gnb" 0
+        #pkill -f nr-gnb
         
         sleep 5
         
         #bash /opt/scripts/runNodeCmd.sh "pkill -f launchUeSim" 0
-        pkill -f launchUeSim
+        #pkill -f launchUeSim
         
-        sleep 5
+        #sleep 5
         
         #kubectl exec -it $mongoPod -- bash -c "pkill -f mongoMonitor.py"
         
