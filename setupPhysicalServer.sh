@@ -61,8 +61,8 @@ cd /opt/scripts && git pull
 
 #https://istio.io/latest/docs/setup/getting-started/#download
 cd /opt
-curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.19.3 TARGET_ARCH=x86_64 sh -
-cd istio-1.19.3
+curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.20.3 TARGET_ARCH=x86_64 sh -
+cd istio-1.20.3
 echo "export PATH=$PWD/bin:$PATH" >> ~/.bashrc
 export PATH=$PWD/bin:$PATH
 
