@@ -10,10 +10,14 @@ do
     do
         threshUeCount=$(echo "scale=4; $subexp*0.9" | bc)
         currUeCount=0
-        ueLogFile=$exp/$f1-$j/$subexp/uesim.logs
-        if [ -f "$ueLogFile" ] ; then
-            currUeCount=$(cat $ueLogFile | grep 'PCS Skipped setting TUN interface for UE' | wc -l)
-        fi
+        for i in "$@"
+        do
+            ueIpFile=$exp/$f1-$j/$subexp/pcs_ueips.txt_node${i}
+            if [ -f "$ueIpFile" ] ; then
+                myUeCount=$(cat $ueIpFile | wc -l)
+                currUeCount=$(( currUeCount + myUeCount ))
+            fi
+        done
         if [ $(echo "$currUeCount >= $threshUeCount" | bc) -ne 0 ] ; then
             nfFile=$exp/$f1-$j/$subexp/nf_max_queue.txt
             for nf in "${NFs[@]}"
