@@ -3,7 +3,7 @@
 declare -a NFs=("amf" "smf" "ausf" "bsf" "pcf" "nrf" "nssf" "udr" "udm")
 exp="/opt/Experiments"
 echo $exp
-f1="IstioBench2"
+f1="IstioBench3"
 for subexp in `seq 100 100 400`
 do
     for j in `seq 1 1 10`

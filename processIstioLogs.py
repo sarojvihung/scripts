@@ -22,8 +22,8 @@ file_format = 'pdf'
 
 
 def aggregate_istio_logs():
-    expName = "/opt/Experiments/IstioBench2"
-    IstioCsvLogFile = "/opt/Experiments/IstioBench2.csv"
+    expName = "/opt/Experiments/IstioBench3"
+    IstioCsvLogFile = "/opt/Experiments/IstioBench3.csv"
     NFs = ["amf", "smf", "ausf", "bsf", "pcf", "nrf", "nssf", "udr", "udm"]
     json_data = []
 
@@ -55,8 +55,8 @@ def aggregate_istio_logs():
 
 def plot_from_istio_logs():
     numSessions = list(range(100, 401, 100))
-    IstioCsvLogFileDir = "/Users/umakantkulkarni/PurdueOneDrive/OneDrive - purdue.edu/Research/5gSec/Spring2024/IstioBenchmarking/2"
-    IstioCsvLogFile = os.path.join(IstioCsvLogFileDir, "IstioBench2.csv")
+    IstioCsvLogFileDir = "/Users/umakantkulkarni/PurdueOneDrive/OneDrive - purdue.edu/Research/5gSec/Spring2024/IstioBenchmarking/3"
+    IstioCsvLogFile = os.path.join(IstioCsvLogFileDir, "IstioBench3.csv")
     df = pd.read_csv(IstioCsvLogFile)
     df.dropna(axis=1, how='all', inplace=True)
     df = df.replace(r'^\s*$', np.nan, regex=True)
