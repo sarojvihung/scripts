@@ -135,7 +135,8 @@ source ~/.bashrc
 
 bash $SCRIPT_DIR/labelK8sNodes.sh
 
-bash $SCRIPT_DIR/nukeOpen5gs.sh 1
+NAMESPACE=open5gs
+bash $SCRIPT_DIR/nukeOpen5gs.sh 1 $NAMESPACE
 
 echo "Waiting 200 seconds for nodes to be ready..."
 sleep 30
@@ -144,7 +145,7 @@ sleep 170
 
 kubectl taint nodes $(kubectl get nodes --selector=node-role.kubernetes.io/control-plane | awk 'FNR==2{print $1}') node-role.kubernetes.io/control-plane-
 
-kubectl patch svc amf-open5gs-sctp -n open5gs -p "{\"spec\": {\"type\": \"LoadBalancer\", \"externalIPs\":[\"$worker_node1_ip\"]}}"
+kubectl patch svc amf-open5gs-sctp -n $NAMESPACE -p "{\"spec\": {\"type\": \"LoadBalancer\", \"externalIPs\":[\"$worker_node1_ip\"]}}"
 
-testPod=`kubectl -n open5gs get po -o json |  jq '.items[] | select(.metadata.name|contains("open5gs"))| .metadata.name' | grep "test" | sed 's/"//g'`
-kubectl exec -it $testPod -n open5gs -- python3 /root/scripts/addMongoSubs.py 100
+testPod=`kubectl -n $NAMESPACE get po -o json |  jq '.items[] | select(.metadata.name|contains("open5gs"))| .metadata.name' | grep "test" | sed 's/"//g'`
+kubectl exec -it $testPod -n $NAMESPACE -- python3 /root/scripts/addMongoSubs.py 100
