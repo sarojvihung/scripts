@@ -48,11 +48,13 @@ rm -f /opt/Experiments/$experimentDir/$pcsDir/nf_max_queue.txt
 for pod in "${ARRAY[@]}"
 do
     rm -f /opt/Experiments/$experimentDir/$pcsDir/${pod}_logs.txt
-    rm -f /opt/Experiments/$experimentDir/$pcsDir/${pod}_istio_logs.txt
+    #rm -f /opt/Experiments/$experimentDir/$pcsDir/${pod}_istio_logs.txt
+    rm -f /opt/Experiments/$experimentDir/$pcsDir/${pod}_ztx_logs.txt
     nfName=$(echo $pod | awk -v FS="(open5gs-|-deployment)" '{print $2}')
     kubectl logs $pod -n open5gs -c $nfName > /opt/Experiments/$experimentDir/$pcsDir/${pod}_logs.txt
-    if [[ "$nfName" != "upf" ]] ; then
-        kubectl logs $pod -n open5gs -c istio-proxy > /opt/Experiments/$experimentDir/$pcsDir/${pod}_istio_logs.txt
+    if [[ "$nfName" == "amf" ||  "$nfName" == "smf" ||  "$nfName" == "upf" ]] ; then
+        #kubectl logs $pod -n open5gs -c istio-proxy > /opt/Experiments/$experimentDir/$pcsDir/${pod}_istio_logs.txt
+        kubectl logs $pod -n open5gs -c ztx > /opt/Experiments/$experimentDir/$pcsDir/${pod}_ztx_logs.txt
     fi
     maxQueue=$(cat /opt/Experiments/$experimentDir/$pcsDir/${pod}_logs.txt | grep " ogs_queue_size is" | grep "PCS " | awk '{print $9}' | sort -rn | head -n 1)
     if [[ "$nfName" == "amf" ]] ; then

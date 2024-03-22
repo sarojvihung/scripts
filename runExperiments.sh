@@ -42,12 +42,19 @@ do
         
         sleep 60
         
+        #start-ztx
+        bash /opt/scripts/runNodeCmd.sh "mkdir -p /opt/Experiments/${experimentDir}" 1
+        bash /opt/scripts/runNodeCmd.sh "mkdir -p /opt/Experiments/${experimentDir}/${pcsDir}" 1
+        bash /opt/scripts/runNodeCmd.sh "ztx -i 10.10.1.2 -z 1 > /opt/Experiments/${experimentDir}/${pcsDir}/ztx_ran.log 2>&1 &" 1
+        #ztx -i 10.10.1.2 -z 1 > /opt/Experiments/${experimentDir}/${pcsDir}/ztx_ran.log 2>&1 &
+        sleep 5
+
         #start-ran
         bash /opt/scripts/runNodeCmd.sh "nr-gnb -c /opt/UERANSIM/config/open5gs-gnb.yaml > /dev/null 2>&1 &" 1
         #nr-gnb -c /opt/UERANSIM/config/open5gs-gnb.yaml > /dev/null 2>&1 &
         
-        rm -rf /opt/Experiments/$experimentDir/$pcsDir/istioPerf
-        mkdir -p /opt/Experiments/$experimentDir/$pcsDir/istioPerf
+        #rm -rf /opt/Experiments/$experimentDir/$pcsDir/istioPerf
+        #mkdir -p /opt/Experiments/$experimentDir/$pcsDir/istioPerf
         PODARRAY=()
         for pod in `kubectl -n open5gs get po -o json |  jq '.items[] | select(.metadata.name|contains("open5gs"))| .metadata.name' | grep -v "test\|webui\|upf\|mongo" | sed 's/"//g'` ;
         do
@@ -56,15 +63,15 @@ do
         done
         
         #https://github.com/istio/istio/wiki/Analyzing-Istio-Performance
-        for pod in "${PODARRAY[@]}"
-        do  
-            POD=$pod
-            NS=open5gs
-            PROFILER="cpu" # Can also be "heap", for a heap profile
-            kubectl exec -n "$NS" "$POD" -c istio-proxy -- curl -X POST -s "http://localhost:15000/${PROFILER}profiler?enable=y"
-            PROFILER="heap" # Can also be "heap", for a heap profile
-            kubectl exec -n "$NS" "$POD" -c istio-proxy -- curl -X POST -s "http://localhost:15000/${PROFILER}profiler?enable=y"
-        done
+        # for pod in "${PODARRAY[@]}"
+        # do  
+        #     POD=$pod
+        #     NS=open5gs
+        #     PROFILER="cpu" # Can also be "heap", for a heap profile
+        #     kubectl exec -n "$NS" "$POD" -c istio-proxy -- curl -X POST -s "http://localhost:15000/${PROFILER}profiler?enable=y"
+        #     PROFILER="heap" # Can also be "heap", for a heap profile
+        #     kubectl exec -n "$NS" "$POD" -c istio-proxy -- curl -X POST -s "http://localhost:15000/${PROFILER}profiler?enable=y"
+        # done
         
         #bash /opt/scripts/runNodeCmd.sh "/opt/scripts/launchUeSim.py > /dev/null 2>&1 &" 1
         #/opt/scripts/launchUeSim.py > /dev/null 2>&1 &
@@ -84,20 +91,20 @@ do
         
         #sleep 60
         
-        for pod in "${PODARRAY[@]}"
-        do
-            POD=$pod
-            NS=open5gs
-            nfName=$(echo $pod | awk -v FS="(open5gs-|-deployment)" '{print $2}')
-            mkdir -p /opt/Experiments/$experimentDir/$pcsDir/istioPerf/${nfName}
-            PROFILER="cpu" # Can also be "heap", for a heap profile
-            kubectl exec -n "$NS" "$POD" -c istio-proxy -- curl -X POST -s "http://localhost:15000/${PROFILER}profiler?enable=n"
-            PROFILER="heap" # Can also be "heap", for a heap profile
-            kubectl exec -n "$NS" "$POD" -c istio-proxy -- curl -X POST -s "http://localhost:15000/${PROFILER}profiler?enable=n"
-            kubectl cp -n "$NS" "$POD":/var/lib/istio/data /opt/Experiments/$experimentDir/$pcsDir/istioPerf/${nfName} -c istio-proxy
-            #kubectl cp -n "$NS" "$POD":/lib/x86_64-linux-gnu /opt/Experiments/$experimentDir/$pcsDir/istioPerf/${nfName}/lib -c istio-proxy
-            #kubectl cp -n "$NS" "$POD":/usr/local/bin/envoy /opt/Experiments/$experimentDir/$pcsDir/istioPerf/${nfName}/lib/envoy -c istio-proxy
-        done
+        # for pod in "${PODARRAY[@]}"
+        # do
+        #     POD=$pod
+        #     NS=open5gs
+        #     nfName=$(echo $pod | awk -v FS="(open5gs-|-deployment)" '{print $2}')
+        #     mkdir -p /opt/Experiments/$experimentDir/$pcsDir/istioPerf/${nfName}
+        #     PROFILER="cpu" # Can also be "heap", for a heap profile
+        #     kubectl exec -n "$NS" "$POD" -c istio-proxy -- curl -X POST -s "http://localhost:15000/${PROFILER}profiler?enable=n"
+        #     PROFILER="heap" # Can also be "heap", for a heap profile
+        #     kubectl exec -n "$NS" "$POD" -c istio-proxy -- curl -X POST -s "http://localhost:15000/${PROFILER}profiler?enable=n"
+        #     kubectl cp -n "$NS" "$POD":/var/lib/istio/data /opt/Experiments/$experimentDir/$pcsDir/istioPerf/${nfName} -c istio-proxy
+        #     #kubectl cp -n "$NS" "$POD":/lib/x86_64-linux-gnu /opt/Experiments/$experimentDir/$pcsDir/istioPerf/${nfName}/lib -c istio-proxy
+        #     #kubectl cp -n "$NS" "$POD":/usr/local/bin/envoy /opt/Experiments/$experimentDir/$pcsDir/istioPerf/${nfName}/lib/envoy -c istio-proxy
+        # done
         
         #stop-ran
         bash /opt/scripts/runNodeCmd.sh "pkill -f nr-ue" 1
@@ -109,7 +116,10 @@ do
         #pkill -f nr-gnb
         
         sleep 5
+        bash /opt/scripts/runNodeCmd.sh "pkill -f ztx" 1
+        #pkill -f ztx
         
+        sleep 5
         #bash /opt/scripts/runNodeCmd.sh "pkill -f launchUeSim" 1
         #pkill -f launchUeSim
         
