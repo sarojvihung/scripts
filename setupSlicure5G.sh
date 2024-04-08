@@ -136,7 +136,7 @@ source ~/.bashrc
 bash $SCRIPT_DIR/labelK8sNodes.sh
 
 NAMESPACE=open5gs
-bash $SCRIPT_DIR/nukeOpen5gs.sh 1 $NAMESPACE
+bash $SCRIPT_DIR/nukeOpen5gs.sh 0 $NAMESPACE
 
 echo "Waiting 200 seconds for nodes to be ready..."
 sleep 30
