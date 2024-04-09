@@ -35,7 +35,7 @@ do
         mkdir -p /opt/Experiments/${experimentDir}/${pcsDir}
         
         numSessions=$(( pcsDir / 1 ))
-        callTime=$(( pcsDir / 5 ))
+        callTime=$(( pcsDir / 4 ))
         
         #cleanup
         kubectl get pods --no-headers=true | awk '/upf|amf|bsf|pcf|udm|ausf|nrf|nssf|udr|smf/{print $1}'| xargs  kubectl delete pod
